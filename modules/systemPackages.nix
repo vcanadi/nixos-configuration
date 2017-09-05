@@ -45,6 +45,7 @@ pkgs: with pkgs; [
     gnumake
 
     git
+    tig
 
     python3		
     pythonPackages.numpy
