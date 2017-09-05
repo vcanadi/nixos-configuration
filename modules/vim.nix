@@ -8,6 +8,7 @@ vim_configurable.customize {
 
       " line nbrs, whitespaces   
         set nu
+        set tabstop=4
         syntax enable 
         filetype plugin on
  
