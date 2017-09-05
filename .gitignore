@@ -16,5 +16,5 @@ cabal.sandbox.config
 *.hp
 .stack-work/
 .local
-users.nix
+modules/users.nix
 hardware-configuration.nix
