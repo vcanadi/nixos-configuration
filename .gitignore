@@ -18,3 +18,4 @@ cabal.sandbox.config
 .local
 modules/users.nix
 hardware-configuration.nix
+contributors.txt
