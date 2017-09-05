@@ -12,6 +12,8 @@
         ./modules/users.nix
         ];
 
+security.chromiumSuidSandbox.enable= true;
+
 environment.systemPackages = import ./modules/systemPackages.nix pkgs;
 
 nixpkgs.config.packageOverrides = super: 
@@ -24,12 +26,6 @@ nixpkgs.config.packageOverrides = super:
 
                      ]);
 
-
-    torbrowser = super.torbrowser.override {
-      extraPrefs = ''
-        lockPref("browser.tabs.remote.autostart", false);
-        lockPref("browser.tabs.remote.autostart.2", false);
-      '';
     };
 */
     };
@@ -102,16 +98,7 @@ system.stateVersion = "17.03";
 #--------------------------------------------
 #-------------------------------------------- 
 
-#	nixpkgs.config.firefox = {
-#		 enableGoogleTalkPlugin = true;
-#		 enableAdobeFlash = true;
-#		};
-/*
-	 nixpkgs.config.chromium = {
-		 enablePepperFlash = true; 
-		 enablePepperPDF = true;
-		};
-*/
+
 /*
 programs.zsh.interactiveShellInit = ''
   export ZSH=${pkgs.oh-my-zsh}/share/oh-my-zsh/

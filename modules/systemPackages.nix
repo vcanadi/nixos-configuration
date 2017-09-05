@@ -6,7 +6,14 @@ pkgs: with pkgs; [
     gnome3.nautilus 
     tmux
     filezilla
+    ncftp
     vimPlugins.ghc-mod-vim
+    go-sct
+    unity3d 
+    sqlite
+    monodevelop
+    gpicview
+    gthumb
                
  #osnovno 
     pavucontrol	
@@ -18,6 +25,7 @@ pkgs: with pkgs; [
     wine
     pcsx2
     p7zip
+
 #text editori
     (import ./vim.nix)
     neovim
