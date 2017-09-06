@@ -9,6 +9,9 @@ vim_configurable.customize {
       " line nbrs, whitespaces   
         set nu
         set tabstop=4
+        set shiftwidth=4
+        set softtabstop=4
+        set expandtab
         syntax enable 
         filetype plugin on
  
@@ -29,6 +32,10 @@ vim_configurable.customize {
       " os clipboard
         nmap <leader>y "*y
         vmap <leader>y "*y
+        nmap <leader>d "*d
+        vmap <leader>d "*d
+        nmap <leader>p "*p
+        vmap <leader>p "*p
           
     '';
 
@@ -40,6 +47,8 @@ vim_configurable.customize {
             "vim-nix"
             "vim-airline"
             "vim-airline-themes"
+            "vim-elixir"
+            "alchemist-vim"
 
             "ghcmod"
             "vimproc"

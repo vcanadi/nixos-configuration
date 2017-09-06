@@ -14,6 +14,9 @@ pkgs: with pkgs; [
     monodevelop
     gpicview
     gthumb
+    elixir
+    erlang
+    rlwrap
                
  #osnovno 
     pavucontrol	
