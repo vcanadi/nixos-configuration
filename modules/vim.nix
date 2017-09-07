@@ -36,6 +36,8 @@ vim_configurable.customize {
         vmap <leader>d "*d
         nmap <leader>p "*p
         vmap <leader>p "*p
+
+        noremap <C-p> :find 
           
     '';
 
