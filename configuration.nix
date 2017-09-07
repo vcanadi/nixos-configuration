@@ -39,7 +39,17 @@
       host    all             all             ::1/128                 trust
       '';
 
-      nixpkgs.config.allowUnfree = true;	
+    environment.etc."inputrc" = lib.mkForce { 
+       text = 
+          builtins.readFile (<nixpkgs/nixos/modules/programs/bash/inputrc>) +
+          ''
+
+          set editing-mode vi
+          set keymap vi-command
+        '';
+      };
+
+    nixpkgs.config.allowUnfree = true;	
 
 
 
