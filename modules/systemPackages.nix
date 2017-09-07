@@ -7,8 +7,6 @@ pkgs: with pkgs; [
     tmux
     filezilla
     ncftp
-    vimPlugins.ghc-mod-vim
-    go-sct
     unity3d 
     sqlite
     monodevelop
@@ -16,8 +14,12 @@ pkgs: with pkgs; [
     gthumb
     elixir
     erlang
+    rebar3
     rlwrap
-               
+    staruml
+    tree
+
+
  #osnovno 
     pavucontrol	
     chromium

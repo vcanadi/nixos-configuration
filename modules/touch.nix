@@ -1,12 +1,20 @@
 {config, pkgs, ...}:
 {  
-	#	services.xserver.multitouch.enable=true; 
-		services.xserver.synaptics.enable=true;   
-		services.xserver.synaptics.palmDetect=true;   
-		services.xserver.synaptics.twoFingerScroll=true; 
-		services.xserver.synaptics.maxSpeed="5";
-		services.xserver.synaptics.minSpeed="0.5";
-		services.xserver.synaptics.accelFactor="0.03";
-		services.xserver.synaptics.palmMinWidth=5;		
-		services.xserver.synaptics.palmMinZ=30;
+		services.xserver.synaptics = { 
+        enable=true;   
+		    palmDetect=true;   
+		    twoFingerScroll=true; 
+		    maxSpeed="5";
+		    minSpeed="0.5";
+		    accelFactor="0.03";
+		    palmMinWidth=5;		
+		    palmMinZ=30;
+
+        additionalOptions = ''
+          Option "LeftEdge" "120"
+          Option "TopEdge" "120"
+          Option "RightEdge" "120"
+          Option "BottomEdge" "120"
+        '';
+      };
 }

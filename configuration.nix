@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
 
     imports = [ # Include the results of the hardware scan.
@@ -7,7 +7,7 @@
         ./modules/locale.nix
         ./modules/touch.nix	
         ./modules/net.nix
-        ./modules/video.nix
+        ./modules/graphics.nix
         ./modules/audio.nix
         ./modules/jobs.nix
         ./modules/users.nix
@@ -22,9 +22,25 @@
   # Enable the OpenSSH daemon.
     services.openssh.enable = true;
    
+    services.redshift.enable = true;
+    services.redshift.latitude = "46";
+    services.redshift.longitude = "16";
+
     services.nixosManual.showManual = true;
 
-    nixpkgs.config.allowUnfree = true;	
+    # postgres
+    services.postgresql.enable = true;
+    services.postgresql.package = pkgs.postgresql94;
+    services.postgresql.authentication = lib.mkForce ''
+      # Generated file; do not edit!
+      # TYPE  DATABASE        USER            ADDRESS                 METHOD
+      local   all             all                                     trust
+      host    all             all             127.0.0.1/32            trust
+      host    all             all             ::1/128                 trust
+      '';
+
+      nixpkgs.config.allowUnfree = true;	
+
 
 
     boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
