@@ -56,6 +56,7 @@ in
         ''
           ${myLogger.placeShLogCall "extraInit"} 
 
+          export PAGER='vim -R -u /etc/nixos/resources/.vimrcpg -'
           export VISUAL=vim
           export EDITOR="$VISUAL"
           set editing-mode vi

@@ -1,4 +1,4 @@
 {
-  placeShLogCall = s: "echo $(date) ${s} >> .myNixLog";
+  placeShLogCall = s: "echo $(date) ${s} >> ~/.myNixLog";
 }
 

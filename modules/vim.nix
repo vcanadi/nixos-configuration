@@ -37,7 +37,8 @@ vim_configurable.customize {
         vmap <leader>d "*d
         nmap <leader>p "*p
         vmap <leader>p "*p
-
+        
+        au BufRead /tmp/psql.edit.* set syntax=sql
           
     '';
 
