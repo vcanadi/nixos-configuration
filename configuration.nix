@@ -70,6 +70,7 @@ in
       gis = "git status";
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch";
+      nodemon = "~/node_modules/.bin/nodemon"; 
     };
 
 

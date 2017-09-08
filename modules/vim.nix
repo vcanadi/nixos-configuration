@@ -40,7 +40,7 @@ vim_configurable.customize {
         
         au BufRead /tmp/psql.edit.* set syntax=sql
         
-        noremap <C-b> :VimShellInteractive nixos-rebuild switch<CR>
+        noremap <C-b> :VimShellInteractive nixos-rebuild switch <CR>
     '';
 
     vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
