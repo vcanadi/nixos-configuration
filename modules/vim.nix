@@ -39,6 +39,8 @@ vim_configurable.customize {
         vmap <leader>p "*p
         
         au BufRead /tmp/psql.edit.* set syntax=sql
+        
+        noremap <C-b> :! nixos-rebuild switch<CR> 
           
     '';
 
