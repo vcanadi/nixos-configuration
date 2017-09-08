@@ -1,3 +1,5 @@
+let myLogger = (import ./myLogger.nix);
+in
 { config, pkgs, lib, ... }:
 {
 
@@ -44,10 +46,31 @@
           builtins.readFile (<nixpkgs/nixos/modules/programs/bash/inputrc>) +
           ''
 
+          ${myLogger.placeShLogCall "etc/initrc"} 
           set editing-mode vi
           set keymap vi-command
         '';
       };
+
+    environment.extraInit =  
+        ''
+          ${myLogger.placeShLogCall "extraInit"} 
+
+          export VISUAL=vim
+          export EDITOR="$VISUAL"
+          set editing-mode vi
+          set keymap vi-command
+        '';
+
+    environment.shellInit =      myLogger.placeShLogCall "shellinit";
+    environment.loginShellInit = myLogger.placeShLogCall "loginShellInit";
+
+    environment.shellAliases = {
+      gis = "git status";
+      nixc = "cd /etc/nixos";
+      nixb = "nixos-rebuild switch";
+    };
+
 
     nixpkgs.config.allowUnfree = true;	
 
