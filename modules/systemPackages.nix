@@ -18,6 +18,7 @@ pkgs: with pkgs; [
     rlwrap
     staruml
     tree
+    nodejs
 
 
  #osnovno 

@@ -40,8 +40,7 @@ vim_configurable.customize {
         
         au BufRead /tmp/psql.edit.* set syntax=sql
         
-        noremap <C-b> :! nixos-rebuild switch<CR> 
-          
+        noremap <C-b> :VimShellInteractive nixos-rebuild switch<CR>
     '';
 
     vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
@@ -49,6 +48,7 @@ vim_configurable.customize {
         names = [
             "Syntastic"
             "The_NERD_tree"
+            "vimshell"
             "vim-nix"
             "vim-airline"
             "vim-airline-themes"
