@@ -1,34 +1,11 @@
-{config, pkgs, ...}:
-{
- # xmonad 
- services.xserver = {
+{config, pkgs, ...}:{
+  
+    services.xserver = {
         enable = true;
-        layout = "hr";
-        xkbOptions = "eurosign:e";
-
-        displayManager= 
-        {
-			lightdm.enable = true;     
-		};
-
-        windowManager.xmonad.enable = true;
-        windowManager.xmonad.enableContribAndExtras = true;
-    #   windowManager.xmonad.extraPackages = self: [ self.xmonadContrib ];
-        windowManager.default = "xmonad";
-    #  desktopManager.default = "xfce";
-    
-    };
-
- # gnome 
- /*services.xserver = {
-        enable = true;
-        layout = "hr";
-        xkbOptions = "eurosign:e";
-
-
-        desktopManager.gnome3.enable = true;
-        desktopManager.default = "gnome3";
-      
-    };
-*/
-}	
+        layout = "us";
+        windowManager = {
+            xmonad = { enable = true; };
+            default = "xmonad";
+        };
+    };	
+}

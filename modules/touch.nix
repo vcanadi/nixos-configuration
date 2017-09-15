@@ -10,11 +10,5 @@
 		    palmMinWidth=5;		
 		    palmMinZ=30;
 
-        additionalOptions = ''
-          Option "LeftEdge" "120"
-          Option "TopEdge" "120"
-          Option "RightEdge" "120"
-          Option "BottomEdge" "120"
-        '';
       };
 }

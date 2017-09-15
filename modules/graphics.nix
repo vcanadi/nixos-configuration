@@ -1,17 +1,4 @@
-{config, pkgs, ...}:
-{
-	
-
-/*    systemd.services.nvidia-control-devices = {
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig.ExecStart = "${pkgs.linuxPackages.nvidia_x11}/bin/nvidia-smi";
-     };
-	
-	 	services.xserver.videoDrivers = [ 
-        "nouveau"
-	  ];
-*/
+{config, pkgs, ...}: {
 		hardware.opengl.driSupport32Bit = true;
-		hardware.opengl.enable=true;
-
+  	hardware.opengl.enable=true;
 }

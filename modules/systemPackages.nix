@@ -19,6 +19,7 @@ pkgs: with pkgs; [
     staruml
     tree
     nodejs
+    acpi
 
 
  #osnovno 
@@ -78,6 +79,8 @@ pkgs: with pkgs; [
 #xmonad sranja
     haskellPackages.xmobar
     haskellPackages.xmonad
+
+    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
 ]
   
 
