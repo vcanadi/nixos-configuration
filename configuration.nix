@@ -2,16 +2,16 @@
 
 {
   imports = [ # Include the results of the hardware scan.
-        ./hardware-configuration.nix	
-        ./modules/displayManager.nix
-        ./modules/locale.nix
-        ./modules/touch.nix	
-        ./modules/net.nix
-        ./modules/graphics.nix
-        ./modules/audio.nix
-        ./modules/jobs.nix
-        ./modules/users.nix
-       ];
+    ./hardware-configuration.nix	
+    ./modules/displayManager.nix
+    ./modules/locale.nix
+    ./modules/touch.nix	
+    ./modules/net.nix
+    ./modules/graphics.nix
+    ./modules/audio.nix
+    ./modules/jobs.nix
+    ./modules/users.nix
+   ];
 
   boot.kernelParams = ["quiet" "splash"];
   boot.loader.grub = {
@@ -30,6 +30,10 @@
       nixb = "nixos-rebuild switch; . /etc/keys";
       nodemon = "~/node_modules/.bin/nodemon"; 
     };
+
+    interactiveShellInit = ''
+    export PATH="$PATH:$HOME/.local/bin"
+    '';
   }; 
 
   virtualisation.virtualbox.host.enable = true;

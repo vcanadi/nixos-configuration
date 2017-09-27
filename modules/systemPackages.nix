@@ -20,7 +20,7 @@ pkgs: with pkgs; [
     tree
     nodejs
     acpi
-
+    tcpdump
 
  #osnovno 
     pavucontrol	
@@ -45,8 +45,10 @@ pkgs: with pkgs; [
 
 #prog
 #    haskell.compiler.ghc7103
-    stack
     ghc
+    haskellPackages.ghc-mod
+    haskellPackages.cabal-install
+    haskellPackages.inline-c
 
     gcc
     gnumake
@@ -79,8 +81,10 @@ pkgs: with pkgs; [
 #xmonad sranja
     haskellPackages.xmobar
     haskellPackages.xmonad
+    cabal2nix
 
-    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
+    #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
+    #     (haskellPackages.callPackage (import /home/bunkar/NixProjs/tutorial2/default.nix) {} )
 ]
   
 

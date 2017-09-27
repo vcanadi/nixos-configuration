@@ -4,7 +4,11 @@
         enable = true;
         layout = "us";
         windowManager = {
-            xmonad = { enable = true; };
+            xmonad = { 
+              enable = true; 
+              enableContribAndExtras = true;
+              extraPackages = with pkgs.haskellPackages; haskellPackages: [ xmobar ];
+            };
             default = "xmonad";
         };
     };	

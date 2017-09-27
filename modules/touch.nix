@@ -9,6 +9,11 @@
 		    accelFactor="0.03";
 		    palmMinWidth=5;		
 		    palmMinZ=30;
-
+        additionalOptions = ''
+          Option "AreaBottomEdge" "0"
+          Option "AreaLeftEdge" "2500"
+          Option "AreaRightEdge" "3500"
+          Option "AreaTopEdge" "3000"
+        '';
       };
 }

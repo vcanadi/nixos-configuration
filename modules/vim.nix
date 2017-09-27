@@ -8,17 +8,16 @@ vim_configurable.customize {
 
       " line nbrs, whitespaces   
         set nu
-        set tabstop=4
-        set shiftwidth=4
-        set softtabstop=4
+        set tabstop=2
+        set shiftwidth=2
+        set softtabstop=2
         set expandtab
-        syntax enable 
+        syntax on 
         filetype plugin on
  
       " vim without plugins
         set path+=**
         set wildmenu
-        noremap <C-p> :find 
 
         let g:netrw_banner=0        " disable annoying banner
         let g:netrw_browse_split=4  " open in prior window
@@ -41,6 +40,15 @@ vim_configurable.customize {
         au BufRead /tmp/psql.edit.* set syntax=sql
         
         noremap <C-b> :VimShellInteractive nixos-rebuild switch <CR>
+
+        autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+        autocmd StdinReadPre * let s:std_in=1
+        autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+        autocmd StdinReadPre * let s:std_in=1
+        autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
     '';
 
     vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
@@ -52,8 +60,10 @@ vim_configurable.customize {
             "vim-nix"
             "vim-airline"
             "vim-airline-themes"
-            "vim-elixir"
-            "alchemist-vim"
+            "haskell-vim"
+            "vim-addon-completion"
+            "ctrlp"
+            "The_NERD_Commenter"
 
             "ghcmod"
             "vimproc"
