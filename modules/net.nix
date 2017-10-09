@@ -1,12 +1,12 @@
 {config, pkgs, ...}:
 {
  
-	#	networking.hostName = "vnix"; # Define your hostname.
-	#	networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  #	 networking.useDHCP = true;
+	#networking.hostName = "vnix"; # Define your hostname.
+	#networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.useDHCP = true;
   #  networking.wicd.enable=true;
   	networking.networkmanager.enable=true;
-  	networking.firewall.enable=false;
+  # 	networking.firewall.enable=false;
 	#	networking.connman.enable=true;
   networking.extraHosts=''
     127.0.0.1 l1 

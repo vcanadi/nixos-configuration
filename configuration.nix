@@ -19,6 +19,13 @@
   	version = 2;
   	device = "/dev/sda";
   	splashImage = null;
+    extraEntries = ''
+		  menuentry 'Ubuntu' {
+		  insmod ext2
+		  set root='(hd0,3)'   
+		  chainloader +1
+		  }  
+		'';
   };
 
   environment={
@@ -29,15 +36,15 @@
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch; . /etc/keys";
       nodemon = "~/node_modules/.bin/nodemon"; 
+      ac = "cd projects/ale-core";
     };
 
     interactiveShellInit = ''
-    export PATH="$PATH:$HOME/.local/bin"
+      export PATH="$PATH:$HOME/.local/bin"
+      export VISUAL=vim
+      export EDITOR="$VISUAL"
     '';
   }; 
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "radivarig" ];
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -51,5 +58,6 @@
   users.defaultUserShell="/run/current-system/sw/bin/fish";
   users.extraUsers.user.shell="${pkgs.fish}/bin/fish";
 
-  system.stateVersion = "17.03";
+  system.stateVersion = "17.09";
+  hardware.enableAllFirmware=true;
 }

@@ -5,8 +5,6 @@ vim_configurable.customize {
     vimrcConfig.customRC = ''
 
         let g:mapleader = ','
-
-      " line nbrs, whitespaces   
         set nu
         set tabstop=2
         set shiftwidth=2
@@ -14,6 +12,9 @@ vim_configurable.customize {
         set expandtab
         syntax on 
         filetype plugin on
+        set smartcase
+        set hlsearch     
+        set incsearch   
  
       " vim without plugins
         set path+=**
@@ -46,8 +47,7 @@ vim_configurable.customize {
         autocmd StdinReadPre * let s:std_in=1
         autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
-        autocmd StdinReadPre * let s:std_in=1
-        autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+        highlight Pmenu ctermfg=0 ctermbg=100
 
     '';
 
@@ -61,12 +61,12 @@ vim_configurable.customize {
             "vim-airline"
             "vim-airline-themes"
             "haskell-vim"
-            "vim-addon-completion"
+            "youcompleteme"
             "ctrlp"
             "The_NERD_Commenter"
 
-            "ghcmod"
             "vimproc"
+            "vim2hs"
             "Hoogle"
         ];
     }];

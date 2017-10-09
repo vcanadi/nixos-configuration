@@ -1,41 +1,34 @@
 pkgs: with pkgs; [
 
     xorg.xmodmap
-    pal
     libreoffice
     gnome3.nautilus 
     tmux
     filezilla
     ncftp
-    unity3d 
     sqlite
-    monodevelop
-    gpicview
-    gthumb
-    elixir
-    erlang
-    rebar3
-    rlwrap
     staruml
     tree
-    nodejs
     acpi
     tcpdump
+    zip
+    haskellPackages.pretty-show
+    wpa_supplicant_gui
+    rocksdb_lite
+    zlib
 
  #osnovno 
     pavucontrol	
-    chromium
     firefox
+    chromium
     w3m
     transmission_gtk
     vlc
     wine
-    pcsx2
     p7zip
 
 #text editori
     (import ./vim.nix)
-    neovim
 
 #terminal
     rxvt_unicode
@@ -56,11 +49,7 @@ pkgs: with pkgs; [
     git
     tig
 
-    python3		
-    pythonPackages.numpy
-
     postgresql
-    archiveopteryx
 		
     dhcpcd
 		
@@ -85,6 +74,7 @@ pkgs: with pkgs; [
 
     #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
     #     (haskellPackages.callPackage (import /home/bunkar/NixProjs/tutorial2/default.nix) {} )
+
 ]
   
 
