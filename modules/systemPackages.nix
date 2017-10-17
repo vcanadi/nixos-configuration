@@ -16,6 +16,9 @@ pkgs: with pkgs; [
     wpa_supplicant_gui
     rocksdb_lite
     zlib
+    hydra 
+    nixops
+    psmisc 
 
  #osnovno 
     pavucontrol	

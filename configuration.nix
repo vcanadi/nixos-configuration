@@ -43,6 +43,8 @@
       export PATH="$PATH:$HOME/.local/bin"
       export VISUAL=vim
       export EDITOR="$VISUAL"
+      export HYDRA_DBI="dbi:Pg:dbname=hydra;host=localhost;user=hydra;"
+      export HYDRA_DATA=/var/lib/hydra
     '';
   }; 
 
@@ -52,7 +54,19 @@
 
   programs.bash.enableCompletion = true;
 
-  services.openssh.enable = true; 
+  services = {
+    openssh.enable = true; 
+    postgresql.enable = true;
+    postgresql.package = pkgs.postgresql94;
+    postgresql.authentication = pkgs.lib.mkForce ''
+        # Generated file; do not edit!
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD
+        local   all             all                                     trust
+        host    all             all             127.0.0.1/32            trust
+        host    all             all             ::1/128                 trust
+    '';
+  };
+
 
   programs.fish.enable=true;
   users.defaultUserShell="/run/current-system/sw/bin/fish";

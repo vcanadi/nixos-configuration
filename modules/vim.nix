@@ -15,6 +15,7 @@ vim_configurable.customize {
         set smartcase
         set hlsearch     
         set incsearch   
+        set noswapfile
  
       " vim without plugins
         set path+=**
@@ -66,7 +67,6 @@ vim_configurable.customize {
             "The_NERD_Commenter"
 
             "vimproc"
-            "vim2hs"
             "Hoogle"
         ];
     }];
