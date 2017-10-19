@@ -41,7 +41,8 @@ vim_configurable.customize {
     
     au BufRead /tmp/psql.edit.* set syntax=sql
     
-    noremap <C-b> :VimShellInteractive nixos-rebuild switch <CR>
+    noremap <leader>b :VimShellInteractive nixos-rebuild switch <CR>
+    noremap <leader>bb :VimShellInteractive stack --nix build <CR>
 
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 

@@ -45,8 +45,15 @@
       export EDITOR="$VISUAL"
       export HYDRA_DBI="dbi:Pg:dbname=hydra;host=localhost;user=hydra;"
       export HYDRA_DATA=/var/lib/hydra
+      set editing-mode vi
+      set keymap vi-command
+      #. /etc/keys
     '';
   }; 
+
+  nix.extraOptions = '' 
+    trusted-users = hydra hydra-evaluator hydra-queue-runner
+  '';
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -56,6 +63,7 @@
 
   services = {
     openssh.enable = true; 
+    nixosManual.showManual = true;
     postgresql.enable = true;
     postgresql.package = pkgs.postgresql94;
     postgresql.authentication = pkgs.lib.mkForce ''
@@ -74,4 +82,5 @@
 
   system.stateVersion = "17.09";
   hardware.enableAllFirmware=true;
+  security.polkit.enable = true;
 }
