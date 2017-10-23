@@ -4,9 +4,7 @@
 	# Select internationalisation properties.
 		
 		i18n = {
-			consoleFont = "Lat2-Terminus16";
-			consoleKeyMap = "us";
-			defaultLocale = "en_US.UTF8";
+			consoleFont = "lat9w-10";
 		};
 
 	# Set your time zone.

@@ -66,6 +66,7 @@ vim_configurable.customize {
       "youcompleteme"
       "ctrlp"
       "The_NERD_Commenter"
+      "ack-vim"
 
       "vimproc"
       "Hoogle"

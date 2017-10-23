@@ -28,27 +28,43 @@
 		'';
   };
 
+  fonts.enableCoreFonts = true;
+  fonts.fonts = with pkgs; [
+    corefonts
+    liberation_ttf
+    dejavu_fonts
+    terminus_font
+    ubuntu_font_family
+    gentium
+  ];
+
   environment={
     systemPackages = import ./modules/systemPackages.nix pkgs;
     
     shellAliases = {
       gis = "git status";
       nixc = "cd /etc/nixos";
-      nixb = "nixos-rebuild switch; . /etc/keys";
+      nixb = "nixos-rebuild switch;";
       nodemon = "~/node_modules/.bin/nodemon"; 
       ac = "cd projects/ale-core";
+      nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"''; 
     };
 
     interactiveShellInit = ''
       export PATH="$PATH:$HOME/.local/bin"
       export VISUAL=vim
       export EDITOR="$VISUAL"
-      export HYDRA_DBI="dbi:Pg:dbname=hydra;host=localhost;user=hydra;"
-      export HYDRA_DATA=/var/lib/hydra
       set editing-mode vi
       set keymap vi-command
-      #. /etc/keys
+      echo keycode 1 = Caps_Lock | loadkeys 
+      echo keycode 58 = Escape | loadkeys
     '';
+
+    variables = { 
+      HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
+      HYDRA_DATA = "/var/lib/hydra";
+    };
+    
   }; 
 
   nix.extraOptions = '' 

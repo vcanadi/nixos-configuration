@@ -11,5 +11,6 @@
       };
       default = "xmonad";
     };
+    xkbOptions = "caps:escape";
   };	
 }
