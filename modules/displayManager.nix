@@ -13,4 +13,11 @@
     };
     xkbOptions = "caps:escape";
   };	
+
+  i18n = {
+			consoleFont = "lat9w-10";
+      consoleUseXkbConfig = true;
+		};
+
+
 }

@@ -28,15 +28,18 @@
 		'';
   };
 
-  fonts.enableCoreFonts = true;
-  fonts.fonts = with pkgs; [
-    corefonts
-    liberation_ttf
-    dejavu_fonts
-    terminus_font
-    ubuntu_font_family
-    gentium
-  ];
+  fonts = {
+    enableCoreFonts = true;
+    fonts = with pkgs; [
+      corefonts
+      liberation_ttf
+      dejavu_fonts
+      terminus_font
+      ubuntu_font_family
+      gentium
+      hasklig
+    ];
+  };
 
   environment={
     systemPackages = import ./modules/systemPackages.nix pkgs;
@@ -56,19 +59,19 @@
       export EDITOR="$VISUAL"
       set editing-mode vi
       set keymap vi-command
-      echo keycode 1 = Caps_Lock | loadkeys 
-      echo keycode 58 = Escape | loadkeys
+      xset r rate 250 40
     '';
 
     variables = { 
-      HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
-      HYDRA_DATA = "/var/lib/hydra";
+      HYDRA_DBI = "dbi:Pg:dbname=root;host=localhost;user=root;";
+      HYDRA_DATA = "/var/lib/root";
+      NIX_REMOTE = "daemon";
     };
     
   }; 
 
   nix.extraOptions = '' 
-    trusted-users = hydra hydra-evaluator hydra-queue-runner
+    trusted-users = hydra root hydra-evaluator hydra-queue-runner
   '';
 
   nixpkgs.config = {
