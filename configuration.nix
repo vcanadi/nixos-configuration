@@ -3,7 +3,7 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix	
-    ./modules/displayManager.nix
+    ./modules/X.nix
     ./modules/locale.nix
     ./modules/touch.nix	
     ./modules/net.nix
@@ -63,8 +63,8 @@
     '';
 
     variables = { 
-      HYDRA_DBI = "dbi:Pg:dbname=root;host=localhost;user=root;";
-      HYDRA_DATA = "/var/lib/root";
+      HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
+      HYDRA_DATA = "/var/lib/hydra";
       NIX_REMOTE = "daemon";
     };
     
