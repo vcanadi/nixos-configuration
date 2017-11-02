@@ -12,6 +12,7 @@
       default = "xmonad";
     };
     xkbOptions = "caps:escape";
+    config = '' '' ;
   };	
 
   i18n = {

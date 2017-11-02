@@ -1,3 +1,6 @@
+let pkgs_old = import (fetchTarball https://d3g5gsiof5omrk.cloudfront.net/nixos/17.03-small/nixos-17.03.1944.6233be812f/nixexprs.tar.xz ) {};
+in 
+
 pkgs: with pkgs; [
 
   xorg.xmodmap
@@ -19,10 +22,12 @@ pkgs: with pkgs; [
   hydra 
   nixops
   psmisc 
+  xdotool
+  virtualboxHeadless
 
 #osnovno 
   pavucontrol	
-  firefox
+  pkgs_old.firefox 
   chromium
   w3m
   transmission_gtk

@@ -67,7 +67,6 @@
       HYDRA_DATA = "/var/lib/hydra";
       NIX_REMOTE = "daemon";
     };
-    
   }; 
 
   nix.extraOptions = '' 
@@ -102,4 +101,8 @@
   system.stateVersion = "17.09";
   hardware.enableAllFirmware=true;
   security.polkit.enable = true;
+
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "bunkar" ];
+
 }
