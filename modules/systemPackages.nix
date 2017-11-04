@@ -24,6 +24,8 @@ pkgs: with pkgs; [
   psmisc 
   xdotool
   virtualboxHeadless
+  perlPackages.ConfigINI
+  haskellPackages.cabal2nix
 
 #osnovno 
   pavucontrol	
@@ -57,8 +59,6 @@ pkgs: with pkgs; [
   git
   tig
 
-  postgresql
-  
   dhcpcd
   
   wpa_supplicant
@@ -74,11 +74,6 @@ pkgs: with pkgs; [
   jdk
   unrar
   nix-repl
-
-#xmonad sranja
-  haskellPackages.xmobar
-  haskellPackages.xmonad
-  cabal2nix
 
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   #     (haskellPackages.callPackage (import /home/bunkar/NixProjs/tutorial2/default.nix) {} )

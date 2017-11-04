@@ -65,6 +65,7 @@
     variables = { 
       HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
       HYDRA_DATA = "/var/lib/hydra";
+      HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
       NIX_REMOTE = "daemon";
     };
   }; 
@@ -83,7 +84,7 @@
     openssh.enable = true; 
     nixosManual.showManual = true;
     postgresql.enable = true;
-    postgresql.package = pkgs.postgresql94;
+    postgresql.package = pkgs.postgresql96;
     postgresql.authentication = pkgs.lib.mkForce ''
         # Generated file; do not edit!
         # TYPE  DATABASE        USER            ADDRESS                 METHOD

@@ -67,6 +67,7 @@ vim_configurable.customize {
       "ctrlp"
       "The_NERD_Commenter"
       "ack-vim"
+      "vim-orgmode"
 
       "vimproc"
       "Hoogle"
