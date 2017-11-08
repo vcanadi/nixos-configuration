@@ -70,6 +70,8 @@
     };
   }; 
 
+  nix.package = pkgs.nixUnstable;  
+
   nix.extraOptions = '' 
     trusted-users = hydra root hydra-evaluator hydra-queue-runner
   '';

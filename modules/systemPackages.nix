@@ -3,29 +3,16 @@ in
 
 pkgs: with pkgs; [
 
-  xorg.xmodmap
   libreoffice
   gnome3.nautilus 
   tmux
-  filezilla
-  ncftp
-  sqlite
-  staruml
-  tree
-  acpi
-  tcpdump
   zip
-  haskellPackages.pretty-show
-  wpa_supplicant_gui
-  rocksdb_lite
-  zlib
   hydra 
   nixops
-  psmisc 
   xdotool
   virtualboxHeadless
-  perlPackages.ConfigINI
   haskellPackages.cabal2nix
+  haskellPackages.xmobar
 
 #osnovno 
   pavucontrol	
@@ -51,7 +38,6 @@ pkgs: with pkgs; [
   ghc
   haskellPackages.ghc-mod
   haskellPackages.cabal-install
-  haskellPackages.inline-c
 
   gcc
   gnumake
@@ -71,7 +57,6 @@ pkgs: with pkgs; [
   hwinfo		
   conky
   htop
-  jdk
   unrar
   nix-repl
 
