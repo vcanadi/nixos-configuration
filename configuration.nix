@@ -45,32 +45,34 @@
     systemPackages = import ./modules/systemPackages.nix pkgs;
     
     shellAliases = {
+      vi = "vim";
+      resx = "systemctl restart service display-manager.service";
+      resnet = "systemctl restart service network-manager.service";
       gis = "git status";
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch;";
-      nodemon = "~/node_modules/.bin/nodemon"; 
       ac = "cd projects/ale-core";
       nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"''; 
     };
 
     interactiveShellInit = ''
-      export PATH="$PATH:$HOME/.local/bin"
-      export VISUAL=vim
-      export EDITOR="$VISUAL"
       set editing-mode vi
       set keymap vi-command
       xset r rate 250 40
     '';
 
     variables = { 
-      HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
-      HYDRA_DATA = "/var/lib/hydra";
-      HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
+      PATH = ["$HOME/.local/bin"]; 
+      VISUAL = "vim";
+      EDITOR = "$VISUAL";
+      #HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
+      #HYDRA_DATA = "/var/lib/hydra";
+      #HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
       NIX_REMOTE = "daemon";
     };
   }; 
 
-  nix.package = pkgs.nixUnstable;  
+  #nix.package = pkgs.nixUnstable;  
 
   nix.extraOptions = '' 
     trusted-users = hydra root hydra-evaluator hydra-queue-runner

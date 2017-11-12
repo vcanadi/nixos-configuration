@@ -25,7 +25,10 @@ pkgs: with pkgs; [
   p7zip
 
 #text editori
-  (import ./vim.nix)
+  ] ++ (with (import ./vim.nix { inherit pkgs; }); [ 
+    myVim 
+    myNvim 
+  ]) ++ [ 
 
 #terminal
   rxvt_unicode
