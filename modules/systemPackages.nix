@@ -7,7 +7,7 @@ pkgs: with pkgs; [
   gnome3.nautilus 
   tmux
   zip
-  hydra 
+  pkgs_old.hydra 
   nixops
   xdotool
   virtualboxHeadless

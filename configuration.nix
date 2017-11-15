@@ -69,6 +69,12 @@
       #HYDRA_DATA = "/var/lib/hydra";
       #HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
       NIX_REMOTE = "daemon";
+      PGHOST = "localhost";
+      PGUSER = "ale";
+      PGDATABASE = "ale";
+      PGPASSWORD = "ale";
+      PGPORT = "5432";
+
     };
   }; 
 
@@ -77,6 +83,8 @@
   nix.extraOptions = '' 
     trusted-users = hydra root hydra-evaluator hydra-queue-runner
   '';
+
+  nix.requireSignedBinaryCaches = false;
 
   nixpkgs.config = {
     allowUnfree = true;
