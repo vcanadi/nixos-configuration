@@ -13,6 +13,7 @@ pkgs: with pkgs; [
   virtualboxHeadless
   haskellPackages.cabal2nix
   haskellPackages.xmobar
+  inotify-tools
 
 #osnovno 
   pavucontrol	

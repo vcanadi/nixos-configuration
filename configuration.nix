@@ -68,7 +68,7 @@
       #HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
       #HYDRA_DATA = "/var/lib/hydra";
       #HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
-      NIX_REMOTE = "daemon";
+      #NIX_REMOTE = "daemon";
       PGHOST = "localhost";
       PGUSER = "ale";
       PGDATABASE = "ale";

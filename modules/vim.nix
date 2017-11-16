@@ -76,11 +76,12 @@ let
           "vim-airline"
           "vim-airline-themes"
           "haskell-vim"
-          "youcompleteme"
+          # "youcompleteme"
           "ctrlp"
           "The_NERD_Commenter"
           "ack-vim"
           "vim-orgmode"
+          "tmux-navigator"
 
           "vimproc"
           "Hoogle"
