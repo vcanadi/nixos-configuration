@@ -5,7 +5,6 @@ pkgs: with pkgs; [
 
   libreoffice
   gnome3.nautilus 
-  tmux
   zip
   pkgs_old.hydra 
   nixops

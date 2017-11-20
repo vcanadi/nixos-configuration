@@ -77,7 +77,7 @@
     };
 
     etc = {
-      "tmux.conf".source = "/etc/nixos/tmux.conf";
+      #"tmux.conf".source = "/etc/nixos/tmux.conf";
     };
   }; 
 
@@ -93,7 +93,6 @@
     allowUnfree = true;
   };
 
-  programs.bash.enableCompletion = true;
 
   services = {
     openssh.enable = true; 
@@ -110,7 +109,41 @@
   };
 
 
-  programs.fish.enable=true;
+  programs = {
+    fish.enable=true;
+    bash.enableCompletion = true;
+    tmux = {
+      enable = true;
+      shortcut = "a";
+      keyMode = "vi";
+      #terminal = "rxvt-unicode-256color";
+      terminal = "screen";
+      clock24 = true;
+      customPaneNavigationAndResize = true;
+      aggressiveResize = true;
+      escapeTime = 0;
+      historyLimit = 100000;
+      extraTmuxConf = ''
+          # Vim style
+          #bind-key -t vi-copy y copy-pipe "xsel -i -p -b"
+          bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
+
+          #set -g window-style 'fg=colour247,bg=colour236'
+          #set -g window-active-style 'fg=colour250,bg=black'
+
+          # Status bar
+          #set -g status-bg black
+          #set -g status-fg white
+          set -g status on
+          bind-key S set-option -g status
+
+          unbind-key s
+          bind-key s split-window
+          unbind-key v
+          bind-key v split-window -h
+      '';
+    };
+  };
   users.defaultUserShell="/run/current-system/sw/bin/fish";
   users.extraUsers.user.shell="${pkgs.fish}/bin/fish";
 
