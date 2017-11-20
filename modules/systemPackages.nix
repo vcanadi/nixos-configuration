@@ -14,6 +14,8 @@ pkgs: with pkgs; [
   haskellPackages.cabal2nix
   haskellPackages.xmobar
   inotify-tools
+  xsel xclip
+  xkeyboard_config
 
 #osnovno 
   pavucontrol	
@@ -66,7 +68,7 @@ pkgs: with pkgs; [
 
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   #     (haskellPackages.callPackage (import /home/bunkar/NixProjs/tutorial2/default.nix) {} )
-
+  openssl
 ]
 
 

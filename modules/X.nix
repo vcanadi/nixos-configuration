@@ -2,7 +2,7 @@
   
   services.xserver = {
     enable = true;
-    layout = "us";
+    layout = "us,hr";
     windowManager = {
       xmonad = { 
         enable = true; 
@@ -11,7 +11,7 @@
       };
       default = "xmonad";
     };
-    xkbOptions = "caps:escape";
+    xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:swap_lalt_lctl";
     config = '' '' ;
   };	
 

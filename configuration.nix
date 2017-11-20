@@ -74,7 +74,10 @@
       PGDATABASE = "ale";
       PGPASSWORD = "ale";
       PGPORT = "5432";
+    };
 
+    etc = {
+      "tmux.conf".source = "/etc/nixos/tmux.conf";
     };
   }; 
 
