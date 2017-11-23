@@ -116,8 +116,8 @@
       enable = true;
       shortcut = "a";
       keyMode = "vi";
-      terminal = "rxvt-unicode-256color";
-      #terminal = "screen";
+      #terminal = "rxvt-unicode-256color";
+      terminal = "screen-256color";
       clock24 = true;
       customPaneNavigationAndResize = true;
       aggressiveResize = true;
@@ -140,8 +140,8 @@
 
         set -g pane-border-fg '#4d5057'
         set -g pane-active-border-fg '#4d5057'
-        set -g window-style 'bg=colour255'
-        set -g window-active-style 'fg=colour234,bg=colour231'
+        set -g window-style 'bg=colour231'
+        set -g window-active-style 'fg=default,bg=colour255'
 
         bind -n M-h select-pane -L
         bind -n M-j select-pane -D 
