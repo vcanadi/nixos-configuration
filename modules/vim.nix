@@ -68,6 +68,11 @@ let
       nnoremap <C-L> <C-W><C-L>
       nnoremap <C-H> <C-W><C-H>
 
+      augroup BgHighlight
+        autocmd!
+        autocmd WinEnter * set cul
+        autocmd WinLeave * set nocul
+      augroup END
     '';
     
     vam = {
