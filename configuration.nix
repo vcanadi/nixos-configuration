@@ -116,31 +116,33 @@
       enable = true;
       shortcut = "a";
       keyMode = "vi";
-      #terminal = "rxvt-unicode-256color";
-      terminal = "screen";
+      terminal = "rxvt-unicode-256color";
+      #terminal = "screen";
       clock24 = true;
       customPaneNavigationAndResize = true;
       aggressiveResize = true;
       escapeTime = 0;
       historyLimit = 100000;
       extraTmuxConf = ''
-          # Vim style
-          #bind-key -t vi-copy y copy-pipe "xsel -i -p -b"
-          bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
+        # Vim style
+        #bind-key -t vi-copy y copy-pipe "xsel -i -p -b"
+        bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
 
-          #set -g window-style 'fg=colour247,bg=colour236'
-          #set -g window-active-style 'fg=colour250,bg=black'
+        # Status bar
+        set -g status on
+        bind-key S set-option -g status
 
-          # Status bar
-          #set -g status-bg black
-          #set -g status-fg white
-          set -g status on
-          bind-key S set-option -g status
+        # Vim split keys
+        unbind-key s
+        bind-key s split-window
+        unbind-key v
+        bind-key v split-window -h
 
-          unbind-key s
-          bind-key s split-window
-          unbind-key v
-          bind-key v split-window -h
+        set -g pane-border-fg '#4d5057'
+        set -g pane-active-border-fg '#4d5057'
+        set -g window-style 'bg=colour255'
+        set -g window-active-style 'fg=colour234,bg=colour231'
+      
       '';
     };
   };

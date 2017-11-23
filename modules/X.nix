@@ -11,7 +11,7 @@
       };
       default = "xmonad";
     };
-    xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:swap_lalt_lctl";
+    xkbOptions = "caps:escape,grp:rctrl_rshift_toggle";
     config = '' '' ;
   };	
 

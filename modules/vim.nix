@@ -63,6 +63,11 @@ let
 
       highlight Pmenu ctermfg=0 ctermbg=100
 
+      nnoremap <C-J> <C-W><C-J>
+      nnoremap <C-K> <C-W><C-K>
+      nnoremap <C-L> <C-W><C-L>
+      nnoremap <C-H> <C-W><C-H>
+
     '';
     
     vam = {
@@ -81,7 +86,6 @@ let
           "The_NERD_Commenter"
           "ack-vim"
           "vim-orgmode"
-          "tmux-navigator"
 
           "vimproc"
           "Hoogle"
