@@ -3,71 +3,47 @@ in
 
 pkgs: with pkgs; [
 
+# programs 
   libreoffice
-  gnome3.nautilus 
-  zip
-  pkgs_old.hydra 
-  nixops
-  xdotool
-  virtualboxHeadless
-  haskellPackages.cabal2nix
-  haskellPackages.xmobar
-  inotify-tools
-  xsel xclip
-  xkeyboard_config
-
-#osnovno 
-  pavucontrol	
-  pkgs_old.firefox 
-  chromium
-  w3m
+  pkgs_old.firefox chromium w3m
   transmission_gtk
   vlc
-  wine
-  p7zip
-
-#text editori
+  
+# text editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [ 
     myVim 
     myNvim 
   ]) ++ [ 
 
-#terminal
+# terminal
   rxvt_unicode
 
-#shell
+# shell
   fish 
 
-#prog
-#    haskell.compiler.ghc7103
+# utils 
   ghc
   haskellPackages.ghc-mod
   haskellPackages.cabal-install
-
-  gcc
-  gnumake
-
-  git
-  tig
-
-  dhcpcd
-  
-  wpa_supplicant
-  unzip
-  qjackctl
-
+  gcc gnumake
+  git tig
+  dhcpcd wpa_supplicant
+  zip unzip unrar p7zip 
+  pavucontrol qjackctl
   gparted
-
-  lshw
-  hwinfo		
-  conky
-  htop
-  unrar
-  nix-repl
-
+  lshw hwinfo	conky htop
+  xdotool xsel xclip
+  gnome3.nautilus 
+  haskellPackages.cabal2nix
+  haskellPackages.xmobar
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
-  #     (haskellPackages.callPackage (import /home/bunkar/NixProjs/tutorial2/default.nix) {} )
   openssl
+
+# nix
+  nix-repl
+  nixops
+  pkgs_old.hydra 
+  virtualboxHeadless
 ]
 
 
