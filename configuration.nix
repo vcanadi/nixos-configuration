@@ -142,6 +142,11 @@
         set -g pane-active-border-fg '#4d5057'
         set -g window-style 'bg=colour255'
         set -g window-active-style 'fg=colour234,bg=colour231'
+
+        bind -n M-h select-pane -L
+        bind -n M-j select-pane -D 
+        bind -n M-k select-pane -U
+        bind -n M-l select-pane -R
       
       '';
     };
