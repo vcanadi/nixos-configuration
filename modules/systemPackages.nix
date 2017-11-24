@@ -8,7 +8,8 @@ pkgs: with pkgs; [
   pkgs_old.firefox chromium w3m
   transmission_gtk
   vlc
-  
+  ekiga
+
 # text editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [ 
     myVim 
@@ -36,6 +37,7 @@ pkgs: with pkgs; [
   gnome3.nautilus 
   haskellPackages.cabal2nix
   haskellPackages.xmobar
+  tmuxinator
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   openssl
 
