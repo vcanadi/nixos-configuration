@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
-
+let 
+  tmux-nix = import ./modules/tmux.nix;
+in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix	
@@ -114,7 +116,7 @@
   programs = {
     fish.enable=true;
     bash.enableCompletion = true;
-    tmux = import ./modules/tmux.nix; 
+    tmux = tmux-nix.tmux; 
   };
   users.defaultUserShell="/run/current-system/sw/bin/fish";
   users.extraUsers.user.shell="${pkgs.fish}/bin/fish";
