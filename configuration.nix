@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 let 
-  tmux-nix = import ./modules/tmux.nix;
+  tmux-nix = import ./modules/tmux.nix pkgs;
+  utils = import ./utils.nix;
+  b = builtins;
 in
 {
   imports = [ # Include the results of the hardware scan.
@@ -51,6 +53,8 @@ in
       resx = "systemctl restart service display-manager.service";
       resnet = "systemctl restart service network-manager.service";
       gis = "git status";
+      gid = "git diff";
+      gil = "git log";
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch;";
       ac = "cd projects/ale-core";
@@ -97,19 +101,22 @@ in
     allowUnfree = true;
   };
 
-
   services = {
-    openssh.enable = true; 
-    nixosManual.showManual = true;
-    postgresql.enable = true;
-    postgresql.package = pkgs.postgresql96;
-    postgresql.authentication = pkgs.lib.mkForce ''
+    openssh = {
+      enable = true; 
+    };
+         nixosManual.showManual = true;
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql96;
+      authentication = pkgs.lib.mkForce ''
         # Generated file; do not edit!
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
         local   all             all                                     trust
         host    all             all             127.0.0.1/32            trust
         host    all             all             ::1/128                 trust
     '';
+    };
   };
 
 
@@ -117,11 +124,26 @@ in
     fish.enable=true;
     bash.enableCompletion = true;
     tmux = tmux-nix.tmux; 
+    ssh = {
+     extraConfig = ''
+        Host *
+        ServerAliveInterval 60
+      '';
+    };
+
+
   };
   users.defaultUserShell="/run/current-system/sw/bin/fish";
   users.extraUsers.user.shell="${pkgs.fish}/bin/fish";
 
-  system.stateVersion = "17.09";
+  system = {
+    stateVersion = "17.09";
+    activationScripts = b.listToAttrs (b.map (user: { 
+     name = "${user.name}-script";  
+     value = tmux-nix.tmuxinator.cmdBuildConfigFor user;
+    }) (utils.userWithHomes config));
+  };
+  
   hardware.enableAllFirmware=true;
   security.polkit.enable = true;
 

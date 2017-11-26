@@ -1,4 +1,3 @@
-pkgs :
 let b = builtins; in
 {
   tmux = {
@@ -40,38 +39,29 @@ let b = builtins; in
     '';
   };
 
-  tmuxinator = rec {
-    cmdBuildConfigFor = user : 
-    let 
-      cmdCreateProjectYamls = b.concatStringsSep ";" (
-        pkgs.lib.imap0 (i: yaml: 
-          let filePath = "config-${b.toString i}.yml"; in ''
-            cp ${b.toFile "" yaml} ${filePath}
-            chmod 644 ${filePath}
-            chown ${user.name}:nogroup ${filePath}
-          ''
-        ) yamls 
-      ); 
-    in ''
-      cd ${user.home}
+  tmuxinator = {
+    scriptForBuildingConfigIn = home : ''
+      cd ${home}
       if [ -d .tmuxinator ]; then rm .tmuxinator -r; fi
       mkdir .tmuxinator
-      chown ${user.name}:nogroup .tmuxinator 
       cd .tmuxinator
-      ${cmdCreateProjectYamls}
+      ${scriptFroProjectYamls} 
     ''; 
-  
-    yamls = [''
-      name: nixconf 
-      root: ~/
+    scriptForCreatingProjectYaml = p: "cp ${p.yaml} ${p.name}";   
+    projects = [{
+      name = "nixconf";
+      yaml = b.toFile "" ''
+        name: nixconf 
+        root: ~/
 
-      windows:
-        - nixconf:
-            layout: main-vertical
-            root: /etc/nixos
-            panes:
-              - vim configuration.nix 
-              -  
-    ''];
+        windows:
+          - nixconf:
+              layout: main-vertical
+              root: /etc/nixos
+              panes:
+                - vim configuration.nix 
+                - htop 
+      '';
+    }];
   };
 }
