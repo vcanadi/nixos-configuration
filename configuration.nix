@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 let 
   tmux-nix = import ./modules/tmux.nix pkgs;
-  utils = import ./utils.nix;
+  sakura-nix = import ./modules/sakura.nix;
+  utils = import ./utils.nix config;
   b = builtins;
 in
 {
@@ -121,7 +122,17 @@ in
 
 
   programs = {
-    fish.enable=true;
+    zsh = {
+      enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      syntaxHighlighting.enable = true;
+      ohMyZsh = {
+        enable = true;
+        #theme = "gentoo";
+        theme = "candy";
+      };
+    };
     bash.enableCompletion = true;
     tmux = tmux-nix.tmux; 
     ssh = {
@@ -133,21 +144,23 @@ in
 
 
   };
-  users.defaultUserShell="/run/current-system/sw/bin/fish";
-  users.extraUsers.user.shell="${pkgs.fish}/bin/fish";
 
   system = {
     stateVersion = "17.09";
-    activationScripts = b.listToAttrs (b.map (user: { 
-     name = "${user.name}-script";  
-     value = tmux-nix.tmuxinator.cmdBuildConfigFor user;
-    }) (utils.userWithHomes config));
+    activationScripts = utils.mkActivationScriptsForUsers [  
+      tmux-nix.tmuxinator.userActivationScript
+      sakura-nix.userActivationScript 
+    ];
+
   };
   
   hardware.enableAllFirmware=true;
   security.polkit.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "bunkar" ];
+  users = {
+    defaultUserShell = pkgs.zsh;
+    extraGroups.vboxusers.members = [ "bunkar" ];
+  };
 
 }

@@ -1,4 +1,10 @@
+config :
 let b = builtins; in
-{
-  userWithHomes = config: b.filter (u: u.createHome) (b.attrValues config.users.extraUsers); 
+rec {
+  userWithHomes = b.filter (u: u.createHome) (b.attrValues config.users.extraUsers); 
+  mkActivationScriptsForUsers = activationScriptCreators: b.listToAttrs (b.map (user: { 
+     name = "${user.name}-script";  
+     value = b.concatStringsSep "\n" (b.map (asc: asc user ) activationScriptCreators) ;
+    }) userWithHomes);
+
 }

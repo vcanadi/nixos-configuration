@@ -73,6 +73,7 @@ let
         autocmd WinEnter * set cul
         autocmd WinLeave * set nocul
       augroup END
+    
     '';
     
     vam = {

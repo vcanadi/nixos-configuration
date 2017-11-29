@@ -5,8 +5,8 @@ let b = builtins; in
     enable = true;
     shortcut = "a";
     keyMode = "vi";
-    terminal = "rxvt-unicode-256color";
-    #terminal = "screen-256color";
+    #terminal = "rxvt-unicode-256color";
+    terminal = "screen-256color";
     clock24 = true;
     customPaneNavigationAndResize = true;
     aggressiveResize = true;
@@ -27,27 +27,29 @@ let b = builtins; in
       unbind-key v
       bind-key v split-window -h
 
-      set -g pane-border-fg '#4d5057'
-      set -g pane-active-border-fg '#4d5057'
-      set -g window-style 'bg=colour231'
-      set -g window-active-style 'fg=default,bg=colour252'
+      #set -g pane-border-fg '#4d5057'
+      #set -g pane-border-bg '#000000'
+      #set -g pane-active-border-fg '#00FF00'
+      #set -g pane-active-border-bg '#FF0000'
+      #set -g window-style 'bg=colour231'
+      #set -g window-active-style 'fg=default,bg=colour252'
 
-      bind -n M-h select-pane -L
-      bind -n M-j select-pane -D 
-      bind -n M-k select-pane -U
-      bind -n M-l select-pane -R
+      bind -n M-h select-pane -L \; display-pane
+      bind -n M-j select-pane -D \; display-pane
+      bind -n M-k select-pane -U \; display-pane
+      bind -n M-l select-pane -R \; display-pane
+
     
     '';
   };
 
   tmuxinator = rec {
-    cmdBuildConfigFor = user : 
+    userActivationScript = user : 
     let 
-      cmdCreateProjectYamls = b.concatStringsSep ";" (
+      cmdCreateProjectYamls = b.concatStringsSep "\n" (
         pkgs.lib.imap0 (i: yaml: 
           let filePath = "config-${b.toString i}.yml"; in ''
             cp ${b.toFile "" yaml} ${filePath}
-            chmod 644 ${filePath}
             chown ${user.name}:nogroup ${filePath}
           ''
         ) yamls 

@@ -9,6 +9,7 @@ pkgs: with pkgs; [
   transmission_gtk
   vlc
   ekiga
+  sakura
 
 # text editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [ 
@@ -20,7 +21,7 @@ pkgs: with pkgs; [
   rxvt_unicode
 
 # shell
-  fish 
+   
 
 # utils 
   ghc
