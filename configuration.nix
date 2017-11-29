@@ -65,8 +65,6 @@ in
     };
 
     interactiveShellInit = ''
-      set editing-mode vi
-      set keymap vi-command
       xset r rate 250 40
     '';
 
@@ -131,6 +129,7 @@ in
         enable = true;
         #theme = "gentoo";
         theme = "candy";
+        plugins = [ "vi-mode" ];
       };
     };
     bash.enableCompletion = true;
