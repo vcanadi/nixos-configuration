@@ -1,5 +1,5 @@
 { config, pkgs, ... }:
-let 
+let
   tmux-nix = import ./modules/tmux.nix pkgs;
   sakura-nix = import ./modules/sakura.nix;
   utils = import ./utils.nix config;
@@ -7,10 +7,10 @@ let
 in
 {
   imports = [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix	
+    ./hardware-configuration.nix
     ./modules/X.nix
     ./modules/locale.nix
-    ./modules/touch.nix	
+    ./modules/touch.nix
     ./modules/net.nix
     ./modules/graphics.nix
     ./modules/audio.nix
@@ -27,9 +27,9 @@ in
     extraEntries = ''
 		  menuentry 'Ubuntu' {
 		  insmod ext2
-		  set root='(hd0,3)'   
+		  set root='(hd0,3)'
 		  chainloader +1
-		  }  
+		  }
 		'';
   };
 
@@ -48,7 +48,7 @@ in
 
   environment={
     systemPackages = import ./modules/systemPackages.nix pkgs;
-    
+
     shellAliases = {
       vi = "vim";
       resx = "systemctl restart service display-manager.service";
@@ -59,17 +59,18 @@ in
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch;";
       ac = "cd projects/ale-core";
-      nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"''; 
+      nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"'';
       ux = "tmux";
       uxi = "tmuxinator";
     };
 
     interactiveShellInit = ''
+      set -o vi
       xset r rate 250 40
     '';
 
-    variables = { 
-      PATH = ["$HOME/.local/bin"]; 
+    variables = {
+      PATH = ["$HOME/.local/bin"];
       VISUAL = "vim";
       EDITOR = "$VISUAL";
       #HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
@@ -86,11 +87,11 @@ in
     etc = {
       #"tmux.conf".source = "/etc/nixos/tmux.conf";
     };
-  }; 
+  };
 
-  #nix.package = pkgs.nixUnstable;  
+  #nix.package = pkgs.nixUnstable;
 
-  nix.extraOptions = '' 
+  nix.extraOptions = ''
     trusted-users = hydra root hydra-evaluator hydra-queue-runner
   '';
 
@@ -102,7 +103,7 @@ in
 
   services = {
     openssh = {
-      enable = true; 
+      enable = true;
     };
          nixosManual.showManual = true;
     postgresql = {
@@ -133,7 +134,7 @@ in
       };
     };
     bash.enableCompletion = true;
-    tmux = tmux-nix.tmux; 
+    tmux = tmux-nix.tmux;
     ssh = {
      extraConfig = ''
         Host *
@@ -146,13 +147,29 @@ in
 
   system = {
     stateVersion = "17.09";
-    activationScripts = utils.mkActivationScriptsForUsers [  
+    activationScripts = utils.mkActivationScriptsForUsers [
       tmux-nix.tmuxinator.userActivationScript
-      sakura-nix.userActivationScript 
-    ];
+      sakura-nix.userActivationScript
+    ] // {
+      synclient-setup = ''
+        synclient PalmDetect=1
+        synclient PalmMinWidth=5
+        synclient VertScrollDelta=170
 
+        synclient VertEdgeScroll=1
+        synclient TapButton2=0
+        synclient TapButton3=0
+
+        synclient AccelFactor=0.2
+        synclient MaxSpeed=1.75
+
+        synclient AreaLeftEdge=2000
+        synclient AreaRightEdge=5000
+        synclient AreaTopEdge=2500
+      '';
+    };
   };
-  
+
   hardware.enableAllFirmware=true;
   security.polkit.enable = true;
 
