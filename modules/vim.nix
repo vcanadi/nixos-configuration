@@ -28,6 +28,7 @@ let
       set hlsearch     
       set incsearch   
       set noswapfile
+      set nowrap
 
     " vim without plugins
       set path+=**
@@ -73,6 +74,8 @@ let
         autocmd WinEnter * set cul
         autocmd WinLeave * set nocul
       augroup END
+       
+      autocmd BufWritePre * %s/\s\+$//e
     
     '';
     
@@ -87,14 +90,12 @@ let
           "vim-airline"
           "vim-airline-themes"
           "haskell-vim"
-          # "youcompleteme"
+          "youcompleteme"
           "ctrlp"
           "The_NERD_Commenter"
-          "ack-vim"
-          "vim-orgmode"
 
           "vimproc"
-          "Hoogle"
+          "vim-trailing-whitespace"
         ];
       }];
     };

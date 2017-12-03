@@ -10,6 +10,9 @@ pkgs: with pkgs; [
   vlc
   ekiga
   sakura
+  stack2nix
+  git-crypt
+  scrot
 
 # text editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [ 
