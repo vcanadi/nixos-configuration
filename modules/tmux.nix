@@ -41,7 +41,7 @@ let b = builtins; in
     userActivationScript = user :
     let
       cmdCreateProjectYamls = b.concatStringsSep "\n" (
-        pkgs.lib.imap0 (i: yaml:
+        pkgs.lib.imap (i: yaml:
           let filePath = "config-${b.toString i}.yml"; in ''
             cp ${b.toFile "" yaml} ${filePath}
             chown ${user.name}:nogroup ${filePath}

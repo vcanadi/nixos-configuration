@@ -67,6 +67,21 @@ in
     interactiveShellInit = ''
       set -o vi
       xset r rate 250 40
+      synclient PalmDetect=1
+      synclient PalmMinWidth=5
+      synclient VertScrollDelta=170
+
+      synclient VertEdgeScroll=1
+      synclient TapButton2=0
+      synclient TapButton3=0
+
+      synclient AccelFactor=0.2
+      synclient MaxSpeed=1.75
+
+      synclient AreaLeftEdge=2000
+      synclient AreaRightEdge=5000
+      synclient AreaTopEdge=2500
+
     '';
 
     variables = {
@@ -152,20 +167,6 @@ in
       sakura-nix.userActivationScript
     ] // {
       synclient-setup = ''
-        synclient PalmDetect=1
-        synclient PalmMinWidth=5
-        synclient VertScrollDelta=170
-
-        synclient VertEdgeScroll=1
-        synclient TapButton2=0
-        synclient TapButton3=0
-
-        synclient AccelFactor=0.2
-        synclient MaxSpeed=1.75
-
-        synclient AreaLeftEdge=2000
-        synclient AreaRightEdge=5000
-        synclient AreaTopEdge=2500
       '';
     };
   };

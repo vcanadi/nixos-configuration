@@ -1,6 +1,6 @@
-{ pkgs }: 
+{ pkgs }:
 with pkgs;
-let 
+let
   buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
   myPlugins = {
     haskell-vim = buildVimPlugin {
@@ -22,11 +22,11 @@ let
       set shiftwidth=2
       set softtabstop=2
       set expandtab
-      syntax on 
+      syntax on
       filetype plugin on
       set smartcase
-      set hlsearch     
-      set incsearch   
+      set hlsearch
+      set incsearch
       set noswapfile
       set nowrap
 
@@ -51,9 +51,9 @@ let
       vmap <leader>d "*d
       nmap <leader>p "*p
       vmap <leader>p "*p
-      
+
       au BufRead /tmp/psql.edit.* set syntax=sql
-      
+
       noremap <leader>b :VimShellInteractive nixos-rebuild switch <CR>
       noremap <leader>bb :VimShellInteractive stack --nix build <CR>
 
@@ -74,11 +74,11 @@ let
         autocmd WinEnter * set cul
         autocmd WinLeave * set nocul
       augroup END
-       
+
       autocmd BufWritePre * %s/\s\+$//e
-    
+
     '';
-    
+
     vam = {
       knownPlugins = pkgs.vimPlugins // myPlugins;
       pluginDictionaries = [{
@@ -93,9 +93,11 @@ let
           "youcompleteme"
           "ctrlp"
           "The_NERD_Commenter"
+          "vim-orgmode"
+          "vim-speeddating"
+
 
           "vimproc"
-          "vim-trailing-whitespace"
         ];
       }];
     };
@@ -109,6 +111,6 @@ in
 
   myNvim = pkgs.neovim.override {
     vimAlias = true;
-    configure = myVimrcConfig; 
+    configure = myVimrcConfig;
   };
 }
