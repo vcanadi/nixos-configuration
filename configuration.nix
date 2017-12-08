@@ -103,7 +103,18 @@ in
     };
 
     etc = {
-      #"tmux.conf".source = "/etc/nixos/tmux.conf";
+      "zshrc.local".text=''
+        if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
+        ZSH_TMUX_AUTOSTART=true
+        ZSH_TMUX_AUTOQUIT=false
+        DISABLE_AUTO_UPDATE="false"
+        DISABLE_UNTRACKED_FILES_DIRTY="true"
+        HIST_STAMPS="yyyy-mm-dd"
+        plugins=( aws cabal catimg common-aliases dirpersist docker encode64 fasd git git-extras jsontools man per-directory-history sudo systemd tmux url-tools vi-mode wd zsh-syntax-highlighting )
+        mkdir -p $HOME/.zsh
+        export ZSH_CACHE_DIR="$HOME/.zsh"
+        export COMPDUMPFILE="$HOME/.zsh"
+      '';
     };
   };
 
