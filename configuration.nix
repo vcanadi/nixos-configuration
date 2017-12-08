@@ -67,6 +67,9 @@ in
     interactiveShellInit = ''
       set -o vi
       xset r rate 250 40
+
+      function shs () { grep --include=\*.{hs,cabal,yaml} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
+
       synclient PalmDetect=1
       synclient PalmMinWidth=5
       synclient VertScrollDelta=170
