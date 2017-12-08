@@ -68,7 +68,7 @@ in
       set -o vi
       xset r rate 250 40
 
-      function shs () { grep --include=\*.{hs,cabal,yaml} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
+      function shs () { grep --include=\*.{hs,cabal,yaml,nix} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
 
       synclient PalmDetect=1
       synclient PalmMinWidth=5
@@ -128,6 +128,14 @@ in
 
   nixpkgs.config = {
     allowUnfree = true;
+    packageOverrides = pkgs : {
+      nixos-unstable = import <nixos-unstable> {
+        config = config.nixpkgs.config;
+      };
+      nixos1703 = import <nixos1703> {
+        config = config.nixpkgs.config;
+      };
+    };
   };
 
   services = {

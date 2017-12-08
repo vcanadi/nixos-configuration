@@ -1,11 +1,8 @@
-#let pkgs_old = import (fetchTarball https://d3g5gsiof5omrk.cloudfront.net/nixos/17.03-small/nixos-17.03.1944.6233be812f/nixexprs.tar.xz ) {};
-#in
-
 pkgs: with pkgs; [
 
 # programs
   libreoffice
-  firefox chromium w3m
+  nixos1703.firefox chromium w3m
   transmission_gtk
   vlc
   git-crypt
