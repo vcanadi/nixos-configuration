@@ -2,9 +2,9 @@ pkgs: with pkgs; [
 
 # programs
   libreoffice
-  nixos1703.firefox chromium w3m
+  nixos-unstable.firefox chromium w3m nixos-unstable.qutebrowser
   transmission_gtk
-  vlc
+  vlc mpv
   git-crypt
   scrot
   stack2nix

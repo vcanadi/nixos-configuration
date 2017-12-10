@@ -104,6 +104,7 @@ in
 
     etc = {
       "zshrc.local".text=''
+        if [ -z "$TMUX" ]; then tmux; fi
         if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
         ZSH_TMUX_AUTOSTART=true
         ZSH_TMUX_AUTOQUIT=false
