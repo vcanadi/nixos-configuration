@@ -2,6 +2,7 @@
 let
   tmux-nix = import ./modules/tmux.nix pkgs;
   sakura-nix = import ./modules/sakura.nix;
+  emacs-nix = import ./modules/emacs.nix { inherit config pkgs; };
   utils = import ./utils.nix config;
   b = builtins;
 in
@@ -47,7 +48,7 @@ in
   };
 
   environment={
-    systemPackages = import ./modules/systemPackages.nix pkgs;
+    systemPackages = import ./modules/systemPackages.nix pkgs ++ emacs-nix.emacsAndDaemon;
 
     shellAliases = {
       vi = "vim";
@@ -62,6 +63,7 @@ in
       nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"'';
       ux = "tmux";
       uxi = "tmuxinator";
+      emacs = "emacs -nw";
     };
 
     interactiveShellInit = ''

@@ -1,31 +1,24 @@
 pkgs: with pkgs; [
 
-# programs
+# Programs
   libreoffice
-  nixos-unstable.firefox chromium w3m nixos-unstable.qutebrowser
+  nixos1703.firefox chromium w3m nixos-unstable.qutebrowser
   transmission_gtk
   vlc mpv
   git-crypt
   scrot
-  stack2nix
   emem
 
-# text editor
+# Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
     myVim
     myNvim
   ]) ++ [
 
-# terminal
+# Terminal
   rxvt_unicode
 
-# shell
-
-
-# utils
-  ghc
-  haskellPackages.ghc-mod
-  haskellPackages.cabal-install
+# Utils
   gcc gnumake
   git tig
   dhcpcd wpa_supplicant
@@ -35,17 +28,24 @@ pkgs: with pkgs; [
   lshw hwinfo	conky htop
   xdotool xsel xclip
   gnome3.nautilus
-  haskellPackages.cabal2nix
-  haskellPackages.xmobar
   tmuxinator
+  gv
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   openssl
 
-# nix
+# Haskell
+  haskell.compiler.ghc821
+  haskellPackages.ghc-mod
+  haskellPackages.cabal-install
+  haskellPackages.cabal2nix
+  haskellPackages.xmobar
+
+# Nix
   nix-repl
   nixops
   hydra
   virtualboxHeadless
+  stack2nix
 ]
 
 

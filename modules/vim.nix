@@ -95,6 +95,7 @@ let
           "The_NERD_Commenter"
           "vim-orgmode"
           "vim-speeddating"
+          "calendar"
 
 
           "vimproc"
