@@ -8,6 +8,7 @@ pkgs: with pkgs; [
   git-crypt
   scrot
   emem
+  termite
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [

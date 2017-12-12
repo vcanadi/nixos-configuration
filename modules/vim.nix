@@ -77,6 +77,8 @@ let
 
       autocmd BufWritePre * %s/\s\+$//e
 
+      set term=rxvt-unicode-256color
+      colorscheme github
     '';
 
     vam = {
@@ -96,6 +98,7 @@ let
           "vim-orgmode"
           "vim-speeddating"
           "calendar"
+          "vim-colorschemes"
 
 
           "vimproc"
