@@ -35,7 +35,8 @@ pkgs: with pkgs; [
   openssl
 
 # Haskell
-  haskell.compiler.ghc821
+  #haskell.compiler.ghc821
+  ghc
   haskellPackages.ghc-mod
   haskellPackages.cabal-install
   haskellPackages.cabal2nix

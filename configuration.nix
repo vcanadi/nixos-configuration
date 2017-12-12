@@ -60,6 +60,7 @@ in
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch;";
       ac = "cd projects/ale-core";
+      an = "cd projects/ale-nixops";
       nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"'';
       ux = "tmux";
       uxi = "tmuxinator";
