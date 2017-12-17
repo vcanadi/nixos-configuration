@@ -88,6 +88,7 @@ in
       synclient AreaRightEdge=5000
       synclient AreaTopEdge=2500
 
+      eval "$(direnv hook zsh)"
     '';
 
     variables = {
@@ -97,7 +98,7 @@ in
       #HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
       #HYDRA_DATA = "/var/lib/hydra";
       #HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
-      #NIX_REMOTE = "daemon";
+      NIX_REMOTE = "daemon";
       PGHOST = "localhost";
       PGUSER = "ale";
       PGDATABASE = "ale";
@@ -122,13 +123,17 @@ in
     };
   };
 
-  #nix.package = pkgs.nixUnstable;
+  nix = {
+    #package = pkgs.nixUnstable;
 
-  nix.extraOptions = ''
-    trusted-users = hydra root hydra-evaluator hydra-queue-runner
-  '';
+    extraOptions = ''
+      trusted-users = hydra root hydra-evaluator hydra-queue-runner
+    '';
 
-  nix.requireSignedBinaryCaches = false;
+    requireSignedBinaryCaches = false;
+
+    useSandbox = false;
+  };
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -190,8 +195,8 @@ in
       syntaxHighlighting.enable = true;
       ohMyZsh = {
         enable = true;
-        #theme = "gentoo";
-        theme = "candy";
+        theme = "gentoo";
+        # theme = "candy";
         plugins = [ "vi-mode" ];
       };
     };

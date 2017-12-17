@@ -9,6 +9,8 @@ pkgs: with pkgs; [
   scrot
   emem
   termite
+  wine
+  p7zip
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
@@ -31,6 +33,7 @@ pkgs: with pkgs; [
   gnome3.nautilus
   tmuxinator
   gv
+  direnv
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   openssl
 
