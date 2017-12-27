@@ -120,6 +120,21 @@ in
         export ZSH_CACHE_DIR="$HOME/.zsh"
         export COMPDUMPFILE="$HOME/.zsh"
       '';
+      "graphite/local_settings.py".text = ''
+        SECRET_KEY = 'a_salty_string'
+        TIME_ZONE = 'Europe/Zagreb'
+        USE_REMOTE_USER_AUTHENTICATION = True
+        DATABASES = {
+            'default': {
+                'NAME': 'graphite',
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'USER': 'graphite',
+                'PASSWORD': 'graphite',
+                'HOST': '127.0.0.1',
+                'PORT': ${"''"}
+            }
+        }
+      '';
     };
   };
 

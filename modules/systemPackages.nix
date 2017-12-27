@@ -14,7 +14,7 @@ pkgs: with pkgs; [
   (python3.withPackages (ps: with ps; [ attrs pyqt5 yamllint jinja2 ] ))
   qt5.qtwebengine
   python27Packages.carbon
-  python27Packages.graphite_api
+  python27Packages.graphite_web
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [

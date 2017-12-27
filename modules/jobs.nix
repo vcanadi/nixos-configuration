@@ -1,24 +1,6 @@
 {config, pkgs, ...}:
 let
-  baseDir = /root;
-  createUserIfNotExistDOTsql = user: pass: builtins.toFile "" ''
-    DO
-    $body$
-    BEGIN
-       IF NOT EXISTS (
-          SELECT                       -- SELECT list can stay empty for this
-          FROM   pg_catalog.pg_user
-          WHERE  usename = '${user}') THEN
-
-          CREATE ROLE ${user} LOGIN PASSWORD '${pass}';
-       END IF;
-    END
-    $body$;
-  '';
-
-  createDbIfNotExistCmd = db: owner: ''
-    psql -u postgres -tc "SELECT 1 FROM pg_database WHERE datname = '${db}'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE ${db} WITH OWNER ${owner}"
-  '';
+  utils = import ./../utils.nix config;
 in
 {
   systemd.services.postgres-custom-setup = {
@@ -28,8 +10,8 @@ in
     wantedBy = [ "multi-user.target" ];
     path = with pkgs; [sudo postgresql];
     script = ''
-      sudo -u postgres psql < ${createUserIfNotExistDOTsql "graphite" "graphite"}
-      ${createDbIfNotExistCmd "graphite" "graphite"}
+      sudo -u postgres psql < ${utils.createUserIfNotExistDOTsql "graphite" "graphite"}
+      ${utils.createDbIfNotExistCmd "graphite" "graphite"}
     '';
   };
 
