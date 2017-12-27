@@ -11,6 +11,8 @@ pkgs: with pkgs; [
   termite
   wine
   p7zip
+  (python3.withPackages (ps: with ps; [ attrs pyqt5 yamllint jinja2 ] ))
+  qt5.qtwebengine
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [

@@ -138,12 +138,9 @@ in
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs : {
-      nixos-unstable = import <nixos-unstable> {
-        config = config.nixpkgs.config;
-      };
-      nixos1703 = import <nixos1703> {
-        config = config.nixpkgs.config;
-      };
+
+      nixos-unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
+      nixos1703      = import <nixos1703>      { config = config.nixpkgs.config; };
 
       emacs = pkgs.emacs.overrideDerivation (args: rec {
         withGTK3 = true;
@@ -165,6 +162,7 @@ in
         --prefix PYTHONPATH : "$(toPythonPath ${python}):$(toPythonPath ${ipython}):$(toPythonPath ${setuptools}):$(toPythonPath ${pip}):$(toPythonPath ${numpy}):$PYTHONPATH";
         '');
       });
+
     };
   };
 
