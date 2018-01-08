@@ -73,6 +73,8 @@ in
 
       function shs () { grep --include=\*.{hs,cabal,yaml,nix} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
 
+      set editing-mode vim
+
       synclient PalmDetect=1
       synclient PalmMinWidth=5
       synclient VertScrollDelta=170
@@ -104,10 +106,12 @@ in
       PGDATABASE = "ale";
       PGPASSWORD = "ale";
       PGPORT = "5432";
+      GRAPHITE_ROOT = "/var/db/graphite";
     };
 
     etc = {
-      "zshrc.local".text=''
+
+      "zshrc.local".text = ''
         if [ -z "$TMUX" ]; then tmux; fi
         if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
         ZSH_TMUX_AUTOSTART=true
@@ -120,20 +124,9 @@ in
         export ZSH_CACHE_DIR="$HOME/.zsh"
         export COMPDUMPFILE="$HOME/.zsh"
       '';
-      "graphite/local_settings.py".text = ''
-        SECRET_KEY = 'a_salty_string'
-        TIME_ZONE = 'Europe/Zagreb'
-        USE_REMOTE_USER_AUTHENTICATION = True
-        DATABASES = {
-            'default': {
-                'NAME': 'graphite',
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'USER': 'graphite',
-                'PASSWORD': 'graphite',
-                'HOST': '127.0.0.1',
-                'PORT': ${"''"}
-            }
-        }
+
+      "inputrc".text = ''
+        set editing-mode vim
       '';
     };
   };
@@ -196,6 +189,74 @@ in
         host    all             all             127.0.0.1/32            trust
         host    all             all             ::1/128                 trust
     '';
+    };
+
+    influxdb = {
+      enable = true;
+      extraConfig = {
+        host = "127.0.0.1";
+        port = 8086;
+        version =  "0.9";
+
+        database = "metrics";
+        username = "root";
+        password = "root";
+        flush.enable = true;
+        proxy = {
+          enable= false;
+          suffix= "raw";
+          flushInterval= 1000;
+        };
+        backends = ["./backends/console"];
+        debug= true;
+        legacyNamespace= false;
+        admin = {
+          enabled = true;
+          bind-address = ":     8083";
+        };
+      };
+
+    };
+
+    graphite = {
+
+      api = {
+        enable = true;
+        port = 8888;
+        finders = [ pkgs.python27Packages.graphite_influxdb ];
+        extraConfig = ''
+          allowed_origins:
+            - dashboard.example.com
+          cheat_times: true
+          influxdb:
+            host: localhost
+            port: 8086
+            user: influxdb
+            pass: influxdb
+            db: metrics
+
+        '';
+      };
+
+      carbon = {
+        enableCache = true;
+        # save disk usage by restricting to 1 bulk update per second
+        config = ''
+          [cache]
+          MAX_CACHE_SIZE = inf
+          MAX_UPDATES_PER_SECOND = 1
+          MAX_CREATES_PER_MINUTE = 50
+          '';
+        storageSchemas = ''
+          [carbon]
+          pattern = ^carbon\.
+          retentions = 60:90d
+
+          [default]
+          pattern = .*
+          retentions = 60s:30d,300s:1y
+          '';
+      };
     };
   };
 

@@ -11,10 +11,15 @@ pkgs: with pkgs; [
   termite
   wine
   p7zip
-  (python3.withPackages (ps: with ps; [ attrs pyqt5 yamllint jinja2 ] ))
-  qt5.qtwebengine
-  python27Packages.carbon
-  python27Packages.graphite_web
+  tldr
+  #(python3. = {
+          #withPackages (ps: with ps; [
+    #attrs pyqt5 yamllint jinja2
+    #psycopg2
+  #] ))
+  #python36Packages.psycopg2
+  #qt5.qtwebengine
+  python36
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
@@ -38,12 +43,13 @@ pkgs: with pkgs; [
   tmuxinator
   gv
   direnv
+  influxdb
   #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
   openssl
 
 # Haskell
-  #haskell.compiler.ghc821
-  ghc
+  haskell.compiler.ghc822
+  #ghc
   haskellPackages.ghc-mod
   haskellPackages.cabal-install
   haskellPackages.cabal2nix
