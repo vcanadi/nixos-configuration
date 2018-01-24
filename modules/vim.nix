@@ -108,7 +108,7 @@ let
   };
 in
 {
-  myVim = pkgs.nixos1703.vim_configurable.customize {
+  myVim = vim_configurable.customize {
     name = "vim";
     vimrcConfig = myVimrcConfig;
   };
