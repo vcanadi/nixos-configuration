@@ -28,7 +28,6 @@ let
       set hlsearch
       set incsearch
       set noswapfile
-      set nowrap
 
     " vim without plugins
       set path+=**
@@ -92,13 +91,14 @@ let
           "vim-airline"
           "vim-airline-themes"
           "haskell-vim"
-          "youcompleteme"
+          "vim-addon-completion"
           "ctrlp"
           "The_NERD_Commenter"
           "vim-orgmode"
           "vim-speeddating"
           "calendar"
           "vim-colorschemes"
+          "stylish-haskell"
 
 
           "vimproc"
@@ -108,7 +108,7 @@ let
   };
 in
 {
-  myVim = vim_configurable.customize {
+  myVim = pkgs.nixos1703.vim_configurable.customize {
     name = "vim";
     vimrcConfig = myVimrcConfig;
   };

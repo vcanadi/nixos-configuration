@@ -25,8 +25,10 @@ in
       path = with pkgs; [sudo influxdb];
       after = [ "influxdb" ];
       script = ''
-        ${utils.influxCreateUserIfNotExistCmd "influxdb" "influxdb"}
-        ${utils.influxCreateDbIfNotExistCmd "metrics"}
+        #${utils.influxCreateUserIfNotExistCmd "influxdb" "influxdb"}
+        #${utils.influxCreateDbIfNotExistCmd "metrics"}
+        #${utils.influxCreateDbIfNotExistCmd "telegraf"}
+        #${utils.influxCreateUserIfNotExistCmd "telegraf" "telegraf"}
       '';
     };
 

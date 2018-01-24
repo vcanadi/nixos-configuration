@@ -48,19 +48,15 @@ in
   };
 
   environment={
-    systemPackages = import ./modules/systemPackages.nix pkgs ++ emacs-nix.emacsAndDaemon;
+    systemPackages = import ./modules/systemPackages.nix pkgs ++ [ emacs-nix.emacs emacs-nix.autostartEmacsDaemon ] ;
 
     shellAliases = {
       vi = "vim";
-      resx = "systemctl restart service display-manager.service";
-      resnet = "systemctl restart service network-manager.service";
       gis = "git status";
       gid = "git diff";
       gil = "git log";
       nixc = "cd /etc/nixos";
       nixb = "nixos-rebuild switch;";
-      ac = "cd projects/ale-core";
-      an = "cd projects/ale-nixops";
       nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"'';
       ux = "tmux";
       uxi = "tmuxinator";
@@ -150,26 +146,6 @@ in
       nixos-unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
       nixos1703      = import <nixos1703>      { config = config.nixpkgs.config; };
 
-      emacs = pkgs.emacs.overrideDerivation (args: rec {
-        withGTK3 = true;
-        withGTK2 = false;
-        pythonPath = [];
-        buildInputs = with pkgs; (args.buildInputs ++
-        [
-          makeWrapper
-          python
-          python27Packages.setuptools
-          python27Packages.pip
-          python27Packages.ipython
-          python27Packages.numpy
-        ]);
-
-        postInstall = with pkgs.python27Packages; (args.postInstall + ''
-        echo "This is PYTHONPATH: " $PYTHONPATH
-        wrapProgram $out/bin/emacs \
-        --prefix PYTHONPATH : "$(toPythonPath ${python}):$(toPythonPath ${ipython}):$(toPythonPath ${setuptools}):$(toPythonPath ${pip}):$(toPythonPath ${numpy}):$PYTHONPATH";
-        '');
-      });
 
     };
   };
@@ -178,7 +154,9 @@ in
     openssh = {
       enable = true;
     };
-         nixosManual.showManual = true;
+
+    nixosManual.showManual = true;
+
     postgresql = {
       enable = true;
       package = pkgs.postgresql96;
@@ -191,75 +169,7 @@ in
     '';
     };
 
-    influxdb = {
-      enable = true;
-      extraConfig = {
-        host = "127.0.0.1";
-        port = 8086;
-        version =  "0.9";
-
-        database = "metrics";
-        username = "root";
-        password = "root";
-        flush.enable = true;
-        proxy = {
-          enable= false;
-          suffix= "raw";
-          flushInterval= 1000;
-        };
-        backends = ["./backends/console"];
-        debug= true;
-        legacyNamespace= false;
-        admin = {
-          enabled = true;
-          bind-address = ":     8083";
-        };
-      };
-
-    };
-
-    graphite = {
-
-      api = {
-        enable = true;
-        port = 8888;
-        finders = [ pkgs.python27Packages.graphite_influxdb ];
-        extraConfig = ''
-          allowed_origins:
-            - dashboard.example.com
-          cheat_times: true
-          influxdb:
-            host: localhost
-            port: 8086
-            user: influxdb
-            pass: influxdb
-            db: metrics
-
-        '';
-      };
-
-      carbon = {
-        enableCache = true;
-        # save disk usage by restricting to 1 bulk update per second
-        config = ''
-          [cache]
-          MAX_CACHE_SIZE = inf
-          MAX_UPDATES_PER_SECOND = 1
-          MAX_CREATES_PER_MINUTE = 50
-          '';
-        storageSchemas = ''
-          [carbon]
-          pattern = ^carbon\.
-          retentions = 60:90d
-
-          [default]
-          pattern = .*
-          retentions = 60s:30d,300s:1y
-          '';
-      };
-    };
   };
-
 
   programs = {
     zsh = {
@@ -290,7 +200,7 @@ in
     stateVersion = "17.09";
     activationScripts = utils.mkActivationScriptsForUsers [
       tmux-nix.tmuxinator.userActivationScript
-      sakura-nix.userActivationScript
+      #sakura-nix.userActivationScript
     ] // {
       synclient-setup = ''
       '';

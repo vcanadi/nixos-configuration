@@ -1,10 +1,13 @@
 let b = builtins; in
 rec {
   userActivationScript = user:  ''
-    cd ${user.home}/.config 
-    if [ -d sakura ]; then rm sakura -r; fi 
-    mkdir sakura 
-    cp ${b.toFile "" conf} sakura/sakura.conf  
+    cd ${user.home}
+    mkdir -p .config
+    chown ${user.name}:nogroup .config
+    cd .config
+    if [ -d sakura ]; then rm sakura -r; fi
+    mkdir sakura
+    cp ${b.toFile "" conf} sakura/sakura.conf
     chown ${user.name}:nogroup sakura -R
   '';
   conf = ''

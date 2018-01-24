@@ -1,17 +1,18 @@
 pkgs: with pkgs; [
 
 # Programs
-  libreoffice
+  #libreoffice
   nixos1703.firefox chromium w3m nixos-unstable.qutebrowser
   transmission_gtk
   vlc mpv
   git-crypt
   scrot
-  emem
-  termite
   wine
   p7zip
   tldr
+  vmpk
+  qsynth
+  haskellPackages.stylish-haskell
   #(python3. = {
           #withPackages (ps: with ps; [
     #attrs pyqt5 yamllint jinja2
@@ -48,9 +49,8 @@ pkgs: with pkgs; [
   openssl
 
 # Haskell
-  haskell.compiler.ghc822
-  #ghc
-  haskellPackages.ghc-mod
+#haskell.compiler.ghc822
+  ghc
   haskellPackages.cabal-install
   haskellPackages.cabal2nix
   haskellPackages.xmobar
@@ -58,9 +58,7 @@ pkgs: with pkgs; [
 # Nix
   nix-repl
   nixops
-  hydra
   virtualboxHeadless
-  stack2nix
 ]
 
 
