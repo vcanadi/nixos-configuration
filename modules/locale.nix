@@ -1,10 +1,3 @@
-
-{config, pkgs, ...}:
-{  
-	# Select internationalisation properties.
-		
-	# Set your time zone.
-		
-		time.timeZone = "Europe/Zagreb";
-		
-} 
+{ config, pkgs, ...}: {
+  time.timeZone = "Europe/Zagreb";
+}

@@ -2,20 +2,8 @@
 with pkgs;
 let
   buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
-  myPlugins = {
-    haskell-vim = buildVimPlugin {
-      name = "haskell-vim";
-      src = fetchgit {
-        url = "https://github.com/neovimhaskell/haskell-vim";
-        rev = "6bb3716a41796f27321ee565b8bb36806b9f7b38";
-        sha256 = "0rkhbzxb17rhxw9g7s47grnl10kxijph7x1b8b6ilzyzbnxaf3s5";
-      };
-      dependencies = [];
-    };
-  };
   myVimrcConfig = {
     customRC = ''
-
       let g:mapleader = ','
       set nu
       set tabstop=4
@@ -53,9 +41,6 @@ let
 
       au BufRead /tmp/psql.edit.* set syntax=sql
 
-      noremap <leader>b :VimShellInteractive nixos-rebuild switch <CR>
-      noremap <leader>bb :VimShellInteractive stack --nix build <CR>
-
       autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
       autocmd StdinReadPre * let s:std_in=1
@@ -76,43 +61,40 @@ let
 
       autocmd BufWritePre * %s/\s\+$//e
 
-      set term=rxvt-unicode-256color
       colorscheme github
     '';
 
-    vam = {
-      knownPlugins = pkgs.vimPlugins // myPlugins;
-      pluginDictionaries = [{
-        names = [
-          "Syntastic"
-          "The_NERD_tree"
-          "vimshell"
-          "vim-nix"
-          "vim-airline"
-          "vim-airline-themes"
-          "haskell-vim"
-          "vim-addon-completion"
-          "ctrlp"
-          "The_NERD_Commenter"
-          "vim-orgmode"
-          "vim-speeddating"
-          "calendar"
-          "vim-colorschemes"
-          "stylish-haskell"
-
-
-          "vimproc"
-        ];
-      }];
+    packages.myVimPackage = with pkgs.vimPlugins; {
+      # loaded on launch
+      start = [
+          calendar
+          ctrlp
+          fugitive
+          haskell-vim
+          neocomplete
+          stylish-haskell
+          Syntastic
+          The_NERD_Commenter
+          The_NERD_tree
+          vim-addon-completion
+          vim-airline
+          vim-airline-themes
+          vim-colorschemes
+          vim-nix
+          vim-orgmode
+          vim-speeddating
+          vimproc
+          vimshell
+    ];
+      # manually loadable by calling `:packadd $plugin-name`
+      opt = [ ];
+      # To automatically load a plugin when opening a filetype, add vimrc lines like:
+      # autocmd FileType php :packadd phpCompletion
     };
+
   };
 in
 {
-  myVim = vim_configurable.customize {
-    name = "vim";
-    vimrcConfig = myVimrcConfig;
-  };
-
   myNvim = pkgs.neovim.override {
     vimAlias = true;
     configure = myVimrcConfig;

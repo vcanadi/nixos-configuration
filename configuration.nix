@@ -1,54 +1,37 @@
 { config, pkgs, ... }:
 let
   tmux-nix = import ./modules/tmux.nix pkgs;
-  sakura-nix = import ./modules/sakura.nix;
-  emacs-nix = import ./modules/emacs.nix { inherit config pkgs; };
   utils = import ./utils.nix config;
-  b = builtins;
 in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/X.nix
     ./modules/locale.nix
+    ./modules/audio.nix
     ./modules/touch.nix
     ./modules/net.nix
-    ./modules/graphics.nix
-    ./modules/audio.nix
-    ./modules/jobs.nix
     ./modules/users.nix
    ];
 
   boot.kernelParams = ["quiet" "splash"];
+  boot.kernelModules =  ["snd-seq" "snd-rawmidi" ];
   boot.loader.grub = {
   	enable = true;
   	version = 2;
   	device = "/dev/sda";
   	splashImage = null;
     extraEntries = ''
-		  menuentry 'Ubuntu' {
-		  insmod ext2
-		  set root='(hd0,3)'
-		  chainloader +1
-		  }
-		'';
+	  menuentry 'Win' {
+	    insmod ntfs
+	    set root='(hd0,3)'
+        chainloader +1
+	  }
+    '';
   };
 
-  fonts = {
-    enableCoreFonts = true;
-    fonts = with pkgs; [
-      corefonts
-      liberation_ttf
-      dejavu_fonts
-      terminus_font
-      ubuntu_font_family
-      gentium
-      hasklig
-    ];
-  };
-
-  environment={
-    systemPackages = import ./modules/systemPackages.nix pkgs ++ [ emacs-nix.emacs emacs-nix.autostartEmacsDaemon ] ;
+  environment = {
+    systemPackages = import ./modules/systemPackages.nix pkgs;
 
     shellAliases = {
       vi = "vim";
@@ -56,53 +39,49 @@ in
       gid = "git diff";
       gil = "git log";
       nixc = "cd /etc/nixos";
-      nixb = "nixos-rebuild switch;";
-      nixrepl = ''nix-repl "<nixpkgs>" "<nixpkgs/nixos>"'';
-      ux = "tmux";
-      uxi = "tmuxinator";
-      emacs = "emacs -nw";
+      ec = "emacsclient -t";
     };
 
     interactiveShellInit = ''
       set -o vi
-      xset r rate 250 40
 
       function shs () { grep --include=\*.{hs,cabal,yaml,nix} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
+      function ytloc () { yt org local --file $1 --yt-token $(cat /home/bunkar/reports/vcanadi-yt-token); }
+      function ytexport () { yt org export --file $1 --user vito.canadi --yt-token $(cat /home/bunkar/reports/vcanadi-yt-token); }
 
       set editing-mode vim
 
-      synclient PalmDetect=1
-      synclient PalmMinWidth=5
-      synclient VertScrollDelta=170
+      if [ -n "$DISPLAY" ]; then
 
-      synclient VertEdgeScroll=1
-      synclient TapButton2=0
-      synclient TapButton3=0
+        xset r rate 200 100
 
-      synclient AccelFactor=0.2
-      synclient MaxSpeed=1.75
+        synclient PalmDetect=1
+        synclient PalmMinWidth=5
+        synclient VertScrollDelta=170
 
-      synclient AreaLeftEdge=2000
-      synclient AreaRightEdge=5000
-      synclient AreaTopEdge=2500
+        synclient VertEdgeScroll=1
+        synclient TapButton2=0
+        synclient TapButton3=0
 
-      eval "$(direnv hook zsh)"
+        synclient AccelFactor=0.2
+        synclient MaxSpeed=1.75
+
+        synclient AreaLeftEdge=2000
+        synclient AreaRightEdge=5000
+        synclient AreaTopEdge=2500
+
+      fi
     '';
 
     variables = {
       PATH = ["$HOME/.local/bin"];
       VISUAL = "vim";
       EDITOR = "$VISUAL";
-      #HYDRA_DBI = "dbi:Pg:dbname=hydra;host=localhost;user=hydra;";
-      #HYDRA_DATA = "/var/lib/hydra";
-      #HYDRA_CONFIG = "/var/lib/hydra/hydra.conf";
-      NIX_REMOTE = "daemon";
-      PGHOST = "localhost";
-      PGUSER = "ale";
-      PGDATABASE = "ale";
-      PGPASSWORD = "ale";
-      PGPORT = "5432";
-      GRAPHITE_ROOT = "/var/db/graphite";
+      HISTTIMEFORMAT="%d/%m/%y %T ";
+      KEYBOARD_RATE = "180";
+      KEYBOARD_DELAY = "200";
+      ALTERNATE_EDITOR = "";
+      XDG_CONFIG_HOME = "/home/bunkar/.config";
     };
 
     etc = {
@@ -111,7 +90,7 @@ in
         if [ -z "$TMUX" ]; then tmux; fi
         if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
         ZSH_TMUX_AUTOSTART=true
-        ZSH_TMUX_AUTOQUIT=false
+        ZSH_TMUX_AUTOQUIT=true
         DISABLE_AUTO_UPDATE="false"
         DISABLE_UNTRACKED_FILES_DIRTY="true"
         HIST_STAMPS="yyyy-mm-dd"
@@ -119,34 +98,21 @@ in
         mkdir -p $HOME/.zsh
         export ZSH_CACHE_DIR="$HOME/.zsh"
         export COMPDUMPFILE="$HOME/.zsh"
+        bindkey "^K" history-substring-search-up
+        bindkey "^J" history-substring-search-down
       '';
 
       "inputrc".text = ''
         set editing-mode vim
       '';
     };
-  };
 
-  nix = {
-    #package = pkgs.nixUnstable;
-
-    extraOptions = ''
-      trusted-users = hydra root hydra-evaluator hydra-queue-runner
-    '';
-
-    requireSignedBinaryCaches = false;
-
-    useSandbox = false;
   };
 
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs : {
-
-      nixos-unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
-      nixos1703      = import <nixos1703>      { config = config.nixpkgs.config; };
-
-
+      nixos-stable = import <nixos-stable> { config = config.nixpkgs.config; };
     };
   };
 
@@ -168,20 +134,23 @@ in
         host    all             all             ::1/128                 trust
     '';
     };
+  };
 
+  security = {
+    polkit.enable = true;
+    chromiumSuidSandbox.enable = true;
   };
 
   programs = {
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestions.enable = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
       ohMyZsh = {
         enable = true;
         theme = "gentoo";
-        # theme = "candy";
-        plugins = [ "vi-mode" ];
+        plugins = [ "vi-mode" "history-substring-search" ];
       };
     };
     bash.enableCompletion = true;
@@ -192,28 +161,23 @@ in
         ServerAliveInterval 60
       '';
     };
-
-
   };
 
   system = {
-    stateVersion = "17.09";
+    stateVersion = "18.03";
     activationScripts = utils.mkActivationScriptsForUsers [
-      tmux-nix.tmuxinator.userActivationScript
-      #sakura-nix.userActivationScript
-    ] // {
-      synclient-setup = ''
-      '';
-    };
+      tmux-nix.tmuxp.userActivationScript
+    ];
   };
 
-  hardware.enableAllFirmware=true;
-  security.polkit.enable = true;
+  hardware = {
+    enableAllFirmware=true;
+    cpu.intel.updateMicrocode=true;
+  };
 
   virtualisation.virtualbox.host.enable = true;
+
   users = {
     defaultUserShell = pkgs.zsh;
-    extraGroups.vboxusers.members = [ "bunkar" ];
   };
-
 }

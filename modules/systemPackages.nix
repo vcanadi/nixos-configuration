@@ -1,64 +1,50 @@
 pkgs: with pkgs; [
 
 # Programs
-  #libreoffice
-  nixos1703.firefox chromium w3m nixos-unstable.qutebrowser
+  firefox chromium w3m qutebrowser tor-browser-bundle-bin
   transmission_gtk
   vlc mpv
+  xorg.xkill tldr wine
+  scrot feh
+  mupdf llpp
+  gnupg
+  ngrok
   git-crypt
-  scrot
-  wine
-  p7zip
-  tldr
-  vmpk
-  qsynth
-  haskellPackages.stylish-haskell
-  #(python3. = {
-          #withPackages (ps: with ps; [
-    #attrs pyqt5 yamllint jinja2
-    #psycopg2
-  #] ))
-  #python36Packages.psycopg2
-  #qt5.qtwebengine
-  python36
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
-    myVim
     myNvim
   ]) ++ [
+  emacs
 
 # Terminal
   rxvt_unicode
+  tmuxp
 
 # Utils
-  gcc gnumake
   git tig
   dhcpcd wpa_supplicant
   zip unzip unrar p7zip
-  pavucontrol qjackctl
   gparted
-  lshw hwinfo	conky htop
+  lshw hwinfo conky htop pciutils
+  pavucontrol pulseaudio alsaUtils
   xdotool xsel xclip
-  gnome3.nautilus
-  tmuxinator
-  gv
   direnv
-  influxdb
-  #    (haskellPackages.callPackage (import /home/bunkar/NixProjs/ping-multi/default.nix) {} )
-  openssl
+  postgresql
 
 # Haskell
-#haskell.compiler.ghc822
   ghc
-  haskellPackages.cabal-install
-  haskellPackages.cabal2nix
+  stack
+  cabal-install
+  cabal2nix
   haskellPackages.xmobar
 
 # Nix
-  nix-repl
   nixops
+  nixos-stable.nix-repl
   virtualboxHeadless
 ]
+
+
 
 

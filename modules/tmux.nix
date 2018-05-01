@@ -6,7 +6,6 @@ let b = builtins; in
     shortcut = "a";
     keyMode = "vi";
     terminal = "rxvt-unicode-256color";
-    #terminal = "screen-256color";
     clock24 = true;
     customPaneNavigationAndResize = true;
     aggressiveResize = true;
@@ -22,9 +21,11 @@ let b = builtins; in
       set -g status on
       bind-key S set-option -g status
 
-      # Vim split keys
+      set -g @plugin 'tmux-plugins/tmux-resurrect'
+
       unbind-key s
-      bind-key s split-window
+      bind-key s set-window-option synchronize-panes
+
       unbind-key v
       bind-key v split-window -h
 
@@ -33,41 +34,68 @@ let b = builtins; in
       bind -n M-k select-pane -U \; display-pane
       bind -n M-l select-pane -R \; display-pane
 
+      bind \ split-window -h -c '#{pane_current_path}'  # Split panes horizontal
+      bind - split-window -v -c '#{pane_current_path}'  # Split panes vertically
 
     '';
   };
 
-  tmuxinator = rec {
+  tmuxp = rec {
     userActivationScript = user :
     let
       cmdCreateProjectYamls = b.concatStringsSep "\n" (
         pkgs.lib.imap0 (i: yaml:
-          let filePath = "config-${b.toString i}.yml"; in ''
-            cp ${b.toFile "" yaml} ${filePath}
+          let filePath = "main-${b.toString i}.yml"; in ''
+            cp ${b.toFile "" (yaml i)} ${filePath}
             chown ${user.name}:nogroup ${filePath}
           ''
         ) yamls
       );
     in ''
       cd ${user.home}
-      if [ -d .tmuxinator ]; then rm .tmuxinator -r; fi
-      mkdir .tmuxinator
-      chown ${user.name}:nogroup .tmuxinator
-      cd .tmuxinator
+      if [ -d .tmuxp ]; then rm .tmuxp -r; fi
+      mkdir .tmuxp
+      chown ${user.name}:nogroup .tmuxp
+      cd .tmuxp
       ${cmdCreateProjectYamls}
     '';
 
-    yamls = [''
-      name: nixconf
-      root: ~/
+    yamls = [(i : ''
+        session_name: main-${b.toString i}
+        windows:
+        - window_name: projects
+          layout: tiled
+          shell_command_before:
+            - cd ~/projects
+          panes:
+            - l
+            - l
+            - l
 
-      windows:
-        - nixconf:
-            layout: main-vertical
-            root: /etc/nixos
-            panes:
-              - vim configuration.nix
-              -
-    ''];
+        - window_name: nix
+          layout: tiled
+          shell_command_before:
+            - cd /etc/nixos
+          panes:
+            - shell_command:
+                - sudo vim configuration.nix
+            - su
+
+        - window_name: reports
+          layout: tiled
+          shell_command_before:
+            - cd ~/reports
+          panes:
+            - shell_command:
+                - emacs -nw .
+
+        - window_name: mpv
+          layout: tiled
+          shell_command_before:
+            - cd ~/downloads/streams
+          panes:
+            - l
+
+    '')];
   };
 }
