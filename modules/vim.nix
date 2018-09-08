@@ -1,7 +1,16 @@
 { pkgs }:
 with pkgs;
 let
-  buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
+  customPlugins.w3m = pkgs.vimUtils.buildVimPlugin {
+    name = "w3m";
+    src = pkgs.fetchFromGitHub {
+      owner = "yuratomo";
+      repo = "w3m.vim";
+      rev = "228a852b188f1a62ecea55fa48b0ec892fa6bad7";
+      sha256 = "0c06yipsm0a1sxdlhnf41lifhzgimybra95v8638ngmr8iv5dznf";
+    };
+  };
+
   myVimrcConfig = {
     customRC = ''
       let g:mapleader = ','
@@ -12,6 +21,7 @@ let
       set expandtab
       syntax on
       filetype plugin on
+      set ignorecase
       set smartcase
       set hlsearch
       set incsearch
@@ -19,6 +29,7 @@ let
 
     " vim without plugins
       set path+=**
+      set wildmode=longest,list,full
       set wildmenu
 
       let g:netrw_banner=0        " disable annoying banner
@@ -32,12 +43,7 @@ let
       nnoremap <leader>f :NERDTreeToggle<CR>
 
     " os clipboard
-      nmap <leader>y "*y
-      vmap <leader>y "*y
-      nmap <leader>d "*d
-      vmap <leader>d "*d
-      nmap <leader>p "*p
-      vmap <leader>p "*p
+      set clipboard=unnamedplus
 
       au BufRead /tmp/psql.edit.* set syntax=sql
 
@@ -61,7 +67,12 @@ let
 
       autocmd BufWritePre * %s/\s\+$//e
 
-      colorscheme github
+      let g:deoplete#enable_at_startup = 1
+
+      if has('persistent_undo')      "check if your vim version supports it
+        set undofile                 "turn on the feature
+        set undodir=$HOME/.vim/undo  "directory where the undo files will be stored
+        endif
     '';
 
     packages.myVimPackage = with pkgs.vimPlugins; {
@@ -69,14 +80,18 @@ let
       start = [
           calendar
           ctrlp
+          commentary
+          deoplete-nvim
           fugitive
           haskell-vim
+          # intero-neovim
           neocomplete
-          stylish-haskell
+          open-browser
+          vim-stylish-haskell
           Syntastic
-          The_NERD_Commenter
+          tagbar
           The_NERD_tree
-          vim-addon-completion
+          vim-addon-mru
           vim-airline
           vim-airline-themes
           vim-colorschemes
@@ -85,13 +100,15 @@ let
           vim-speeddating
           vimproc
           vimshell
-    ];
-      # manually loadable by calling `:packadd $plugin-name`
-      opt = [ ];
-      # To automatically load a plugin when opening a filetype, add vimrc lines like:
-      # autocmd FileType php :packadd phpCompletion
-    };
+      ];
 
+    };
+    vam = {
+      knownPlugins = pkgs.vimPlugins // customPlugins; # optional
+      pluginDictionaries = [
+        { name = "w3m"; }
+      ];
+    };
   };
 in
 {

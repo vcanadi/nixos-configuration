@@ -37,6 +37,7 @@ let b = builtins; in
       bind \ split-window -h -c '#{pane_current_path}'  # Split panes horizontal
       bind - split-window -v -c '#{pane_current_path}'  # Split panes vertically
 
+      bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -i -f -selection primary | xclip -i -selection clipboard"
     '';
   };
 
@@ -44,9 +45,9 @@ let b = builtins; in
     userActivationScript = user :
     let
       cmdCreateProjectYamls = b.concatStringsSep "\n" (
-        pkgs.lib.imap0 (i: yaml:
-          let filePath = "main-${b.toString i}.yml"; in ''
-            cp ${b.toFile "" (yaml i)} ${filePath}
+        pkgs.lib.mapAttrsToList (n: yaml:
+          let filePath = "${n}.yml"; in ''
+            cp ${b.toFile "" yaml} ${filePath}
             chown ${user.name}:nogroup ${filePath}
           ''
         ) yamls
@@ -60,8 +61,9 @@ let b = builtins; in
       ${cmdCreateProjectYamls}
     '';
 
-    yamls = [(i : ''
-        session_name: main-${b.toString i}
+    yamls = {
+      work = ''
+        session_name: main
         windows:
         - window_name: projects
           layout: tiled
@@ -72,14 +74,6 @@ let b = builtins; in
             - l
             - l
 
-        - window_name: nix
-          layout: tiled
-          shell_command_before:
-            - cd /etc/nixos
-          panes:
-            - shell_command:
-                - sudo vim configuration.nix
-            - su
 
         - window_name: reports
           layout: tiled
@@ -88,14 +82,20 @@ let b = builtins; in
           panes:
             - shell_command:
                 - emacs -nw .
+      '';
 
-        - window_name: mpv
+      nix = ''
+        session_name: nix
+        windows:
+        - window_name: nix
           layout: tiled
           shell_command_before:
-            - cd ~/downloads/streams
+            - cd /etc/nixos
           panes:
-            - l
-
-    '')];
+            - shell_command:
+                - sudo vim configuration.nix
+            - su
+      '';
+    };
   };
 }

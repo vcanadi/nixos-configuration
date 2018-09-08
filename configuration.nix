@@ -14,21 +14,33 @@ in
     ./modules/users.nix
    ];
 
-  boot.kernelParams = ["quiet" "splash"];
-  boot.kernelModules =  ["snd-seq" "snd-rawmidi" ];
-  boot.loader.grub = {
-  	enable = true;
-  	version = 2;
-  	device = "/dev/sda";
-  	splashImage = null;
-    extraEntries = ''
-	  menuentry 'Win' {
-	    insmod ntfs
-	    set root='(hd0,3)'
-        chainloader +1
-	  }
-    '';
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      "acpi_rev_override"
+    ];
+
+    # extraModprobeConfig = "options nvidia-drm modeset=1";
+
+    # initrd.kernelModules = [
+    #   "nouveau"
+    #   "kvm-intel"
+      # ];
+    # initrd.kernelModules = [
+    #   "nvidia"
+    #   "nvidia_modeset"
+    #   "nvidia_uvm"
+    #   "nvidia_drm"
+    #   "kvm-intel"
+    # ];
+    blacklistedKernelModules = [ "nvidia" "nouveau" ];
+
   };
+
 
   environment = {
     systemPackages = import ./modules/systemPackages.nix pkgs;
@@ -38,39 +50,26 @@ in
       gis = "git status";
       gid = "git diff";
       gil = "git log";
-      nixc = "cd /etc/nixos";
+      nixc = "cd /etc/nixos; vim configuration.nix";
+      nixb = "cd /etc/nixos; nixos-rebuild switch";
       ec = "emacsclient -t";
+      sc = "systemctl";
+      hgrep = ''
+        grep -rni \
+          --include \*.hs \
+          --include \*.cabal \
+          --include \*.yaml \
+          --include \*.nix \
+          --exclude-dir .stack-work \
+      '';
     };
 
     interactiveShellInit = ''
-      set -o vi
-
-      function shs () { grep --include=\*.{hs,cabal,yaml,nix} -rnw . -e "\w*"$1"\w*" --exclude-dir .stack-work; }
-      function ytloc () { yt org local --file $1 --yt-token $(cat /home/bunkar/reports/vcanadi-yt-token); }
-      function ytexport () { yt org export --file $1 --user vito.canadi --yt-token $(cat /home/bunkar/reports/vcanadi-yt-token); }
-
       set editing-mode vim
 
-      if [ -n "$DISPLAY" ]; then
+      function ytloc () { yt org local --file $1 --yt-token $(cat /home/vcanadi/reports/vcanadi-yt-token); }
+      function ytexport () { yt org export --file $1 --user vito.canadi --yt-token $(cat /home/vcanadi/reports/vcanadi-yt-token); }
 
-        xset r rate 200 100
-
-        synclient PalmDetect=1
-        synclient PalmMinWidth=5
-        synclient VertScrollDelta=170
-
-        synclient VertEdgeScroll=1
-        synclient TapButton2=0
-        synclient TapButton3=0
-
-        synclient AccelFactor=0.2
-        synclient MaxSpeed=1.75
-
-        synclient AreaLeftEdge=2000
-        synclient AreaRightEdge=5000
-        synclient AreaTopEdge=2500
-
-      fi
     '';
 
     variables = {
@@ -78,10 +77,10 @@ in
       VISUAL = "vim";
       EDITOR = "$VISUAL";
       HISTTIMEFORMAT="%d/%m/%y %T ";
-      KEYBOARD_RATE = "180";
       KEYBOARD_DELAY = "200";
+      KEYBOARD_RATE = "100";
       ALTERNATE_EDITOR = "";
-      XDG_CONFIG_HOME = "/home/bunkar/.config";
+      XDG_CONFIG_HOME = "/home/vcanadi/.config";
     };
 
     etc = {
@@ -100,11 +99,14 @@ in
         export COMPDUMPFILE="$HOME/.zsh"
         bindkey "^K" history-substring-search-up
         bindkey "^J" history-substring-search-down
+        set -s escape-time 0
+        precmd() { print "" }
       '';
 
       "inputrc".text = ''
         set editing-mode vim
       '';
+      current-nixos-config.source = ./.;
     };
 
   };
@@ -119,21 +121,10 @@ in
   services = {
     openssh = {
       enable = true;
+      passwordAuthentication = false;
     };
-
     nixosManual.showManual = true;
-
-    postgresql = {
-      enable = true;
-      package = pkgs.postgresql96;
-      authentication = pkgs.lib.mkForce ''
-        # Generated file; do not edit!
-        # TYPE  DATABASE        USER            ADDRESS                 METHOD
-        local   all             all                                     trust
-        host    all             all             127.0.0.1/32            trust
-        host    all             all             ::1/128                 trust
-    '';
-    };
+    # youtrack.enable = true;
   };
 
   security = {
@@ -155,27 +146,25 @@ in
     };
     bash.enableCompletion = true;
     tmux = tmux-nix.tmux;
-    ssh = {
-     extraConfig = ''
-        Host *
-        ServerAliveInterval 60
-      '';
-    };
   };
 
   system = {
-    stateVersion = "18.03";
+    stateVersion = "19.03";
     activationScripts = utils.mkActivationScriptsForUsers [
       tmux-nix.tmuxp.userActivationScript
     ];
   };
 
   hardware = {
-    enableAllFirmware=true;
-    cpu.intel.updateMicrocode=true;
+    enableAllFirmware = true;
+    cpu.intel.updateMicrocode = true;
+    # nvidiaOptimus.disable = true;
+    # bumblebee = {
+    #   enable = true;
+    #   connectDisplay = true;
+    #   driver = "nouveau";
+    # };
   };
-
-  virtualisation.virtualbox.host.enable = true;
 
   users = {
     defaultUserShell = pkgs.zsh;

@@ -4,7 +4,6 @@ pkgs: with pkgs; [
   firefox chromium w3m qutebrowser tor-browser-bundle-bin
   transmission_gtk
   vlc mpv
-  xorg.xkill tldr wine
   scrot feh
   mupdf llpp
   gnupg
@@ -19,18 +18,24 @@ pkgs: with pkgs; [
 
 # Terminal
   rxvt_unicode
+  cool-retro-term
+  terminator
   tmuxp
 
+
 # Utils
-  git tig
+  gcc
+  binutils gnumake autoconf automake linuxHeaders python3
+  git
   dhcpcd wpa_supplicant
   zip unzip unrar p7zip
   gparted
   lshw hwinfo conky htop pciutils
-  pavucontrol pulseaudio alsaUtils
+  xorg.xkill tldr
+  pavucontrol  alsaUtils
+  # pulseaudio
   xdotool xsel xclip
   direnv
-  postgresql
 
 # Haskell
   ghc
@@ -38,11 +43,9 @@ pkgs: with pkgs; [
   cabal-install
   cabal2nix
   haskellPackages.xmobar
+  haskellPackages.stylish-haskell
 
-# Nix
-  nixops
-  nixos-stable.nix-repl
-  virtualboxHeadless
+  linuxPackages_latest.nvidia_x11
 ]
 
 
