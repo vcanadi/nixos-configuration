@@ -8,11 +8,13 @@ pkgs: with pkgs; [
   mupdf llpp
   gnupg
   ngrok
-  git-crypt
+
+  geogebra
 
 # Editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
     myNvim
+    myNvimQt
   ]) ++ [
   emacs
 
@@ -27,6 +29,7 @@ pkgs: with pkgs; [
   gcc
   binutils gnumake autoconf automake linuxHeaders python3
   git
+  git-crypt
   dhcpcd wpa_supplicant
   zip unzip unrar p7zip
   gparted
@@ -43,9 +46,16 @@ pkgs: with pkgs; [
   cabal-install
   cabal2nix
   haskellPackages.xmobar
+  haskellPackages.xmonad-contrib
+  haskellPackages.xmonad-extras
+  haskellPackages.xmonad
+  haskellPackages.xmobar
+  haskellPackages.conduit
+  haskellPackages.http-conduit
   haskellPackages.stylish-haskell
 
   linuxPackages_latest.nvidia_x11
+  xkeyboard_config
 ]
 
 

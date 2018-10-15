@@ -9,7 +9,6 @@ in
     ./modules/X.nix
     ./modules/locale.nix
     ./modules/audio.nix
-    ./modules/touch.nix
     ./modules/net.nix
     ./modules/users.nix
    ];
@@ -52,7 +51,7 @@ in
       gil = "git log";
       nixc = "cd /etc/nixos; vim configuration.nix";
       nixb = "cd /etc/nixos; nixos-rebuild switch";
-      ec = "emacsclient -t";
+      ec = "emacsclient -t -nw";
       sc = "systemctl";
       hgrep = ''
         grep -rni \
@@ -81,6 +80,7 @@ in
       KEYBOARD_RATE = "100";
       ALTERNATE_EDITOR = "";
       XDG_CONFIG_HOME = "/home/vcanadi/.config";
+      WINDOW_MANAGER = "xmonad";
     };
 
     etc = {
@@ -118,13 +118,17 @@ in
     };
   };
 
+  nix = {
+    buildCores = 12;
+    maxJobs = 12;
+  };
+
   services = {
     openssh = {
       enable = true;
       passwordAuthentication = false;
     };
     nixosManual.showManual = true;
-    # youtrack.enable = true;
   };
 
   security = {

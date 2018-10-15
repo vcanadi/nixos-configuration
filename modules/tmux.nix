@@ -22,6 +22,8 @@ let b = builtins; in
       bind-key S set-option -g status
 
       set -g @plugin 'tmux-plugins/tmux-resurrect'
+      set -g base-index 1
+      set-option -g prefix `
 
       unbind-key s
       bind-key s set-window-option synchronize-panes

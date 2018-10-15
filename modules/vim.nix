@@ -40,14 +40,39 @@ let
       let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
     " plugin shortcuts
-      nnoremap <leader>f :NERDTreeToggle<CR>
+
+      function! CloseTree()
+        if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+      endfunction
+
+      function! NERDTreeToggleInCurDir()
+        " If NERDTree is open in the current buffer
+        if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+          exe ":NERDTreeClose"
+        else
+          if (expand("%:t") != "" )
+             exe ":NERDTreeFind"
+          else
+            exe ":NERDTreeToggle"
+          endif
+        endif
+      endfunction
+
+      function! ToggleTree()
+        if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | else | NERDTreeFind | endif
+      endfunction
+
+      nnoremap <leader>f :call NERDTreeToggleInCurDir()<CR>
 
     " os clipboard
       set clipboard=unnamedplus
 
+    " spell check
+    " set spell spelllang=en_us
+
       au BufRead /tmp/psql.edit.* set syntax=sql
 
-      autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+      autocmd bufenter * call CloseTree()
 
       autocmd StdinReadPre * let s:std_in=1
       autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
@@ -66,8 +91,6 @@ let
       augroup END
 
       autocmd BufWritePre * %s/\s\+$//e
-
-      let g:deoplete#enable_at_startup = 1
 
       if has('persistent_undo')      "check if your vim version supports it
         set undofile                 "turn on the feature
@@ -111,9 +134,14 @@ let
     };
   };
 in
-{
+rec {
   myNvim = pkgs.neovim.override {
     vimAlias = true;
     configure = myVimrcConfig;
   };
+
+  myNvimQt = pkgs.neovim-qt.override {
+    neovim = myNvim;
+  };
+
 }
