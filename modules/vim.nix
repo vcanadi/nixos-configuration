@@ -96,18 +96,27 @@ let
         set undofile                 "turn on the feature
         set undodir=$HOME/.vim/undo  "directory where the undo files will be stored
         endif
+
+    " fzf bindings
+    map <C-p> :Files<CR>
+
+    " ack binding
+    map ; :Ack<space>
+
     '';
 
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [
+          ack-vim                # Search in project files
           calendar
-          ctrlp
           commentary
           deoplete-nvim
           fugitive
-          haskell-vim
+          fzfWrapper
+          fzf-vim                # Search files (ctrlp replacement)
           # intero-neovim
+          haskell-vim
           neocomplete
           open-browser
           vim-stylish-haskell
@@ -118,6 +127,7 @@ let
           vim-airline
           vim-airline-themes
           vim-colorschemes
+          vim-gitgutter
           vim-nix
           vim-orgmode
           vim-speeddating
