@@ -19,21 +19,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [
-      "acpi_rev_override"
-    ];
-    extraModprobeConfig = ''
-      options i915 alpha_support=1
-    '';
 
-    initrd.kernelModules = [
-      "nvidia"
-      "nvidia_modeset"
-      "nvidia_uvm"
-      "nvidia_drm"
-      "kvm-intel"
-      "coretemp"
-    ];
   };
 
 
