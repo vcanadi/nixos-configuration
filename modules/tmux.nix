@@ -179,7 +179,7 @@ in
           - window_name: Music
             layout: tiled
             shell_command_before:
-              - cd /downloads/streams
+              - cd downloads/streams
             panes:
               - shell_command:
                  - mpv $(ls | sort -R | head -n 1)

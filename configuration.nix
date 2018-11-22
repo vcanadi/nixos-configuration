@@ -19,9 +19,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_latest;
-
   };
-
 
   environment = {
     systemPackages = import ./modules/systemPackages.nix pkgs;
@@ -86,17 +84,10 @@ in
         set editing-mode vim
       '';
 
+      # Currently active configuration.nix
       current-nixos-config.source = ./.;
 
-      "sensors.d/isa-coretemp".text = ''
-         chip "coretemp-isa-0000"
-           label temp2 "Core 0"
-           compute temp2 @-20,@-20
-
-           label temp3 "Core 1"
-           compute temp3 @-20,@-20
-           '';
-    };
+      };
   };
 
   nixpkgs.config = {
@@ -107,8 +98,8 @@ in
   };
 
   nix = {
-    buildCores = 12;
-    maxJobs = 12;
+    buildCores = 6;
+    maxJobs = 6;
   };
 
   services = {
@@ -121,22 +112,8 @@ in
     emacs.enable = true;
   };
 
-  # systemd.services.ycmds = {
-  #    enable = true;
-  #    description = "ycmd";
-  #    serviceConfig = {
-  #      Type = "forking";
-  #      ExecStart = "${pkgs.ycmd}/bin/ycmd --options_file ${pkgs.copyPathToStore ./conf/ycmd.json}";
-  #      ExecStop = "";
-  #      Restart = "on-failure";
-  #    };
-  #    wantedBy = [ "default.target" ];
-  #  };
-
-
   security = {
     polkit.enable = true;
-    chromiumSuidSandbox.enable = true;
   };
 
   programs = {
@@ -179,13 +156,8 @@ in
     defaultUserShell = pkgs.zsh;
   };
 
-  # virtualisation.virtualbox.host = {
-  #   enable = true;
-  #   enableExtensionPack = true;
-  # };
-
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "ondemand";
+    cpuFreqGovernor = "powersave";
   };
 }
