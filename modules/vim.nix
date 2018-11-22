@@ -70,8 +70,6 @@ let
     " spell check
     " set spell spelllang=en_us
 
-      au BufRead /tmp/psql.edit.* set syntax=sql
-
       autocmd bufenter * call CloseTree()
 
       autocmd StdinReadPre * let s:std_in=1
@@ -108,14 +106,15 @@ let
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [
-          ack-vim                # Search in project files
+          ack-vim                # Search in project
           calendar
           commentary
           deoplete-nvim
           fugitive
           fzfWrapper
           fzf-vim                # Search files (ctrlp replacement)
-          # intero-neovim
+          intero-neovim
+          # neco-ghc
           haskell-vim
           neocomplete
           open-browser

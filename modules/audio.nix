@@ -2,6 +2,6 @@
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
-    package = pkgs.pulseaudioLight.override { jackaudioSupport = true; };
+    package = pkgs.pulseaudioFull; # pkgs.pulseaudioLight.override { jackaudioSupport = true; };
   };
 }

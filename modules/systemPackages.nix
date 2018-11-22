@@ -1,61 +1,61 @@
 pkgs: with pkgs; [
 
-# Programs
-  firefox chromium w3m qutebrowser tor-browser-bundle-bin
+# Browser
+  firefox w3m qutebrowser tor-browser-bundle-bin
+
+# Torrent
   transmission_gtk
-  vlc mpv
+
+# Media player
+  vlc mpv mplayer
+
+# Misc
   scrot feh
-  mupdf llpp
-  gnupg
-  ngrok
+  # llpp
+  mupdf
+  tldr
+  zip unzip unrar p7zip
 
-  geogebra
-
-# Editor
+# Text editor
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
     myNvim
-    myNvimQt
   ]) ++ [
-  emacs
+  atom
+  vscode
 
 # Terminal
   rxvt_unicode
-  cool-retro-term
-  terminator
   tmuxp
 
-
 # Utils
-  gcc
-  binutils gnumake autoconf automake linuxHeaders python3
-  git
-  git-crypt
-  dhcpcd wpa_supplicant
-  zip unzip unrar p7zip
-  gparted
-  lshw hwinfo conky htop pciutils
-  xorg.xkill tldr
-  pavucontrol  alsaUtils
-  # pulseaudio
-  xdotool xsel xclip
-  direnv
+  # Git
+    git python27Packages.grip tig
+  # Hardware/Proc tools
+    lshw hwinfo htop pciutils hwdata hardinfo sysstat gotop nvtop
+  # Disk
+    gparted ntfs3g
+  # X tools
+    xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi
+  # Vim deps
+    ack fzf
+  # Other
+    gnupg
+    dhcpcd wpa_supplicant
+    trash-cli
+
 
 # Haskell
-  ghc
   stack
   cabal-install
-  cabal2nix
   haskellPackages.xmobar
-  haskellPackages.xmonad-contrib
-  haskellPackages.xmonad-extras
-  haskellPackages.xmonad
-  haskellPackages.xmobar
-  haskellPackages.conduit
-  haskellPackages.http-conduit
   haskellPackages.stylish-haskell
 
-  linuxPackages_latest.nvidia_x11
-  xkeyboard_config
+
+# Music
+  guitarix
+  lmms
+  qjackctl
+  jack2
 ]
 
 

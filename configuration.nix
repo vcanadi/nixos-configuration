@@ -22,22 +22,18 @@ in
     kernelParams = [
       "acpi_rev_override"
     ];
+    extraModprobeConfig = ''
+      options i915 alpha_support=1
+    '';
 
-    # extraModprobeConfig = "options nvidia-drm modeset=1";
-
-    # initrd.kernelModules = [
-    #   "nouveau"
-    #   "kvm-intel"
-      # ];
-    # initrd.kernelModules = [
-    #   "nvidia"
-    #   "nvidia_modeset"
-    #   "nvidia_uvm"
-    #   "nvidia_drm"
-    #   "kvm-intel"
-    # ];
-    blacklistedKernelModules = [ "nvidia" "nouveau" ];
-
+    initrd.kernelModules = [
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_uvm"
+      "nvidia_drm"
+      "kvm-intel"
+      "coretemp"
+    ];
   };
 
 
@@ -86,10 +82,7 @@ in
     etc = {
 
       "zshrc.local".text = ''
-        if [ -z "$TMUX" ]; then tmux; fi
         if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
-        ZSH_TMUX_AUTOSTART=true
-        ZSH_TMUX_AUTOQUIT=true
         DISABLE_AUTO_UPDATE="false"
         DISABLE_UNTRACKED_FILES_DIRTY="true"
         HIST_STAMPS="yyyy-mm-dd"
@@ -106,9 +99,18 @@ in
       "inputrc".text = ''
         set editing-mode vim
       '';
-      current-nixos-config.source = ./.;
-    };
 
+      current-nixos-config.source = ./.;
+
+      "sensors.d/isa-coretemp".text = ''
+         chip "coretemp-isa-0000"
+           label temp2 "Core 0"
+           compute temp2 @-20,@-20
+
+           label temp3 "Core 1"
+           compute temp3 @-20,@-20
+           '';
+    };
   };
 
   nixpkgs.config = {
@@ -126,10 +128,25 @@ in
   services = {
     openssh = {
       enable = true;
-      passwordAuthentication = false;
+      passwordAuthentication = true;
     };
     nixosManual.showManual = true;
+    acpid.enable = true;
+    emacs.enable = true;
   };
+
+  # systemd.services.ycmds = {
+  #    enable = true;
+  #    description = "ycmd";
+  #    serviceConfig = {
+  #      Type = "forking";
+  #      ExecStart = "${pkgs.ycmd}/bin/ycmd --options_file ${pkgs.copyPathToStore ./conf/ycmd.json}";
+  #      ExecStop = "";
+  #      Restart = "on-failure";
+  #    };
+  #    wantedBy = [ "default.target" ];
+  #  };
+
 
   security = {
     polkit.enable = true;
@@ -153,7 +170,7 @@ in
   };
 
   system = {
-    stateVersion = "19.03";
+    stateVersion = "18.09";
     activationScripts = utils.mkActivationScriptsForUsers [
       tmux-nix.tmuxp.userActivationScript
     ];
@@ -168,9 +185,17 @@ in
     #   connectDisplay = true;
     #   driver = "nouveau";
     # };
+    opengl.driSupport.enable = true;
+    opengl.driSupport32Bit = true;
   };
 
   users = {
     defaultUserShell = pkgs.zsh;
   };
+
+  # virtualisation.virtualbox.host = {
+  #   enable = true;
+  #   enableExtensionPack = true;
+  # };
+
 }
