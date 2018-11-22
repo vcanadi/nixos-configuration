@@ -184,4 +184,8 @@ in
   #   enableExtensionPack = true;
   # };
 
+  powerManagement = {
+    enable = true;
+    cpuFreqGovernor = "ondemand";
+  };
 }
