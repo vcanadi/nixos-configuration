@@ -16,8 +16,8 @@ in
     historyLimit = 100000;
     extraTmuxConf =
       let
-        windows = map toString [ 0 1 2 3 4 5 6 7 8 9 ];
-        withShift = i: {
+        # Windows/workspace key values and their shifted values
+        windows' = {
           "0" = ")";
           "1" = "!";
           "2" = "@";
@@ -28,7 +28,9 @@ in
           "7" = "&";
           "8" = "*";
           "9" = "(";
-        }.${i};
+        };
+        windows = b.attrNames windows';
+        withShift = i: windows'.${i};
         mod = "M";
         tmux-dir = pkgs.copyPathToStore ./tmux;
         tmux-cpu = ./tmux-plugins/tmux-cpu;
@@ -87,6 +89,9 @@ in
         bind s set-window-option synchronize-panes
         set -g display-time 4000
 
+      # When window 3 is deleted, rename windows 1,2,4 to 1,2,3
+        set-option -g renumber-windows on
+
       # Manually replace prefixed commands that require two key strokes with single mod key (e.g. M-w replaces C-a + w )
 
         # Reload config
@@ -133,6 +138,10 @@ in
       # Status bar
 
         # run-shell ${plugins.cpu + ./share/tmux-plugins/cpu/cpu.tmux}
+
+      # Name windows with directory path
+        set-window-option -g window-status-current-format '#[fg=white,bold] #{window_index} #[fg=green]#(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[fg=white]|'
+        set-window-option -g window-status-format         '#[fg=white,bold] #{window_index} #[fg=blue]#(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[fg=white]|'
     '';
   };
 

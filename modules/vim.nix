@@ -96,10 +96,10 @@ let
         endif
 
     " fzf bindings
-    map <C-p> :Files<CR>
+      map <C-p> :Files<CR>
 
     " ack binding
-    map ; :Ack<space>
+      map ; :Ack<space>
 
     '';
 
@@ -113,15 +113,16 @@ let
           fugitive
           fzfWrapper
           fzf-vim                # Search files (ctrlp replacement)
-          intero-neovim
-          # neco-ghc
           haskell-vim
+          intero-neovim
+          # LanguageClient-neovim
+          # neco-ghc
           neocomplete
           open-browser
-          vim-stylish-haskell
           Syntastic
           tagbar
           The_NERD_tree
+          vim-stylish-haskell
           vim-addon-mru
           vim-airline
           vim-airline-themes

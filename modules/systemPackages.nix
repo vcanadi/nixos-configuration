@@ -20,8 +20,6 @@ pkgs: with pkgs; [
   ] ++ (with (import ./vim.nix { inherit pkgs; }); [
     myNvim
   ]) ++ [
-  atom
-  vscode
 
 # Terminal
   rxvt_unicode
@@ -31,7 +29,7 @@ pkgs: with pkgs; [
   # Git
     git python27Packages.grip tig
   # Hardware/Proc tools
-    lshw hwinfo htop pciutils hwdata hardinfo sysstat gotop nvtop
+    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop nvtop lm_sensors
   # Disk
     gparted ntfs3g
   # X tools
@@ -50,12 +48,9 @@ pkgs: with pkgs; [
   haskellPackages.xmobar
   haskellPackages.stylish-haskell
 
-
 # Music
   guitarix
-  lmms
   qjackctl
-  jack2
 ]
 
 

@@ -27,7 +27,7 @@
         };
       };
 
-      xkbOptions = "caps:escape,grp:rctrl_rshift_toggle";
+      xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
 
       synaptics = {
         enable = true;

@@ -66,7 +66,6 @@ in
     etc = {
 
       "zshrc.local".text = ''
-        if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
         DISABLE_AUTO_UPDATE="false"
         DISABLE_UNTRACKED_FILES_DIRTY="true"
         HIST_STAMPS="yyyy-mm-dd"
