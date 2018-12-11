@@ -109,6 +109,7 @@ in
     nixosManual.showManual = true;
     acpid.enable = true;
     emacs.enable = true;
+    vnstat.enable = true;
   };
 
   security = {

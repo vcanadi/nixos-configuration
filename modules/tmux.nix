@@ -148,7 +148,8 @@ in
   tmuxp = rec {
     userActivationScript = user :
     let
-      userProjPaths = import (user.home + "/.tmux-projects.nix");
+      userProjPaths = let projsPath = user.home + "/./tmux-projects.nix";
+          in if b.pathExists projsPath then import projsPath else [];
 
       userProjTemp = proj: ''
           - window_name: ${proj}
