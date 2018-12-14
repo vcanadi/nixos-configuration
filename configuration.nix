@@ -28,11 +28,8 @@ in
     shellAliases = {
       vi = "vim";
       gis = "git status";
-      gid = "git diff";
-      gil = "git log";
       nixc = "cd /etc/nixos; vim configuration.nix";
       nixb = "cd /etc/nixos; nixos-rebuild switch";
-      ec = "emacsclient -t -nw";
       sc = "systemctl";
       hgrep = ''
         grep -rni \
@@ -108,8 +105,6 @@ in
       passwordAuthentication = true;
     };
     nixosManual.showManual = true;
-    acpid.enable = true;
-    emacs.enable = true;
     vnstat.enable = true;
   };
 
@@ -142,7 +137,6 @@ in
 
   hardware = {
     enableAllFirmware = true;
-    cpu.intel.updateMicrocode = true;
     # nvidiaOptimus.disable = true;
     # bumblebee = {
     #   enable = true;
