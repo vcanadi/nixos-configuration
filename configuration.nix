@@ -18,6 +18,7 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+    kernelModules = [ "coretemp" ];
     kernelPackages = pkgs.linuxPackages_latest;
   };
 

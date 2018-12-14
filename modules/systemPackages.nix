@@ -29,7 +29,7 @@ pkgs: with pkgs; [
   # Git
     git python27Packages.grip tig
   # Hardware/Proc tools
-    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop nvtop lm_sensors
+    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop nvtop lm_sensors vnstat conky
   # Disk
     gparted ntfs3g
   # X tools
@@ -51,6 +51,7 @@ pkgs: with pkgs; [
 # Music
   guitarix
   qjackctl
+  jack2
 ]
 
 
