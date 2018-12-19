@@ -41,14 +41,6 @@ in
       '';
     };
 
-    interactiveShellInit = ''
-      set editing-mode vim
-
-      function ytloc () { yt org local --file $1 --yt-token $(cat /home/vcanadi/reports/vcanadi-yt-token); }
-      function ytexport () { yt org export --file $1 --user vito.canadi --yt-token $(cat /home/vcanadi/reports/vcanadi-yt-token); }
-
-    '';
-
     variables = {
       PATH = ["$HOME/.local/bin"];
       VISUAL = "vim";
@@ -62,7 +54,6 @@ in
     };
 
     etc = {
-
       "zshrc.local".text = ''
         DISABLE_AUTO_UPDATE="false"
         DISABLE_UNTRACKED_FILES_DIRTY="true"
@@ -80,11 +71,7 @@ in
       "inputrc".text = ''
         set editing-mode vim
       '';
-
-      # Currently active configuration.nix
-      current-nixos-config.source = ./.;
-
-      };
+    };
   };
 
   nixpkgs.config = {
@@ -95,8 +82,8 @@ in
   };
 
   nix = {
-    buildCores = 6;
-    maxJobs = 6;
+    buildCores = 12;
+    maxJobs = 12;
   };
 
   services = {
@@ -106,6 +93,23 @@ in
     };
     nixosManual.showManual = true;
     vnstat.enable = true;
+
+  };
+
+  # Custom services
+  systemd.services = {
+    cpufreq-fixed = {
+      description = "Set fixed CPU frequency";
+      after = [ "systemd-modules-load.service" ];
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.linuxPackages.cpupower ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = "no";
+        ExecStart = "${pkgs.linuxPackages.cpupower}/bin/cpupower frequency-set -u 3700000";
+        SuccessExitStatus = "0 237";
+      };
+    };
   };
 
   security = {
