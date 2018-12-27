@@ -65,7 +65,6 @@ in
         bindkey "^K" history-substring-search-up
         bindkey "^J" history-substring-search-down
         set -s escape-time 0
-        precmd() { print "" }
       '';
 
       "inputrc".text = ''
@@ -124,7 +123,7 @@ in
       syntaxHighlighting.enable = true;
       ohMyZsh = {
         enable = true;
-        theme = "gentoo";
+        theme = "philips";
         plugins = [ "vi-mode" "history-substring-search" ];
       };
     };
