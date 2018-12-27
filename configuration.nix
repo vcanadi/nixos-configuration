@@ -105,7 +105,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "no";
-        ExecStart = "${pkgs.linuxPackages.cpupower}/bin/cpupower frequency-set -u 3700000";
+        ExecStart = "${pkgs.linuxPackages.cpupower}/bin/cpupower frequency-set -u 3800000";
         SuccessExitStatus = "0 237";
       };
     };
