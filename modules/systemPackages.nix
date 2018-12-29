@@ -23,13 +23,13 @@ pkgs: with pkgs; [
 
 # Terminal
   rxvt_unicode
-  tmuxp
+  # tmuxp
 
 # Utils
   # Git
     git python27Packages.grip tig
   # Hardware/Proc tools
-    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop nvtop lm_sensors vnstat conky
+    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat conky
   # Disk
     gparted ntfs3g
   # X tools
@@ -46,12 +46,16 @@ pkgs: with pkgs; [
   stack
   cabal-install
   haskellPackages.xmobar
-  haskellPackages.stylish-haskell
+  # haskellPackages.stylish-haskell
 
 # Music
   guitarix
   qjackctl
   jack2
+
+# Ps emulators
+  pcsx2
+  pcsxr
 ]
 
 

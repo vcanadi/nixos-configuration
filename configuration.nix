@@ -42,14 +42,12 @@ in
     };
 
     variables = {
-      PATH = ["$HOME/.local/bin"];
       VISUAL = "vim";
       EDITOR = "$VISUAL";
       HISTTIMEFORMAT="%d/%m/%y %T ";
       KEYBOARD_DELAY = "200";
       KEYBOARD_RATE = "100";
       ALTERNATE_EDITOR = "";
-      XDG_CONFIG_HOME = "/home/vcanadi/.config";
       WINDOW_MANAGER = "xmonad";
     };
 
@@ -132,7 +130,6 @@ in
   };
 
   system = {
-    stateVersion = "18.09";
     activationScripts = utils.mkActivationScriptsForUsers [
       tmux-nix.tmuxp.userActivationScript
     ];
@@ -140,12 +137,7 @@ in
 
   hardware = {
     enableAllFirmware = true;
-    # nvidiaOptimus.disable = true;
-    # bumblebee = {
-    #   enable = true;
-    #   connectDisplay = true;
-    #   driver = "nouveau";
-    # };
+    bumblebee.enable = true;
     opengl.driSupport.enable = true;
     opengl.driSupport32Bit = true;
   };
