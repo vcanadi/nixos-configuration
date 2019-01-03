@@ -1,16 +1,6 @@
 { pkgs }:
 with pkgs;
 let
-  customPlugins.w3m = pkgs.vimUtils.buildVimPlugin {
-    name = "w3m";
-    src = pkgs.fetchFromGitHub {
-      owner = "yuratomo";
-      repo = "w3m.vim";
-      rev = "228a852b188f1a62ecea55fa48b0ec892fa6bad7";
-      sha256 = "0c06yipsm0a1sxdlhnf41lifhzgimybra95v8638ngmr8iv5dznf";
-    };
-  };
-
   myVimrcConfig = {
     customRC = ''
       let g:mapleader = ','
@@ -114,7 +104,7 @@ let
           fzfWrapper
           fzf-vim                # Search files (ctrlp replacement)
           haskell-vim
-          intero-neovim
+          # intero-neovim
           # LanguageClient-neovim
           # neco-ghc
           neocomplete
@@ -136,12 +126,6 @@ let
       ];
 
     };
-    vam = {
-      knownPlugins = pkgs.vimPlugins // customPlugins; # optional
-      pluginDictionaries = [
-        { name = "w3m"; }
-      ];
-    };
   };
 in
 rec {
@@ -149,9 +133,4 @@ rec {
     vimAlias = true;
     configure = myVimrcConfig;
   };
-
-  myNvimQt = pkgs.neovim-qt.override {
-    neovim = myNvim;
-  };
-
 }

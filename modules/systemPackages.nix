@@ -11,8 +11,7 @@ pkgs: with pkgs; [
 
 # Misc
   scrot feh
-  # llpp
-  mupdf
+  llpp
   tldr
   zip unzip unrar p7zip
 
@@ -27,7 +26,7 @@ pkgs: with pkgs; [
 
 # Utils
   # Git
-    git python27Packages.grip tig
+    git tig
   # Hardware/Proc tools
     lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat conky
   # Disk
@@ -56,8 +55,5 @@ pkgs: with pkgs; [
 # Ps emulators
   pcsx2
   pcsxr
+
 ]
-
-
-
-

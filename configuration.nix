@@ -88,9 +88,6 @@ in
       enable = true;
       passwordAuthentication = true;
     };
-    nixosManual.showManual = true;
-    vnstat.enable = true;
-
   };
 
   # Custom services
