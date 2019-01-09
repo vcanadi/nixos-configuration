@@ -50,7 +50,7 @@
 
     compton = {
       enable = true;
-      inactiveOpacity = "0.4";
+      inactiveOpacity = "0.7";
       fade = true;
       extraOptions = ''
         inactive-opacity-override = true;

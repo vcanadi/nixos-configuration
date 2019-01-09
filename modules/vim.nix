@@ -3,6 +3,8 @@ with pkgs;
 let
   myVimrcConfig = {
     customRC = ''
+      colorscheme github
+
       let g:mapleader = ','
       set nu
       set tabstop=4
@@ -14,7 +16,6 @@ let
       set ignorecase
       set smartcase
       set hlsearch
-      set incsearch
       set noswapfile
 
     " vim without plugins
@@ -104,9 +105,6 @@ let
           fzfWrapper
           fzf-vim                # Search files (ctrlp replacement)
           haskell-vim
-          # intero-neovim
-          # LanguageClient-neovim
-          # neco-ghc
           neocomplete
           open-browser
           Syntastic

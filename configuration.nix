@@ -118,7 +118,7 @@ in
       syntaxHighlighting.enable = true;
       ohMyZsh = {
         enable = true;
-        theme = "philips";
+        theme = "jreese";
         plugins = [ "vi-mode" "history-substring-search" ];
       };
     };
