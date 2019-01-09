@@ -111,14 +111,11 @@ let
           tagbar
           The_NERD_tree
           vim-stylish-haskell
-          vim-addon-mru
           vim-airline
           vim-airline-themes
           vim-colorschemes
           vim-gitgutter
           vim-nix
-          vim-orgmode
-          vim-speeddating
           vimproc
           vimshell
       ];
