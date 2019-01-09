@@ -51,6 +51,7 @@ in
         set -g status on
 
       # Status bar
+        set -g status-position top
         set -g status-bg black
         set -g status-fg white
         set -g status-interval 2
