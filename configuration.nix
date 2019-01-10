@@ -88,6 +88,34 @@ in
       enable = true;
       passwordAuthentication = true;
     };
+    jupyter = {
+      enable = true;
+      password = "";
+      kernels = {
+
+        python3 = let
+            env = (pkgs.python3.withPackages (pythonPackages: with pythonPackages; [
+                    numpy
+                    ipywidgets
+                    matplotlib
+                    scikitlearn
+                  ]));
+          in {
+
+            displayName = "Python 3 for machine learning";
+
+            argv = [
+                  "${env.interpreter}"
+                  "-m"
+                  "ipykernel_launcher"
+                  "-f"
+                  "{connection_file}"
+                ];
+            language = "python";
+          };
+
+      };
+    };
   };
 
   # Custom services
@@ -128,7 +156,7 @@ in
 
   system = {
     activationScripts = utils.mkActivationScriptsForUsers [
-      tmux-nix.tmuxp.userActivationScript
+      # tmux-nix.tmuxp.userActivationScript
     ];
   };
 
