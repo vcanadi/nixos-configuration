@@ -56,8 +56,7 @@ in
         set -g status-fg white
         set -g status-interval 2
         set -g status-left-length 30
-
-        set-option -g status-attr default
+        set -g status-attr default
 
       # Status bar's window title colors
         set -g window-status-fg green
@@ -70,16 +69,19 @@ in
       # Active pane/border fg and bg
         set -g window-style default
         set -g window-active-style default
-        set-option -g pane-border-fg colour58
-        set-option -g pane-active-border-fg colour1
+        set -g pane-border-bg white
+        set -g pane-active-border-bg green
+        set -g pane-active-border-fg black
+        set -g pane-border-status bottom
+        set -g pane-border-format '#{pane_title}'
 
       # Message text
-        set-option -g message-bg colour235 #base02
-        set-option -g message-fg colour166 #orange
+        set -g message-bg colour235 #base02
+        set -g message-fg colour166 #orange
 
       # pane number display
-        set-option -g display-panes-active-colour colour1
-        set-option -g display-panes-colour colour58
+        set -g display-panes-active-colour red
+        set -g display-panes-colour colour8
 
       # Clock
         set-window-option -g clock-mode-colour green #green
@@ -91,7 +93,7 @@ in
         set -g display-time 4000
 
       # When window 3 is deleted, rename windows 1,2,4 to 1,2,3
-        set-option -g renumber-windows on
+        set -g renumber-windows on
 
       # Manually replace prefixed commands that require two key strokes with single mod key (e.g. M-w replaces C-a + w )
 
@@ -103,28 +105,30 @@ in
           ${b.concatStringsSep "\n" (map (i: "bind -n '${mod}-${withShift i}' swap-window -t ${i}") windows)}
 
         # Select pane
-          bind -n ${mod}-h select-pane -L \; display-pane
-          bind -n ${mod}-j select-pane -D \; display-pane
-          bind -n ${mod}-k select-pane -U \; display-pane
-          bind -n ${mod}-l select-pane -R \; display-pane
+          bind -n ${mod}-h select-pane -L
+          bind -n ${mod}-j select-pane -D
+          bind -n ${mod}-k select-pane -U
+          bind -n ${mod}-l select-pane -R
 
         # Create/Delete/Rename pane/window
           bind -n ${mod}-x confirm-before -p "kill-pane #P? (y/n)" kill-pane
           bind -n ${mod}-n new-window
-          bind -n ${mod}-v split-window -v -c '#{pane_current_path}'
-          bind -n ${mod}-b split-window -h -c '#{pane_current_path}'
+          bind -n ${mod}-u split-window -v -c '#{pane_current_path}'
+          bind -n ${mod}-o split-window -h -c '#{pane_current_path}'
+          bind -n ${mod}-i split-window -vb -c '#{pane_current_path}'
+          bind -n ${mod}-y split-window -hb -c '#{pane_current_path}'
           bind -n ${mod}-, command-prompt -I "#W" "rename-window -- '%%'"
 
         # Resize pane
-          bind -n ${mod}-Y resize-pane -L
-          bind -n ${mod}-U resize-pane -D
-          bind -n ${mod}-I resize-pane -U
-          bind -n ${mod}-O resize-pane -R
+          bind -n ${mod}-H resize-pane -L
+          bind -n ${mod}-J resize-pane -D
+          bind -n ${mod}-K resize-pane -U
+          bind -n ${mod}-L resize-pane -R
           bind -n ${mod}-z resize-pane -Z
 
         # Swap panes
-          bind -n ${mod}-J swap-pane -D
-          bind -n ${mod}-K swap-pane -U
+          bind -n ${mod}-U swap-pane -D
+          bind -n ${mod}-I swap-pane -U
 
         # Detach session
           bind -n ${mod}-d detach-client
@@ -149,19 +153,17 @@ in
   tmuxp = rec {
     userActivationScript = user :
     let
-      userProjPaths = let projsPath = user.home + "/./tmux-projects.nix";
+      userProjPaths = let projsPath = user.home + "/.tmux-projects.nix";
           in if b.pathExists projsPath then import projsPath else [];
 
       userProjTemp = proj: ''
           - window_name: ${proj}
+            start_directory: ~/projects/${proj}
             layout: tiled
-            shell_command_before:
-              - cd ~/projects/${proj}
             panes:
               - vim
               - vim
               - ls
-
             '';
       userProjs = b.concatStringsSep "\n" (map userProjTemp userProjPaths);
 
@@ -169,32 +171,38 @@ in
         main = ''
           session_name: main
           windows:
-          - window_name: Reports
+          - window_name: NixConf
+            start_directory: /etc/nix
             layout: tiled
-            shell_command_before:
-              - cd ~/reports
             panes:
-              - shell_command:
-                  - emacsclient -nw .
-              - ls
+              - su
+              - su
+              - su
 
           ${userProjs}
-          - window_name: NixConf
-            layout: tiled
-            shell_command_before:
-              - cd /etc/nixos
-            panes:
-              - su
-              - su
+          '';
 
-          - window_name: Music
-            layout: tiled
+        monitor = ''
+          session_name: monitor
+          windows:
+          - window_name: monitorwin
+            layout: even-horizontal
             shell_command_before:
-              - cd downloads/streams
+            - tmux split-window -h
+            - tmux split-window -h
+            - tmux select-layout even-horizontal
+            - tmux select-pane -t 0
+            - tmux resize-pane -L 60
+            - tmux split-window -v
+            - tmux select-pane -t 3
+            - tmux resize-pane -R 60
+            - tmux split-window -v
+            - tmux send -t 0 'htop --sort-key=PERCENT_CPU' Enter
+            - tmux send -t 1 'htop --sort-key=PERCENT_MEM' Enter
+            - tmux send -t 3 'journalctl -f -p warning' Enter
+            - tmux send -t 4 'journalctl -f -p err' Enter
             panes:
-              - shell_command:
-                 - mpv $(ls | sort -R | head -n 1)
-
+            - null
         '';
       };
       cmdCreateProjectYamls = b.concatStringsSep "\n" (
