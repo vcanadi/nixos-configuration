@@ -167,6 +167,60 @@ in
             '';
       userProjs = b.concatStringsSep "\n" (map userProjTemp userProjPaths);
 
+      htoprc0 = b.toFile "htoprc0" ''
+        fields=48 46 47 49 1
+        sort_key=46
+        sort_direction=1
+        hide_threads=1
+        hide_kernel_threads=1
+        hide_userland_threads=1
+        shadow_other_users=1
+        show_thread_names=0
+        show_program_path=1
+        highlight_base_name=0
+        highlight_megabytes=1
+        highlight_threads=1
+        tree_view=0
+        header_margin=1
+        detailed_cpu_time=0
+        cpu_count_from_zero=0
+        update_process_names=0
+        account_guest_in_cpu_meter=0
+        color_scheme=3
+        delay=10
+        left_meters=LeftCPUs2 LeftCPUs2
+        left_meter_modes=1 3
+        right_meters=RightCPUs2 RightCPUs2 Tasks LoadAverage Uptime
+        right_meter_modes=1 3 2 2 2
+      '';
+
+      htoprc1 = b.toFile "htoprc0" ''
+        fields=48 46 47 49 1
+        sort_key=46
+        sort_direction=1
+        hide_threads=1
+        hide_kernel_threads=1
+        hide_userland_threads=1
+        shadow_other_users=1
+        show_thread_names=0
+        show_program_path=1
+        highlight_base_name=0
+        highlight_megabytes=1
+        highlight_threads=1
+        tree_view=0
+        header_margin=1
+        detailed_cpu_time=0
+        cpu_count_from_zero=0
+        update_process_names=0
+        account_guest_in_cpu_meter=0
+        color_scheme=3
+        delay=10
+        left_meters=Memory
+        left_meter_modes=1
+        right_meters=Swap
+        right_meter_modes=1
+      '';
+
       yamls = {
         main = ''
           session_name: main
@@ -197,8 +251,8 @@ in
             - tmux select-pane -t 3
             - tmux resize-pane -R 60
             - tmux split-window -v
-            - tmux send -t 0 'htop --sort-key=PERCENT_CPU' Enter
-            - tmux send -t 1 'htop --sort-key=PERCENT_MEM' Enter
+            - tmux send -t 0 'HTOPRC=${htoprc0} htop --sort-key=PERCENT_CPU' Enter
+            - tmux send -t 1 'HTOPRC=${htoprc1} htop --sort-key=PERCENT_MEM' Enter
             - tmux send -t 3 'journalctl -f -p warning' Enter
             - tmux send -t 4 'journalctl -f -p err' Enter
             panes:
