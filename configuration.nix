@@ -19,7 +19,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelModules = [ "coretemp" ];
-    # kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   environment = {
