@@ -12,6 +12,7 @@
   services = {
     xserver = {
       enable = true;
+      enableCtrlAltBackspace = true;
       autorun = true;
       layout = "us,hr";
       autoRepeatDelay = 200;

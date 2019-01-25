@@ -63,6 +63,8 @@ in
         bindkey "^K" history-substring-search-up
         bindkey "^J" history-substring-search-down
         set -s escape-time 0
+        my-cpufreq-info(){ watch -n -0.5 "cpufreq-info  | grep 'current CPU'"; }
+        my-cpufreq-set(){ for i in $(seq 0 $(($(nproc) - 1))); do; cpufreq-set -c $i -u $1; done; }
       '';
 
       "inputrc".text = ''
@@ -73,8 +75,16 @@ in
 
   nixpkgs.config = {
     allowUnfree = true;
+
     packageOverrides = pkgs : {
-      nixos-stable = import <nixos-stable> { config = config.nixpkgs.config; };
+      browsh-vim = pkgs.browsh.overrideDerivation (oldAttrs: {
+        src = pkgs.fetchFromGitHub {
+          owner = "browsh-org";
+          repo = "browsh";
+          rev = "0c0b9073e459cfbae00a4466375bd03879b20b76";
+          sha256 = "10q1il6qd9f6h7hc861kqsh3nvl948dwhlayw69wq54jjq1zqlv9";
+        };
+      });
     };
   };
 
@@ -84,10 +94,14 @@ in
   };
 
   services = {
+
     openssh = {
       enable = true;
       passwordAuthentication = true;
     };
+
+    clipmenu.enable = true;
+
     jupyter = {
       enable = true;
       password = "";
