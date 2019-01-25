@@ -98,7 +98,10 @@ in
                     numpy
                     ipywidgets
                     matplotlib
-                    scikitlearn
+                    h5py
+                    scipy
+                    pillow
+                    numba
                   ]));
           in {
 
@@ -130,6 +133,16 @@ in
         RemainAfterExit = "no";
         ExecStart = "${pkgs.linuxPackages.cpupower}/bin/cpupower frequency-set -u 3600000";
         SuccessExitStatus = "0 237";
+      };
+    };
+
+    # For numba
+    jupyter = {
+      wantedBy = [ "multi-user.target" ];
+      environment = {
+        NUMBAPRO_NVVM="${pkgs.cudatoolkit}/nvvm/lib64/libnvvm.so";
+        NUMBAPRO_LIBDEVICE="${pkgs.cudatoolkit}/nvvm/libdevice/";
+        NUMBAPRO_CUDA_DRIVER="${pkgs.linuxPackages_latest.nvidia_x11}/lib/libcuda.so";
       };
     };
   };
