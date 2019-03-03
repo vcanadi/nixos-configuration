@@ -49,6 +49,7 @@ in
       KEYBOARD_RATE = "100";
       ALTERNATE_EDITOR = "";
       WINDOW_MANAGER = "xmonad";
+      _JAVA_AWT_WM_NONREPARENTING = "1";
     };
 
     etc = {
@@ -87,7 +88,6 @@ in
       });
     };
   };
-
   nix = {
     buildCores = 12;
     maxJobs = 12;
@@ -102,6 +102,12 @@ in
 
     clipmenu.enable = true;
 
+    redshift = {
+      enable = true;
+      latitude = "46";
+      longitude = "16";
+    };
+
     jupyter = {
       enable = true;
       password = "";
@@ -112,10 +118,15 @@ in
                     numpy
                     ipywidgets
                     matplotlib
-                    h5py
-                    scipy
-                    pillow
-                    numba
+                    # h5py
+                    # scipy
+                    # pillow
+                    # pandas
+                    # scikitlearn
+                    tensorflowWithCuda
+                    # psutil
+                    # xgboost
+                    (opencv3.override { enableUnfree = true; enableGtk2 = true;})
                   ]));
           in {
 
@@ -188,8 +199,7 @@ in
   };
 
   hardware = {
-    enableAllFirmware = true;
-    bumblebee.enable = true;
+    # bumblebee.enable = true;
     opengl.driSupport.enable = true;
     opengl.driSupport32Bit = true;
   };
@@ -200,6 +210,35 @@ in
 
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "powersave";
+    cpuFreqGovernor = "performance";
+  };
+
+  fonts = {
+    enableDefaultFonts = true;
+    enableFontDir = true;
+  };
+
+  i18n = {
+    consoleFont = "lat9w-12";
+    consoleUseXkbConfig = true;
+    consoleColors = [
+      "FFFFFF" #white
+      "E5E5E5" #lightgrey
+      "44C9C9" #cyan
+      "5FAFAF" #darkcyan
+      "D633B2" #magenta
+      "BD53A5" #darkmagenta
+      "FFD75F" #yellow
+      "D75F5F" #darkred
+      "7373C9" #blue
+      "D7AF87" #brown
+      "232323" #darkgrey
+      "2B2B2B" #darkgrey
+      "E33636" #red
+      "87AF5F" #darkgreen
+      "98E34D" #green
+      "8787AF" #darkblue
+    ];
   };
 }
+

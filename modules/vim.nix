@@ -1,15 +1,26 @@
 { pkgs }:
 with pkgs;
 let
+  customPlugins.vimpyter = pkgs.vimUtils.buildVimPlugin {
+    name = "vimpyter";
+    src = pkgs.fetchFromGitHub {
+      owner = "szymonmaszke";
+      repo = "vimpyter";
+      rev = "master";
+      sha256 = "0h4xbiqk6gdi2kiywjqkgf042n48wbqs2ha94swha4rcsi046py8";
+    };
+  };
+
   myVimrcConfig = {
+
     customRC = ''
-      colorscheme github
+      hi Normal guibg=NONE ctermbg=NONE
 
       let g:mapleader = ','
       set nu
-      set tabstop=4
-      set shiftwidth=4
-      set softtabstop=4
+      set tabstop=2
+      set shiftwidth=2
+      set softtabstop=2
       set expandtab
       syntax on
       filetype plugin on
@@ -22,6 +33,7 @@ let
       set path+=**
       set wildmode=longest,list,full
       set wildmenu
+      set t_ut=
 
       let g:netrw_banner=0        " disable annoying banner
       let g:netrw_browse_split=4  " open in prior window
@@ -92,6 +104,17 @@ let
     " ack binding
       map ; :Ack<space>
 
+      let python_highlight_all=1
+      let g:LanguageClient_serverCommands = {
+        \ 'python': ['pyls']
+        \ }
+       nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+       nnoremap <silent> gh :call LanguageClient_textDocument_hover()<CR>
+       nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+       nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
+       nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
+       nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+       nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
     '';
 
     packages.myVimPackage = with pkgs.vimPlugins; {
@@ -109,17 +132,27 @@ let
           open-browser
           Syntastic
           tagbar
+          LanguageClient-neovim
           The_NERD_tree
           vim-stylish-haskell
           vim-airline
           vim-airline-themes
           vim-colorschemes
+          vim-flake8
           vim-gitgutter
           vim-nix
           vimproc
           vimshell
+          w3m
       ];
 
+    };
+
+    vam = {
+      knownPlugins = pkgs.vimPlugins // customPlugins; # optional
+      pluginDictionaries = [
+        { name = "vimpyter"; }
+      ];
     };
   };
 in

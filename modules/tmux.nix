@@ -61,14 +61,14 @@ in
       # Status bar's window title colors
         set -g window-status-fg green
         set -g window-status-bg default
-        set -g window-status-attr dim
+        set -g window-status-attr default
         set -g window-status-current-fg green
         set -g window-status-current-bg colour240
-        set -g window-status-current-attr bright
+        set -g window-status-current-attr default
 
       # Active pane/border fg and bg
-        set -g window-style default
-        set -g window-active-style default
+        set -g window-style "bg=#DDDDDD"
+        set -g window-active-style "bg=#FFFFFF"
         set -g pane-border-bg white
         set -g pane-active-border-bg green
         set -g pane-active-border-fg black
@@ -78,10 +78,6 @@ in
       # Message text
         set -g message-bg colour235 #base02
         set -g message-fg colour166 #orange
-
-      # pane number display
-        set -g display-panes-active-colour red
-        set -g display-panes-colour colour8
 
       # Clock
         set-window-option -g clock-mode-colour green #green
@@ -215,10 +211,10 @@ in
         account_guest_in_cpu_meter=0
         color_scheme=3
         delay=10
-        left_meters=Memory
-        left_meter_modes=1
-        right_meters=Swap
-        right_meter_modes=1
+        left_meters=Memory Swap
+        left_meter_modes=1 1
+        right_meters=Memory
+        right_meter_modes=3
       '';
 
       yamls = {
@@ -253,8 +249,8 @@ in
             - tmux split-window -v
             - tmux send -t 0 'HTOPRC=${htoprc0} htop --sort-key=PERCENT_CPU' Enter
             - tmux send -t 1 'HTOPRC=${htoprc1} htop --sort-key=PERCENT_MEM' Enter
-            - tmux send -t 3 'journalctl -f -p warning' Enter
-            - tmux send -t 4 'journalctl -f -p err' Enter
+            - tmux send -t 3 'nvidia-smi -l 1' Enter
+            - tmux send -t 4 'nvtop' Enter
             panes:
             - null
         '';

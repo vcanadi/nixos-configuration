@@ -11,6 +11,7 @@
 
   services = {
     xserver = {
+      # tty = 2;
       enable = true;
       enableCtrlAltBackspace = true;
       autorun = true;
@@ -19,16 +20,27 @@
       autoRepeatInterval = 1000 / 100;
       videoDrivers = [ "nvidia" ];
 
+      xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
+
+      desktopManager = {
+        xfce = {
+          enable = true;
+          enableXfwm = false;
+          extraSessionCommands = "xset r rate 200 100";
+          thunarPlugins = [ pkgs.xfce.thunar-volman pkgs.xfce.thunar-archive-plugin ];
+        };
+        default = "none";
+      };
+
       windowManager = {
         xmonad = {
           enable = true;
           enableContribAndExtras = true;
           extraPackages = with pkgs.haskellPackages; haskellPackages:
-            [ xmonad-contrib xmonad-extras xmonad xmobar conduit http-conduit];
+            [ xmonad-contrib xmonad-extras xmonad xmobar conduit http-conduit xmonad-wallpaper];
         };
+        default = "none";
       };
-
-      xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
 
       synaptics = {
         enable = true;
@@ -47,20 +59,20 @@
           Option "AreaTopEdge" "400"
         '';
       };
+
+      monitorSection = ''
+        Option "DPMS" "true"
+      '';
+
+      serverLayoutSection = ''
+        Option "StandbyTime" "120"
+      '';
     };
 
     compton = {
       enable = true;
-      inactiveOpacity = "0.7";
-      fade = true;
-      extraOptions = ''
-        inactive-opacity-override = true;
-      '';
+      vSync = "opengl-swc";
     };
   };
 
-  i18n = {
-    consoleFont = "lat9w-10";
-    consoleUseXkbConfig = true;
-  };
 }
