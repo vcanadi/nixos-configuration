@@ -1,7 +1,8 @@
 pkgs: with pkgs;
 [
 # Browser
-  firefox w3m qutebrowser tor-browser-bundle-bin
+  firefox w3m qutebrowser tor
+  skypeforlinux
 
 # Torrent
   transmission_gtk
@@ -10,7 +11,7 @@ pkgs: with pkgs;
   vlc mpv mplayer
 
 # Image
-  scrot feh gthumb
+  scrot feh
 
 # Misc
   llpp
@@ -31,14 +32,14 @@ pkgs: with pkgs;
     git tig
 
   # Hardware/Proc tools
-    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat conky lsof nvtop psutils
+    lshw hwinfo htop ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat conky lsof psutils entr
 
   # Disk
     gparted ntfs3g
 
   # X tools
-    xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi xwinwrap xorg.xinput gnuplot hddtemp graphviz
-    cudatoolkit
+    xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi xorg.xinput
+    xorg.xbacklight
 
   # Vim deps
     ack fzf bsdbuild
@@ -46,31 +47,26 @@ pkgs: with pkgs;
   # Other
     gnupg
     dhcpcd wpa_supplicant
-    trash-cli
 
 # Haskell
-  stack
   cabal-install
   haskellPackages.xmobar
-  haskellPackages.stylish-haskell
+  haskellPackages.hasktags
+  ghcid
+  idris
 
 # Cpp
   gcc
 
+# DB
+  staruml
+  postgresql
+
 # Music
-  guitarix
   qjackctl
-  jack2
+  lingot
 
-# Python
-  # (python36.withPackages(ps: with ps; [
-  #   python-language-server
-  #   # the following plugins are optional, they provide type checking, import sorting and code formatting
-  #   pyls-mypy pyls-isort pyls-black
-  #   tensorflow psutil jupyterlab
-  # ]))
-  xgboost
-
- # Misc
-  geogebra
+# Nix
+  cabal2nix
+  nixops
 ]

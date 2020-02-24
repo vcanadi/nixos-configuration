@@ -14,7 +14,7 @@ in
     aggressiveResize = true;
     escapeTime = 0;
     historyLimit = 100000;
-    extraTmuxConf =
+    extraConfig =
       let
         # Windows/workspace key values and their shifted values
         windows' = {
@@ -52,32 +52,33 @@ in
 
       # Status bar
         set -g status-position top
-        set -g status-bg black
-        set -g status-fg white
+        set -g status-style "bg=black"
+        set -g status-style "fg=white"
         set -g status-interval 2
         set -g status-left-length 30
-        set -g status-attr default
+        set -g status-style "default"
+        set -g status-right "#(cut -d ' ' -f -3 /proc/loadavg) %H:%M %d-%b-%y"
 
       # Status bar's window title colors
-        set -g window-status-fg green
-        set -g window-status-bg default
-        set -g window-status-attr default
-        set -g window-status-current-fg green
-        set -g window-status-current-bg colour240
-        set -g window-status-current-attr default
+        set -g window-status-style "fg=green"
+        set -g window-status-style "bg=default"
+        set -g window-status-style "default"
+        set -g window-status-current-style "fg=green"
+        set -g window-status-current-style "bg=colour240"
+        set -g window-status-current-style "default"
 
       # Active pane/border fg and bg
         set -g window-style "bg=#DDDDDD"
         set -g window-active-style "bg=#FFFFFF"
-        set -g pane-border-bg white
-        set -g pane-active-border-bg green
-        set -g pane-active-border-fg black
+        set -g pane-border-style "bg=white"
+        set -g pane-active-border-style "bg=green"
+        set -g pane-active-border-style "fg=black"
         set -g pane-border-status bottom
         set -g pane-border-format '#{pane_title}'
 
       # Message text
-        set -g message-bg colour235 #base02
-        set -g message-fg colour166 #orange
+        set -g message-style "bg=colour235" #base02
+        set -g message-style "fg=colour166" #orange
 
       # Clock
         set-window-option -g clock-mode-colour green #green

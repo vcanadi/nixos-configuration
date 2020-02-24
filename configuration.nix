@@ -19,6 +19,7 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelModules = [ "coretemp" ];
+    # kernelPackages = pkgs.linuxPackages_4_19;
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
@@ -39,6 +40,9 @@ in
           --include \*.nix \
           --exclude-dir .stack-work \
       '';
+      scr = "sc restart";
+      scsp = "sc stop";
+      scsr = "sc start";
     };
 
     variables = {
@@ -49,28 +53,16 @@ in
       KEYBOARD_RATE = "100";
       ALTERNATE_EDITOR = "";
       WINDOW_MANAGER = "xmonad";
-      _JAVA_AWT_WM_NONREPARENTING = "1";
+      JAVA_AWT_WM_NONREPARENTING = "1";
+      XKB_DEFAULT_OPTIONS = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
     };
 
     etc = {
-      "zshrc.local".text = ''
-        DISABLE_AUTO_UPDATE="false"
-        DISABLE_UNTRACKED_FILES_DIRTY="true"
-        HIST_STAMPS="yyyy-mm-dd"
-        plugins=( aws cabal catimg common-aliases dirpersist docker encode64 fasd git git-extras jsontools man per-directory-history sudo systemd tmux url-tools vi-mode wd zsh-syntax-highlighting )
-        mkdir -p $HOME/.zsh
-        export ZSH_CACHE_DIR="$HOME/.zsh"
-        export COMPDUMPFILE="$HOME/.zsh"
-        bindkey "^K" history-substring-search-up
-        bindkey "^J" history-substring-search-down
-        set -s escape-time 0
-        my-cpufreq-info(){ watch -n -0.5 "cpufreq-info  | grep 'current CPU'"; }
-        my-cpufreq-set(){ for i in $(seq 0 $(($(nproc) - 1))); do; cpufreq-set -c $i -u $1; done; }
-      '';
-
       "inputrc".text = ''
         set editing-mode vim
       '';
+      "subuid".text = "vcanadi:100000:65536";
+      "subgid".text = "vcanadi:100000:65536";
     };
   };
 
@@ -86,6 +78,11 @@ in
           sha256 = "10q1il6qd9f6h7hc861kqsh3nvl948dwhlayw69wq54jjq1zqlv9";
         };
       });
+
+      pkg-config = pkgs.pkg-config.overrideDerivation (args: {
+      });
+
+      nixos-stable = import <nixos-stable> { config = config.nixpkgs.config; };
     };
   };
   nix = {
@@ -93,28 +90,33 @@ in
     maxJobs = 12;
   };
 
+  location = {
+    latitude = 46.0;
+    longitude = 16.0;
+  };
+
   services = {
 
+    # teamviewer.enable = true;
+
     openssh = {
-      enable = true;
-      passwordAuthentication = true;
+      # enable = true;
+      passwordAuthentication = false;
     };
 
     clipmenu.enable = true;
 
-    redshift = {
-      enable = true;
-      latitude = "46";
-      longitude = "16";
-    };
+    # redshift = {
+    #   enable = true;
+    # };
 
     jupyter = {
-      enable = true;
+      enable = false;
       password = "";
       kernels = {
 
         python3 = let
-            env = (pkgs.python3.withPackages (pythonPackages: with pythonPackages; [
+            env = (pkgs.python36.withPackages (pythonPackages: with pythonPackages; [
                     numpy
                     ipywidgets
                     matplotlib
@@ -162,15 +164,16 @@ in
     };
 
     # For numba
-    jupyter = {
-      wantedBy = [ "multi-user.target" ];
-      environment = {
-        NUMBAPRO_NVVM="${pkgs.cudatoolkit}/nvvm/lib64/libnvvm.so";
-        NUMBAPRO_LIBDEVICE="${pkgs.cudatoolkit}/nvvm/libdevice/";
-        NUMBAPRO_CUDA_DRIVER="${pkgs.linuxPackages_latest.nvidia_x11}/lib/libcuda.so";
-      };
-    };
+    # jupyter = {
+    #   wantedBy = [ "multi-user.target" ];
+    #   environment = {
+    #     NUMBAPRO_NVVM="${pkgs.cudatoolkit}/nvvm/lib64/libnvvm.so";
+    #     NUMBAPRO_LIBDEVICE="${pkgs.cudatoolkit}/nvvm/libdevice/";
+    #     NUMBAPRO_CUDA_DRIVER="${pkgs.linuxPackages_latest.nvidia_x11}/lib/libcuda.so";
+    #   };
+    # };
   };
+
 
   security = {
     polkit.enable = true;
@@ -182,14 +185,35 @@ in
       autosuggestions.enable = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
+      promptInit = ''
+        DISABLE_AUTO_UPDATE="false"
+        DISABLE_UNTRACKED_FILES_DIRTY="true"
+        HIST_STAMPS="yyyy-mm-dd"
+        mkdir -p $HOME/.zsh
+        mkdir -p $HOME/.fzf
+        rm $HOME/.fzf/shell -f
+        ln -sf ${pkgs.fzf.outPath}/share/fzf $HOME/.fzf/shell
+        export ZSH_CACHE_DIR="$HOME/.zsh"
+        export COMPDUMPFILE="$HOME/.zsh"
+        bindkey "^K" history-substring-search-up
+        bindkey "^J" history-substring-search-down
+        set -s escape-time 0
+        my-cpufreq-info(){ watch -n -0.5 "cpufreq-info  | grep 'current CPU'"; }
+        my-cpufreq-set(){ for i in $(seq 0 $(($(nproc) - 1))); do; cpufreq-set -c $i -u $1; done; }
+      '';
       ohMyZsh = {
         enable = true;
         theme = "jreese";
-        plugins = [ "vi-mode" "history-substring-search" ];
+        plugins= [ "common-aliases" "fasd" "git" "git-extras" "man" "systemd" "tmux" "vi-mode" "wd" "history-substring-search" "fzf" ];
+        customPkgs = [ pkgs.deer ];
       };
     };
+    java.enable = true;
     bash.enableCompletion = true;
     tmux = tmux-nix.tmux;
+    sway = {
+      enable = true;
+    };
   };
 
   system = {
@@ -218,27 +242,25 @@ in
     enableFontDir = true;
   };
 
-  i18n = {
-    consoleFont = "lat9w-12";
-    consoleUseXkbConfig = true;
-    consoleColors = [
-      "FFFFFF" #white
-      "E5E5E5" #lightgrey
-      "44C9C9" #cyan
-      "5FAFAF" #darkcyan
-      "D633B2" #magenta
-      "BD53A5" #darkmagenta
-      "FFD75F" #yellow
-      "D75F5F" #darkred
-      "7373C9" #blue
-      "D7AF87" #brown
-      "232323" #darkgrey
-      "2B2B2B" #darkgrey
-      "E33636" #red
-      "87AF5F" #darkgreen
-      "98E34D" #green
-      "8787AF" #darkblue
-    ];
+  console = {
+    font = "lat9w-12";
+    useXkbConfig = true;
+    };
+
+  # i18n = {
+  #   consoleFont = "lat9w-12";
+  #   consoleUseXkbConfig = true;
+  #   };
+
+  virtualisation = {
+    docker = {
+      # enable = true;
+      liveRestore = false;
+    };
+    # virtualbox = {
+    #   host.enable = true;
+    #   guest.enable = true;
+    # };
   };
 }
 

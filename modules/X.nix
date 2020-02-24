@@ -19,18 +19,9 @@
       autoRepeatDelay = 200;
       autoRepeatInterval = 1000 / 100;
       videoDrivers = [ "nvidia" ];
+      # videoDrivers = [ "modesetting" ];
 
       xkbOptions = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
-
-      desktopManager = {
-        xfce = {
-          enable = true;
-          enableXfwm = false;
-          extraSessionCommands = "xset r rate 200 100";
-          thunarPlugins = [ pkgs.xfce.thunar-volman pkgs.xfce.thunar-archive-plugin ];
-        };
-        default = "none";
-      };
 
       windowManager = {
         xmonad = {
@@ -39,7 +30,13 @@
           extraPackages = with pkgs.haskellPackages; haskellPackages:
             [ xmonad-contrib xmonad-extras xmonad xmobar conduit http-conduit xmonad-wallpaper];
         };
-        default = "none";
+        # default = "none";
+      };
+
+      # desktopManager.gnome3.enable = true;
+      displayManager = {
+        gdm.wayland = true;
+        defaultSession = "none+xmonad";
       };
 
       synaptics = {
@@ -47,9 +44,9 @@
         tapButtons = false;
         palmDetect = true;
         twoFingerScroll = true;
-        maxSpeed = "5";
-        minSpeed = "0.5";
-        accelFactor = "0.2";
+        maxSpeed = "7";
+        minSpeed = "0.9";
+        accelFactor = "0.3";
         palmMinWidth = 5;
         palmMinZ = 30;
         additionalOptions = ''
@@ -71,7 +68,7 @@
 
     compton = {
       enable = true;
-      vSync = "opengl-swc";
+      # vSync = true;
     };
   };
 

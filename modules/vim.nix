@@ -15,6 +15,7 @@ let
 
     customRC = ''
       hi Normal guibg=NONE ctermbg=NONE
+      set background=light
 
       let g:mapleader = ','
       set nu
@@ -102,7 +103,7 @@ let
       map <C-p> :Files<CR>
 
     " ack binding
-      map ; :Ack<space>
+      map ; :Ag<space>
 
       let python_highlight_all=1
       let g:LanguageClient_serverCommands = {
@@ -120,13 +121,14 @@ let
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [
-          ack-vim                # Search in project
+          ag
           calendar
           commentary
           deoplete-nvim
           fugitive
           fzfWrapper
           fzf-vim                # Search files (ctrlp replacement)
+          ghcid
           haskell-vim
           neocomplete
           open-browser
@@ -134,16 +136,18 @@ let
           tagbar
           LanguageClient-neovim
           The_NERD_tree
-          vim-stylish-haskell
+          # vim-stylishask
           vim-airline
           vim-airline-themes
           vim-colorschemes
           vim-flake8
           vim-gitgutter
           vim-nix
+          vim-scala
           vimproc
           vimshell
           w3m
+          idris-vim
       ];
 
     };
@@ -151,7 +155,7 @@ let
     vam = {
       knownPlugins = pkgs.vimPlugins // customPlugins; # optional
       pluginDictionaries = [
-        { name = "vimpyter"; }
+        # { name = "vimpyter"; }
       ];
     };
   };
