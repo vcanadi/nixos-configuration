@@ -1,14 +1,13 @@
-pkgs :
+{ pkgs }:
 let
   b = builtins;
-  plugins = pkgs.tmuxPlugins;
 in
 {
   tmux = {
     enable = true;
     shortcut = "a";
     keyMode = "vi";
-    terminal = "rxvt-unicode-256color";
+    terminal = "xterm-256color";
     clock24 = true;
     customPaneNavigationAndResize = true;
     aggressiveResize = true;
@@ -82,7 +81,7 @@ in
 
       # Clock
         set-window-option -g clock-mode-colour green #green
-        set -g base-index 0
+        set -g base-index 1
 
       # Synchronized control over multiple panes
         unbind-key s
@@ -108,7 +107,6 @@ in
           bind -n ${mod}-l select-pane -R
 
         # Create/Delete/Rename pane/window
-          bind -n ${mod}-x confirm-before -p "kill-pane #P? (y/n)" kill-pane
           bind -n ${mod}-n new-window
           bind -n ${mod}-u split-window -v -c '#{pane_current_path}'
           bind -n ${mod}-o split-window -h -c '#{pane_current_path}'
@@ -137,141 +135,137 @@ in
         # Cmd
           bind -n ${mod}-: command-prompt
 
-      # Status bar
-
-        # run-shell ${plugins.cpu + ./share/tmux-plugins/cpu/cpu.tmux}
-
       # Name windows with directory path
         set-window-option -g window-status-current-format '#[fg=white,bold] #{window_index} #[fg=green]#(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[fg=white]|'
         set-window-option -g window-status-format         '#[fg=white,bold] #{window_index} #[fg=blue]#(echo "#{pane_current_path}" | rev | cut -d'/' -f-1 | rev) #[fg=white]|'
     '';
   };
 
-  tmuxp = rec {
-    userActivationScript = user :
-    let
-      userProjPaths = let projsPath = user.home + "/.tmux-projects.nix";
-          in if b.pathExists projsPath then import projsPath else [];
+  # tmuxp = rec {
+  #   userActivationScript = user :
+  #   let
+  #     userProjPaths = let projsPath = user.home + "/.tmux-projects.nix";
+  #         in if b.pathExists projsPath then import projsPath else [];
 
-      userProjTemp = proj: ''
-          - window_name: ${proj}
-            start_directory: ~/projects/${proj}
-            layout: tiled
-            panes:
-              - vim
-              - vim
-              - ls
-            '';
-      userProjs = b.concatStringsSep "\n" (map userProjTemp userProjPaths);
+  #     userProjTemp = proj: ''
+  #         - window_name: ${proj}
+  #           start_directory: ~/projects/${proj}
+  #           layout: tiled
+  #           panes:
+  #             - vim
+  #             - vim
+  #             - ls
+  #           '';
+  #     userProjs = b.concatStringsSep "\n" (map userProjTemp userProjPaths);
 
-      htoprc0 = b.toFile "htoprc0" ''
-        fields=48 46 47 49 1
-        sort_key=46
-        sort_direction=1
-        hide_threads=1
-        hide_kernel_threads=1
-        hide_userland_threads=1
-        shadow_other_users=1
-        show_thread_names=0
-        show_program_path=1
-        highlight_base_name=0
-        highlight_megabytes=1
-        highlight_threads=1
-        tree_view=0
-        header_margin=1
-        detailed_cpu_time=0
-        cpu_count_from_zero=0
-        update_process_names=0
-        account_guest_in_cpu_meter=0
-        color_scheme=3
-        delay=10
-        left_meters=LeftCPUs2 LeftCPUs2
-        left_meter_modes=1 3
-        right_meters=RightCPUs2 RightCPUs2 Tasks LoadAverage Uptime
-        right_meter_modes=1 3 2 2 2
-      '';
+  #     htoprc0 = b.toFile "htoprc0" ''
+  #       fields=48 46 47 49 1
+  #       sort_key=46
+  #       sort_direction=1
+  #       hide_threads=1
+  #       hide_kernel_threads=1
+  #       hide_userland_threads=1
+  #       shadow_other_users=1
+  #       show_thread_names=0
+  #       show_program_path=1
+  #       highlight_base_name=0
+  #       highlight_megabytes=1
+  #       highlight_threads=1
+  #       tree_view=0
+  #       header_margin=1
+  #       detailed_cpu_time=0
+  #       cpu_count_from_zero=0
+  #       update_process_names=0
+  #       account_guest_in_cpu_meter=0
+  #       color_scheme=3
+  #       delay=10
+  #       left_meters=LeftCPUs2 LeftCPUs2
+  #       left_meter_modes=1 3
+  #       right_meters=RightCPUs2 RightCPUs2 Tasks LoadAverage Uptime
+  #       right_meter_modes=1 3 2 2 2
+  #     '';
 
-      htoprc1 = b.toFile "htoprc0" ''
-        fields=48 46 47 49 1
-        sort_key=46
-        sort_direction=1
-        hide_threads=1
-        hide_kernel_threads=1
-        hide_userland_threads=1
-        shadow_other_users=1
-        show_thread_names=0
-        show_program_path=1
-        highlight_base_name=0
-        highlight_megabytes=1
-        highlight_threads=1
-        tree_view=0
-        header_margin=1
-        detailed_cpu_time=0
-        cpu_count_from_zero=0
-        update_process_names=0
-        account_guest_in_cpu_meter=0
-        color_scheme=3
-        delay=10
-        left_meters=Memory Swap
-        left_meter_modes=1 1
-        right_meters=Memory
-        right_meter_modes=3
-      '';
+  #     htoprc1 = b.toFile "htoprc0" ''
+  #       fields=48 46 47 49 1
+  #       sort_key=46
+  #       sort_direction=1
+  #       hide_threads=1
+  #       hide_kernel_threads=1
+  #       hide_userland_threads=1
+  #       shadow_other_users=1
+  #       show_thread_names=0
+  #       show_program_path=1
+  #       highlight_base_name=0
+  #       highlight_megabytes=1
+  #       highlight_threads=1
+  #       tree_view=0
+  #       header_margin=1
+  #       detailed_cpu_time=0
+  #       cpu_count_from_zero=0
+  #       update_process_names=0
+  #       account_guest_in_cpu_meter=0
+  #       color_scheme=3
+  #       delay=10
+  #       left_meters=Memory Swap
+  #       left_meter_modes=1 1
+  #       right_meters=Memory
+  #       right_meter_modes=3
+  #     '';
 
-      yamls = {
-        main = ''
-          session_name: main
-          windows:
-          - window_name: NixConf
-            start_directory: /etc/nix
-            layout: tiled
-            panes:
-              - su
-              - su
-              - su
+  #     yamls = {
+  #       main = ''
+  #         session_name: main
+  #         windows:
+  #         - window_name: NixConf
+  #           start_directory: /etc/nix
+  #           layout: tiled
+  #           panes:
+  #             - su
+  #             - su
+  #             - su
 
-          ${userProjs}
-          '';
+  #         ${userProjs}
+  #         '';
 
-        monitor = ''
-          session_name: monitor
-          windows:
-          - window_name: monitorwin
-            layout: even-horizontal
-            shell_command_before:
-            - tmux split-window -h
-            - tmux split-window -h
-            - tmux select-layout even-horizontal
-            - tmux select-pane -t 0
-            - tmux resize-pane -L 60
-            - tmux split-window -v
-            - tmux select-pane -t 3
-            - tmux resize-pane -R 60
-            - tmux split-window -v
-            - tmux send -t 0 'HTOPRC=${htoprc0} htop --sort-key=PERCENT_CPU' Enter
-            - tmux send -t 1 'HTOPRC=${htoprc1} htop --sort-key=PERCENT_MEM' Enter
-            - tmux send -t 3 'nvidia-smi -l 1' Enter
-            - tmux send -t 4 'nvtop' Enter
-            panes:
-            - null
-        '';
-      };
-      cmdCreateProjectYamls = b.concatStringsSep "\n" (
-        pkgs.lib.mapAttrsToList (n: yaml:
-          let filePath = "${n}.yml"; in ''
-            cp ${b.toFile "" yaml} ${filePath}
-            chown ${user.name}:nogroup ${filePath}
-          ''
-        ) yamls
-      );
-    in ''
-      cd ${user.home}
-      if [ -d .tmuxp ]; then rm .tmuxp -r; fi
-      mkdir .tmuxp
-      chown ${user.name}:nogroup .tmuxp
-      cd .tmuxp
-      ${cmdCreateProjectYamls}
-    '';
+  #       monitor = ''
+  #         session_name: monitor
+  #         windows:
+  #         - window_name: monitorwin
+  #           layout: even-horizontal
+  #           shell_command_before:
+  #           - tmux split-window -h
+  #           - tmux split-window -h
+  #           - tmux select-layout even-horizontal
+  #           - tmux select-pane -t 0
+  #           - tmux resize-pane -L 60
+  #           - tmux split-window -v
+  #           - tmux select-pane -t 3
+  #           - tmux resize-pane -R 60
+  #           - tmux split-window -v
+  #           - tmux send -t 0 'HTOPRC=${htoprc0} htop --sort-key=PERCENT_CPU' Enter
+  #           - tmux send -t 1 'HTOPRC=${htoprc1} htop --sort-key=PERCENT_MEM' Enter
+  #           - tmux send -t 3 'nvidia-smi -l 1' Enter
+  #           - tmux send -t 4 'nvtop' Enter
+  #           panes:
+  #           - null
+  #       '';
+  #     };
+  #     cmdCreateProjectYamls = b.concatStringsSep "\n" (
+  #       pkgs.lib.mapAttrsToList (n: yaml:
+  #         let filePath = "${n}.yml"; in ''
+  #           cp ${b.toFile "" yaml} ${filePath}
+  #           chown ${user.name}:nogroup ${filePath}
+  #         ''
+  #       ) yamls
+  #     );
+  #   in ''
+  #     cd ${user.home}
+  #     if [ -d .tmuxp ]; then rm .tmuxp -r; fi
+  #     mkdir .tmuxp
+  #     chown ${user.name}:nogroup .tmuxp
+  #     cd .tmuxp
+  #     ${cmdCreateProjectYamls}
+  #   '';
 
-  };
+  # };
 }

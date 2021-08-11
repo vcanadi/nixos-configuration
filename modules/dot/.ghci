@@ -1,0 +1,25 @@
+-- Prompt display
+:set prompt "\ESC[34m\STX%s > \ESC[m\STX\n"
+
+-- Extensions
+:seti -XOverloadedStrings
+:seti -XTypeApplications
+
+-- Fancy debugging
+_nl = "putStrLn \"\"\n"
+_history = "putStrLn \"HISTORY:\"\n :history \n"
+_context = "putStrLn \"CONTEXT:\"\n :sh context\n"
+_breaks = "putStrLn \"BREAKS:\"\n :sh breaks\n"
+_bindings = "putStrLn \"BINDINGS:\"\n :sh bindings\n"
+_list = "putStrLn \"LIST:\"\n :list\n"
+_status = \_ -> return $ ":!clear\n " ++ _breaks ++ _nl ++ _history ++ _nl ++ _bindings ++ _nl ++ _context ++ _nl ++ _list ++ _nl
+
+-- Useful commands
+:def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""
+:def hinfo \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
+:def stl \x -> return $ ":steplocal " ++ x
+:def status _status
+
+-- Show status on breakpoint
+:set stop :status
+

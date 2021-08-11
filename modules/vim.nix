@@ -1,19 +1,9 @@
 { pkgs }:
-with pkgs;
-let
-  customPlugins.vimpyter = pkgs.vimUtils.buildVimPlugin {
-    name = "vimpyter";
-    src = pkgs.fetchFromGitHub {
-      owner = "szymonmaszke";
-      repo = "vimpyter";
-      rev = "master";
-      sha256 = "0h4xbiqk6gdi2kiywjqkgf042n48wbqs2ha94swha4rcsi046py8";
-    };
-  };
-
-  myVimrcConfig = {
-
-    customRC = ''
+{
+  enable = true;
+  viAlias = true;
+  vimAlias = true;
+  extraConfig = ''
       hi Normal guibg=NONE ctermbg=NONE
       set background=light
 
@@ -35,6 +25,7 @@ let
       set wildmode=longest,list,full
       set wildmenu
       set t_ut=
+      set t_Co=256
 
       let g:netrw_banner=0        " disable annoying banner
       let g:netrw_browse_split=4  " open in prior window
@@ -42,6 +33,9 @@ let
       let g:netrw_liststyle=3     " tree view
       let g:netrw_list_hide=netrw_gitignore#Hide()
       let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+      cabb W w
+      cabb Q q
 
     " plugin shortcuts
 
@@ -100,69 +94,42 @@ let
         endif
 
     " fzf bindings
-      map <C-p> :Files<CR>
+      map <Leader>r :Files<CR>
 
     " ack binding
       map ; :Ag<space>
 
-      let python_highlight_all=1
+    " LSP bindings
+      let g:LanguageClient_autoStart = 1
+
       let g:LanguageClient_serverCommands = {
-        \ 'python': ['pyls']
-        \ }
-       nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-       nnoremap <silent> gh :call LanguageClient_textDocument_hover()<CR>
-       nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-       nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
-       nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
-       nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-       nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
+          \ 'haskell': ['haskell-language-server', '--lsp'],
+          \ }
+      nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+      map <Leader>lk :call LanguageClient#textDocument_hover()<CR>
+      map <Leader>lg :call LanguageClient#textDocument_definition()<CR>
+      map <Leader>lr :call LanguageClient#textDocument_rename()<CR>
+      map <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
+      map <Leader>lb :call LanguageClient#textDocument_references()<CR>
+      map <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
+      map <Leader>ls :call LanguageClient#textDocument_documentSymbol()<CR>
+
     '';
 
-    packages.myVimPackage = with pkgs.vimPlugins; {
-      # loaded on launch
-      start = [
-          ag
-          calendar
+    plugins = with pkgs.vimPlugins;  [
           commentary
-          deoplete-nvim
           fugitive
           fzfWrapper
-          fzf-vim                # Search files (ctrlp replacement)
+          fzf-vim
           ghcid
           haskell-vim
-          neocomplete
-          open-browser
           Syntastic
-          tagbar
           LanguageClient-neovim
           The_NERD_tree
-          # vim-stylishask
           vim-airline
           vim-airline-themes
           vim-colorschemes
-          vim-flake8
           vim-gitgutter
           vim-nix
-          vim-scala
-          vimproc
-          vimshell
-          w3m
-          idris-vim
       ];
-
-    };
-
-    vam = {
-      knownPlugins = pkgs.vimPlugins // customPlugins; # optional
-      pluginDictionaries = [
-        # { name = "vimpyter"; }
-      ];
-    };
-  };
-in
-rec {
-  myNvim = pkgs.neovim.override {
-    vimAlias = true;
-    configure = myVimrcConfig;
-  };
 }

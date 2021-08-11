@@ -1,0 +1,110 @@
+c.search.incremental = False
+c.session.lazy_restore = True
+c.qt.highdpi = True
+c.auto_save.session = True
+config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://web.whatsapp.com/')
+config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://accounts.google.com/*')
+config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36', 'https://*.slack.com/*')
+config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://docs.google.com/*')
+config.set('content.images', True, 'chrome-devtools://*')
+config.set('content.images', True, 'devtools://*')
+c.content.javascript.can_open_tabs_automatically = False
+c.content.notifications.enabled = True
+c.content.desktop_capture = True
+config.set('content.javascript.enabled', True, 'file://*')
+config.set('content.javascript.enabled', True, 'chrome-devtools://*')
+config.set('content.javascript.enabled', True, 'devtools://*')
+config.set('content.javascript.enabled', True, 'chrome://*/*')
+config.set('content.javascript.enabled', True, 'qute://*/*')
+c.content.cookies.accept = 'no-3rdparty'
+
+c.content.media.audio_capture = True
+c.content.plugins = True
+c.content.proxy = 'system'
+c.content.pdfjs = True
+c.completion.height = '50%'
+c.completion.quick = True
+c.downloads.location.directory = '~/downloads'
+c.downloads.remove_finished = 2
+c.hints.auto_follow = 'never'
+c.hints.chars = 'asdfghjkl'
+c.hints.hide_unmatched_rapid_hints = True
+c.hints.mode = 'number'
+c.hints.scatter = False
+c.hints.uppercase = False
+c.scrolling.bar = 'always'
+c.spellcheck.languages = ['en-US', 'hr-HR']
+c.statusbar.position = 'top'
+c.tabs.background = False
+c.tabs.favicons.scale = 1.3
+c.tabs.mousewheel_switching = False
+c.tabs.position = 'left'
+c.tabs.select_on_remove = 'prev'
+c.tabs.show = 'always'
+c.tabs.title.format = '{current_title}'
+c.tabs.width = '15%'
+c.url.default_page = 'www.google.com'
+# c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
+c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
+c.zoom.default = '90%'
+c.colors.completion.fg = ['white', 'white', 'white']
+c.colors.completion.odd.bg = '#00444444'
+c.colors.completion.even.bg = '#D0333333'
+c.colors.completion.category.bg = 'qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #22888888, stop:1 #22505050)'
+c.colors.hints.fg = 'black'
+c.colors.hints.bg = 'qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0,255, 0, 0.8), stop:1 rgba(0,255, 0, 0.2))'
+c.colors.hints.match.fg = 'red'
+# c.colors.tabs.bar.bg = '#EEEEEE'
+# c.colors.tabs.odd.bg = '#EEEEEE'
+# c.colors.tabs.even.bg = '#EEEEEE'
+c.colors.tabs.bar.bg = 'white'
+c.colors.tabs.odd.fg = 'black'
+c.colors.tabs.odd.bg = 'white'
+c.colors.tabs.even.fg = 'black'
+c.colors.tabs.even.bg = 'white'
+c.colors.tabs.selected.odd.fg = 'white'
+c.colors.tabs.selected.odd.bg = 'black'
+c.colors.tabs.selected.even.fg = 'white'
+c.colors.tabs.selected.even.bg = 'black'
+c.colors.tabs.pinned.odd.fg = 'black'
+c.colors.tabs.pinned.odd.bg = 'white'
+c.colors.tabs.pinned.even.fg = 'black'
+c.colors.tabs.pinned.even.bg = 'white'
+c.colors.tabs.pinned.selected.odd.fg = 'white'
+c.colors.tabs.pinned.selected.odd.bg = 'black'
+c.colors.tabs.pinned.selected.even.fg = 'white'
+c.colors.tabs.pinned.selected.even.bg = 'black'
+c.fonts.completion.entry = '16pt monospace'
+c.fonts.completion.category = 'bold 16pt monospace'
+c.fonts.debug_console = '16pt monospace'
+c.fonts.hints = '14pt monospace'
+c.fonts.messages.error = '20pt monospace'
+c.fonts.statusbar = '16pt monospace'
+c.fonts.web.size.minimum = 0
+c.fonts.web.size.minimum_logical = 6
+
+# Bindings for normal mode
+config.bind('<Alt+b>', 'set-cmd-text -s :quickmark-load -t')
+config.bind('<Alt+h>', 'back')
+config.bind('<Alt+j>', 'tab-next')
+config.bind('<Alt+k>', 'tab-prev')
+config.bind('<Alt+l>', 'forward')
+config.bind('<Alt+n>', 'set-cmd-text -s :open -t')
+config.bind('<Alt+m>', 'set-cmd-text -s :open -t hackage')
+config.bind('<Ctrl+Shift+y>', 'hint links spawn --detach mpv --force-window yes {hint-url}')
+config.bind('<Alt+w>', 'tab-close')
+config.bind('<Ctrl+w>', 'None')
+config.bind('B', 'None')
+config.bind('H', 'None')
+config.bind('J', 'None')
+config.bind('K', 'None')
+config.bind('L', 'None')
+config.bind('M', 'None')
+config.bind('O', 'None')
+config.bind('P', 'open --private')
+config.bind('d', 'None')
+config.bind('e', 'move-to-end-of-word')
+config.bind('gi', 'hint inputs')
+config.bind('m', 'None')
+
+config.load_autoconfig(False)
