@@ -20,6 +20,7 @@ in
     };
     kernelModules = [ "coretemp" "nct6775" "it87" ];
     kernelPackages = pkgs.linuxPackages_latest;
+    supportedFilesystems = [ "ext4" "vfat" "ntfs" ];
   };
 
   environment = {
@@ -51,15 +52,8 @@ in
 
   services = {
     openvpn.servers = {
-      evpn = {
-        config = ''
-          config /home/vcanadi/vpn/evpn/frankfurt2.ovpn
-          auth-user-pass /home/vcanadi/vpn/evpn/pass-file.txt
-          '';
-        autoStart = false;
-        updateResolvConf = true;
-      };
     };
+    redshift.enable = true;
   };
 
   security.polkit.enable = true;
@@ -81,7 +75,7 @@ in
       support32Bit = false;
       package = pkgs.pulseaudioFull;
     };
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
 
   time.hardwareClockInLocalTime = true;
@@ -96,15 +90,27 @@ in
   };
 
   home-manager.users = {
-   vcanadi = home-manager-config;
-   root = home-manager-config;
+    vcanadi = home-manager-config;
+    root = home-manager-config;
   };
 
-  nix.trustedUsers = [ "vcanadi" ];
+  nix = {
+    settings = {
+      trusted-users = [ "vcanadi" ];
+    };
+  };
 
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "performance";
   };
+  # system.activationScripts = utils.mkActivationScriptsForUsers [ tmux-nix.tmuxp.userActivationScript ];
+  system.stateVersion = "22.05";
+
+  virtualisation.virtualbox.host = {
+    enable = false;
+    enableExtensionPack = true;
+  };
+
 }
 

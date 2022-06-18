@@ -1,6 +1,11 @@
 { pkgs }:
 {
       enable = true;
+      history = {
+        extended = true;
+        ignoreDups = true;
+        size = 10000000;
+      };
       enableAutosuggestions = true;
       enableCompletion = true;
       defaultKeymap="viins";
@@ -18,9 +23,9 @@
           PROJ="$1"
           CORE="$2"
           DEV="$3"
-          echo "\$1: $1"
-          echo "\$2: $2"
-          echo "\$3: $3"
+          echo "PROJ: $1"
+          echo "CORE: $2"
+          echo "DEV: $3"
           COMPILE_CMD="arduino-cli compile --fqbn arduino:avr:$CORE $HOME/arps/$PROJ"
           UPLOAD_CMD="arduino-cli upload -p $DEV --fqbn arduino:avr:$CORE $HOME/arps/$PROJ"
           SERIAL_OUTPUT_CMD="cat $DEV"
@@ -32,19 +37,19 @@
       '';
       plugins = [
         {
-          name = "zsh-nix-shell";
-          file = "nix-shell.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
+        name = "zsh-nix-shell";
+        file = "nix-shell.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
             owner = "chisui";
             repo = "zsh-nix-shell";
-            rev = "v0.1.0";
-            sha256 = "0snhch9hfy83d4amkyxx33izvkhbwmindy0zjjk28hih1a9l2jmx";
+            rev = "v0.4.0";
+            sha256 = "037wz9fqmx0ngcwl9az55fgkipb745rymznxnssr3rx9irb6apzg";
           };
         }
       ];
       oh-my-zsh = {
         enable = true;
-        theme = "jreese";
+        theme = "tjkirch";
         plugins= [ "common-aliases" "fasd" "git" "git-extras" "man" "systemd" "tmux" "vi-mode" "wd" "history-substring-search" "fzf" ];
       };
       shellAliases = {
@@ -63,12 +68,13 @@
         VISUAL = "vim";
         EDITOR = "$VISUAL";
         HISTTIMEFORMAT="%d/%m/%y %T ";
-        KEYBOARD_DELAY = "200";
+        KEYBOARD_DELAY = "185";
         KEYBOARD_RATE = "100";
         ALTERNATE_EDITOR = "";
         WINDOW_MANAGER = "xmonad";
         JAVA_AWT_WM_NONREPARENTING = "1";
         XKB_DEFAULT_OPTIONS = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
         PS1 = "$PS1<$IN_NIX_SHELL> ";
+        FZF_BASE = "${pkgs.fzf}/share/fzf";
       };
     }

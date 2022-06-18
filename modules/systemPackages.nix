@@ -1,10 +1,11 @@
 pkgs: with pkgs;
 [
 # Torrent
-  transmission_gtk
+  transmission-gtk
 
 # Media player
   vlc
+  spotify
 
 # Misc
   llpp
@@ -15,9 +16,10 @@ pkgs: with pkgs;
   xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi xorg.xinput xrandr-invert-colors
   jq
   tig
+  gitFull
 
 # Vim deps
-  ack ag ctags
+  ack silver-searcher ctags
 
 # Haskell
   haskellPackages.xmobar
@@ -30,5 +32,5 @@ pkgs: with pkgs;
   cabal2nix
 
 # Arduino
-  arduino-cli
+  # arduino-cli
 ]

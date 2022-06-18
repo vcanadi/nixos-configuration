@@ -19,7 +19,8 @@ _status = \_ -> return $ ":!clear\n " ++ _breaks ++ _nl ++ _history ++ _nl ++ _b
 :def hinfo \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
 :def stl \x -> return $ ":steplocal " ++ x
 :def status _status
+:def fprint \x -> return $ ":force " ++ x ++ "\n" ++ "print " ++ x
+:def fpprint \x -> return $ ":force " ++ x ++ "\n" ++ "pPrint " ++ x
 
 -- Show status on breakpoint
 :set stop :status
-

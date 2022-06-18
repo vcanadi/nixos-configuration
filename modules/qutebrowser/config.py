@@ -1,3 +1,18 @@
+import subprocess
+import os
+from qutebrowser.api import interceptor
+
+def filter_yt(info: interceptor.Request):
+    """Block the given request if necessary."""
+    url = info.request_url
+    if (
+        url.host() == "www.youtube.com"
+        and url.path() == "/get_video_info"
+        and "&adformat=" in url.query()
+    ):
+        info.block()
+
+interceptor.register(filter_yt)
 c.search.incremental = False
 c.session.lazy_restore = True
 c.qt.highdpi = True
@@ -16,7 +31,8 @@ config.set('content.javascript.enabled', True, 'chrome-devtools://*')
 config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
-c.content.cookies.accept = 'no-3rdparty'
+c.content.cookies.accept = 'all'
+c.content.prefers_reduced_motion = True
 
 c.content.media.audio_capture = True
 c.content.plugins = True
@@ -36,14 +52,15 @@ c.scrolling.bar = 'always'
 c.spellcheck.languages = ['en-US', 'hr-HR']
 c.statusbar.position = 'top'
 c.tabs.background = False
-c.tabs.favicons.scale = 1.3
+c.tabs.favicons.scale = 1
 c.tabs.mousewheel_switching = False
-c.tabs.position = 'left'
+c.tabs.position = 'top'
 c.tabs.select_on_remove = 'prev'
 c.tabs.show = 'always'
-c.tabs.title.format = '{current_title}'
+c.tabs.title.format = '{index}: {current_title}'
 c.tabs.width = '15%'
-c.url.default_page = 'www.google.com'
+c.tabs.padding = {'bottom': 10, 'left': 5, 'right': 5, 'top': 10}
+c.url.default_page = 'www.startpage.com'
 # c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
 c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
 c.zoom.default = '90%'
@@ -105,6 +122,7 @@ config.bind('P', 'open --private')
 config.bind('d', 'None')
 config.bind('e', 'move-to-end-of-word')
 config.bind('gi', 'hint inputs')
-config.bind('m', 'None')
 
+config.bind('m', 'spawn mpv {url}')
+config.bind('M', 'hint links spawn mpv {hint-url}')
 config.load_autoconfig(False)
