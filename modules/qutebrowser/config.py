@@ -17,10 +17,9 @@ c.search.incremental = False
 c.session.lazy_restore = True
 c.qt.highdpi = True
 c.auto_save.session = True
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://web.whatsapp.com/')
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://accounts.google.com/*')
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36', 'https://*.slack.com/*')
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://docs.google.com/*')
+config.set('content.headers.user_agent',
+           'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+           '*')
 config.set('content.images', True, 'chrome-devtools://*')
 config.set('content.images', True, 'devtools://*')
 c.content.javascript.can_open_tabs_automatically = False
@@ -31,6 +30,8 @@ config.set('content.javascript.enabled', True, 'chrome-devtools://*')
 config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
+config.set('content.blocking.enabled', True)
+config.set('content.blocking.method', 'both')
 c.content.cookies.accept = 'all'
 c.content.prefers_reduced_motion = True
 
@@ -61,8 +62,8 @@ c.tabs.title.format = '{index}: {current_title}'
 c.tabs.width = '15%'
 c.tabs.padding = {'bottom': 10, 'left': 5, 'right': 5, 'top': 10}
 c.url.default_page = 'www.startpage.com'
-# c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
-c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
+c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
+# c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
 c.zoom.default = '90%'
 c.colors.completion.fg = ['white', 'white', 'white']
 c.colors.completion.odd.bg = '#00444444'
@@ -101,13 +102,13 @@ c.fonts.web.size.minimum = 0
 c.fonts.web.size.minimum_logical = 6
 
 # Bindings for normal mode
-config.bind('<Alt+b>', 'set-cmd-text -s :quickmark-load -t')
+config.bind('<Alt+b>', 'cmd-set-text -s :quickmark-load -t')
 config.bind('<Alt+h>', 'back')
 config.bind('<Alt+j>', 'tab-next')
 config.bind('<Alt+k>', 'tab-prev')
 config.bind('<Alt+l>', 'forward')
-config.bind('<Alt+n>', 'set-cmd-text -s :open -t')
-config.bind('<Alt+m>', 'set-cmd-text -s :open -t hackage')
+config.bind('<Alt+n>', 'cmd-set-text -s :open -t')
+config.bind('<Alt+m>', 'cmd-set-text -s :open -t hackage')
 config.bind('<Ctrl+Shift+y>', 'hint links spawn --detach mpv --force-window yes {hint-url}')
 config.bind('<Alt+w>', 'tab-close')
 config.bind('<Ctrl+w>', 'None')
@@ -126,3 +127,4 @@ config.bind('gi', 'hint inputs')
 config.bind('m', 'spawn mpv {url}')
 config.bind('M', 'hint links spawn mpv {hint-url}')
 config.load_autoconfig(False)
+

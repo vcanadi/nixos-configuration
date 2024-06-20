@@ -1,7 +1,9 @@
 { pkgs }:
 let myExtraConfig = ''
 
-  hi Normal guibg=NONE ctermbg=NONE
+  colorscheme lunaperche
+  ri Normal guibg=NONE
+  hi Normal ctermbg=16
   set background=light
 
   let g:mapleader = ','
@@ -157,7 +159,6 @@ function! ShowDocumentation()
     call feedkeys('K', 'in')
   endif
 endfunction
-
 '';
   in
 {
@@ -184,8 +185,7 @@ endfunction
     "codeLens.enable" = true;
     "coc.preferences.enableMarkdown" = true;
     "coc.preferences.jumpCommand" = "tab drop";
-    languageserver = {
-      haskell = {
+    languageserver.haskell = {
         command = "haskell-language-server-wrapper";
         args = [ "--lsp" ];
         rootPatterns = [
@@ -201,9 +201,9 @@ endfunction
           maxNumberOfProblems = 10;
           completionSnippetsOn = true;
         };
-      };
     };
   };
+
   plugins = with pkgs.vimPlugins;  [
     commentary
     fugitive
@@ -213,11 +213,14 @@ endfunction
     haskell-vim
     coc-nvim
     coc-json
+    coc-rls
 
     Syntastic
     nvim-lspconfig
     The_NERD_tree
     vim-gitgutter
     vim-nix
+    agda-vim
+    vim-lsp
   ];
 }

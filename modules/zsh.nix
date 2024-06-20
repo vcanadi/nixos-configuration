@@ -6,7 +6,7 @@
         ignoreDups = true;
         size = 10000000;
       };
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
       defaultKeymap="viins";
       initExtra = ''
@@ -73,7 +73,7 @@
         ALTERNATE_EDITOR = "";
         WINDOW_MANAGER = "xmonad";
         JAVA_AWT_WM_NONREPARENTING = "1";
-        XKB_DEFAULT_OPTIONS = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
+        #XKB_DEFAULT_OPTIONS = "caps:escape,grp:rctrl_rshift_toggle,ctrl:ralt_rctrl,terminate:ctrl_alt_bksp";
         PS1 = "$PS1<$IN_NIX_SHELL> ";
         FZF_BASE = "${pkgs.fzf}/share/fzf";
       };

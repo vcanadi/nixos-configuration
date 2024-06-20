@@ -1,36 +1,77 @@
 pkgs: with pkgs;
-[
-# Torrent
-  transmission-gtk
+let overlay = final: prev: rec {
+        # qutebrowserovr = prev.qutebrowser.overrideAttrs (prev: {
+        #   version = "git";
+        #   src = pkgs.fetchFromGitHub {
+        #     owner = "qutebrowser";
+        #     repo = "qutebrowser";
+        #     rev = "479d8f4fd82b042627d2e6b7e9ffacdcf32b7a6f";
+        #     sha256 = "";
 
-# Media player
-  vlc
-  spotify
+        #   };
+        # });
 
-# Misc
-  llpp
-  tldr
-  zip unzip unrar
-  lxqt.pavucontrol-qt
-  lshw hwinfo ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat lsof psutils entr dconf
-  xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi xorg.xinput xrandr-invert-colors
-  jq
-  tig
-  gitFull
+  };
+  pkgsClone = import /home/vcanadi/git/nixpkgs {};
+  in
+{
+  systemPackages = [
+  # Torrent
+    transmission-gtk
 
-# Vim deps
-  ack silver-searcher ctags
+    firefox
 
-# Haskell
-  haskellPackages.xmobar
-  haskellPackages.hasktags
+  # Media player
+    vlc
+    spotify
 
-# Games
-  steam
+  # Misc
+    tldr
+    zip unzip unrar
+    lxqt.pavucontrol-qt
+    hwinfo ftop pciutils hwdata hardinfo sysstat gotop lm_sensors vnstat lsof psutils entr dconf
+    xorg.xkill autorandr xorg.xmodmap xdotool xsel xclip rofi xorg.xinput xrandr-invert-colors
+    jq
+    tig
+    gitFull
+    wget
 
-# Nix
-  cabal2nix
+  # Docs
+    llpp
 
-# Arduino
-  # arduino-cli
-]
+  # Vim deps
+    ack silver-searcher ctags
+    nodejs
+
+  # Haskell
+    haskellPackages.xmobar
+    haskellPackages.hasktags
+
+  # Games
+    steam
+    godot_4
+
+  # 3d
+    freecad
+
+  # Nix
+    cabal2nix
+
+  # Arduino
+    # arduino-cli
+
+  # Android
+    # android-studio
+    # jre
+    # android-tools
+    # apksigner
+
+  # Virtualization
+    # virt-manager
+    # OVMFFull
+    # edk2
+    # edk2-uefi-shell
+    # docker
+  ];
+  overlays = [overlay];
+}

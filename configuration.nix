@@ -15,7 +15,10 @@ in
   boot = {
     loader = {
       systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
       timeout = 2;
     };
     kernelModules = [ "coretemp" "nct6775" "it87" ];
@@ -24,8 +27,7 @@ in
   };
 
   environment = {
-    systemPackages = import ./modules/systemPackages.nix pkgs;
-
+    systemPackages = (import ./modules/systemPackages.nix pkgs).systemPackages;
     etc = {
       "inputrc".text = ''
         set editing-mode vim
@@ -34,15 +36,19 @@ in
     };
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
+  nixpkgs = {
+    config = {
+      android_sdk.accept_license = true;
+      allowUnfree = true;
 
-    packageOverrides = pkgs : {
-      nixos-stable = import <nixos-stable> { config = config.nixpkgs.config; };
-      nixpkgs-unstable = import <nixpkgs-unstable> { config = config.nixpkgs.config; };
-      nixos-unstable-small = import <nixos-unstable-small> { config = config.nixpkgs.config; };
-
+      packageOverrides = pkgs : {
+        nixos-stable = import <nixos-stable> { config = config.nixpkgs.config; };
+        nixpkgs-unstable = import <nixpkgs-unstable> { config = config.nixpkgs.config; };
+        nixos-unstable-small = import <nixos-unstable-small> { config = config.nixpkgs.config; };
+        nixos-cloned = import /home/vcanadi/git/nixpkgs { config = config.nixpkgs.config; };
+      };
     };
+    overlays = (import ./modules/systemPackages.nix pkgs).overlays;
   };
 
   location = {
@@ -50,38 +56,45 @@ in
     longitude = 16.0;
   };
 
-  services = {
-    openvpn.servers = {
-    };
-    redshift.enable = true;
-  };
-
   security.polkit.enable = true;
 
   sound = {
     enable = true;
   };
+
+  services = {
+
+    openssh.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # jack.enable = true;
+    };
+    blueman.enable = true;
+  };
+
   networking.networkmanager.enable = true;
 
   programs = {
+    zsh.enable = true;
     tmux = tmux-nix.tmux;
     gnupg.agent.enable = true;
   };
 
   hardware = {
+    opengl.enable = true;
     opengl.driSupport32Bit = true;
-    pulseaudio = {
-      enable = true;
-      support32Bit = false;
-      package = pkgs.pulseaudioFull;
-    };
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
 
-  time.hardwareClockInLocalTime = true;
+  time = {
+    hardwareClockInLocalTime = true;
+    timeZone = "Europe/Zagreb";
+  };
 
   fonts = {
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
   };
 
   console = {
@@ -105,12 +118,20 @@ in
     cpuFreqGovernor = "performance";
   };
   # system.activationScripts = utils.mkActivationScriptsForUsers [ tmux-nix.tmuxp.userActivationScript ];
-  system.stateVersion = "22.05";
+  system.stateVersion = "unstable";
 
-  virtualisation.virtualbox.host = {
-    enable = false;
-    enableExtensionPack = true;
-  };
+  # virtualisation = {
+  #   virtualbox.host = {
+  #     enable = true;
+  #     # enableHardening = false;
+  #     package = pkgs.nixos-stable.pkgs.virtualbox;
+  #     enableExtensionPack = true;
+  #   };
+  #   docker = {
+  #     enable =  true;
+  #   };
+  #   libvirtd.enable = true;
+  # };
 
 }
 
