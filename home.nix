@@ -105,6 +105,8 @@ in
       ".ghci".text = builtins.readFile ./modules/dot/.ghci;
       ".haskeline".text = builtins.readFile ./modules/dot/.haskeline;
       ".wallpaper".source = ./modules/dot/.wallpaper;
+      ".xmonad/xmobar.hs".text = builtins.readFile ./modules/dot/.xmonad/xmobar.hs;
+      ".xmonad/xmonad.hs".text = builtins.readFile ./modules/dot/.xmonad/xmonad.hs;
       ".fehbg".text = ''
         #!/usr/bin/env bash
         feh --bg-fill --no-fehbg ~/.wallpaper
