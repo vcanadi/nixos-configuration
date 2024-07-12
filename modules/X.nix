@@ -15,11 +15,15 @@ in
     prime = {
       # offload.enable = true;
       sync.enable = true;
-      amdgpuBusId = "PCI:5:0:0";
+      amdgpuBusId = "PCI:8:0:0";
       nvidiaBusId = "PCI:1:0:0";
     };
     # package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+  # programs.sway = {
+  #   enable =true;
+  # };
+
 
   services = {
 
@@ -30,6 +34,19 @@ in
       };
     };
 
+    desktopManager.plasma6 = {
+      enable = true;
+      enableQt5Integration = true;
+    };
+
+    displayManager = {
+      # defaultSession = "sway";
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
+    };
+
     xserver = {
       enable = true;
       enableCtrlAltBackspace = true;
@@ -37,24 +54,61 @@ in
       dpi = 110;
       autoRepeatDelay = 220;
       autoRepeatInterval = 1000 / 90;
-      exportConfiguration = true;
+      # exportConfiguration = true;
       videoDrivers = [ "nvidia" ];
 
       xkb = {
         options = "caps:escape,grp:rctrl_rshift_toggle,ctrl:swap_lwin_lctrl,terminate:ctrl_alt_bksp";
-        layout = "us,hr";
+        layout = "us2,hr2";
+        extraLayouts = {
+          us2 = {
+            description = "us2";
+            languages = [];
+            keycodesFile = pkgs.writeText "keycodes" ''
+            '';
+
+            typesFile = pkgs.writeText "types" ''
+            '';
+
+            symbolsFile = pkgs.writeText "symbols" ''
+              xkb_symbols "us2" {
+                include "us"
+                key <RALT> { [ Shift_L, Shift_R] };
+                key <CAPS> { [ Escape ] };
+              };
+            '';
+          };
+          hr2 = {
+            description = "hr2";
+            languages = [];
+            keycodesFile = pkgs.writeText "keycodes" ''
+            '';
+
+            typesFile = pkgs.writeText "types" ''
+            '';
+
+            symbolsFile = pkgs.writeText "symbols" ''
+              xkb_symbols "hr2" {
+                include "hr"
+                key <RALT> { [ Shift_L, Shift_R] };
+                key <CAPS> { [ Escape ] };
+              };
+            '';
+          };
+        };
       };
-      displayManager.sessionCommands = let
-        layout = pkgs.writeText "xkb-layout" ''
-            keycode 108 = Shift_L
 
-            remove Control = Control_R
-            keycode 105 = Control_R NoSymbol Control_R
-            keycode 135 = Control_R NoSymbol Control_R
-            add Control = Control_R
+      # displayManager.sessionCommands = let
+      #   layout = pkgs.writeText "xkb-layout" ''
+      #       keycode 108 = Shift_L
 
-          '';
-      in "${pkgs.xorg.xmodmap}/bin/xmodmap ${layout}";
+      #       remove Control = Control_R
+      #       keycode 105 = Control_R NoSymbol Control_R
+      #       keycode 135 = Control_R NoSymbol Control_R
+      #       add Control = Control_R
+
+      #     '';
+      # in "${pkgs.xorg.xmodmap}/bin/xmodmap ${layout}";
 
       windowManager = {
         xmonad = {

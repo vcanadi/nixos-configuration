@@ -17,7 +17,7 @@ let overlay = final: prev: rec {
 {
   systemPackages = [
   # Torrent
-    transmission-gtk
+    transmission_3-gtk
 
     firefox
 

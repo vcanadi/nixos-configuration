@@ -20,11 +20,17 @@ c.auto_save.session = True
 config.set('content.headers.user_agent',
            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
            '*')
+
+config.set('content.headers.user_agent',
+           'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/118.0.5615.213 Safari/{webkit_version}',
+           '*.slack.com')
+
 config.set('content.images', True, 'chrome-devtools://*')
 config.set('content.images', True, 'devtools://*')
 c.content.javascript.can_open_tabs_automatically = False
 c.content.notifications.enabled = True
 c.content.desktop_capture = True
+c.content.site_specific_quirks.skip = ["ua-slack"]
 config.set('content.javascript.enabled', True, 'file://*')
 config.set('content.javascript.enabled', True, 'chrome-devtools://*')
 config.set('content.javascript.enabled', True, 'devtools://*')
@@ -64,7 +70,7 @@ c.tabs.padding = {'bottom': 10, 'left': 5, 'right': 5, 'top': 10}
 c.url.default_page = 'www.startpage.com'
 c.url.searchengines = {'DEFAULT': 'https://google.com/search?q={}'}
 # c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
-c.zoom.default = '90%'
+c.zoom.default = '100%'
 c.colors.completion.fg = ['white', 'white', 'white']
 c.colors.completion.odd.bg = '#00444444'
 c.colors.completion.even.bg = '#D0333333'

@@ -10,6 +10,7 @@ import           System.IO
 import           XMonad
 import           XMonad.Actions.GridSelect
 import           XMonad.Actions.Volume
+import           XMonad.Actions.ShowText
 import           XMonad.Config.Kde
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.DynamicLog
@@ -48,7 +49,7 @@ import Control.Concurrent(threadDelay)
 
 getDisplays :: X [String]
 getDisplays = fmap (fmap (head . words) . lines)
-            $ runProcessWithInput "xrandr" [] "" >>= runProcessWithInput "grep" ["connected"]
+            $ runProcessWithInput "xrandr" [] "" >>= runProcessWithInput "grep" [" connected"]
 
 disp p s dType | dType == DS0 = p
                  | otherwise = s
@@ -94,20 +95,30 @@ sndDisplayPos = "--above"
 -- sndDisplayPos = "--below"
 
 xrandrSingle dType = do
-  [p,s] <- getDisplays
-  safeSpawn "xrandr" [ "--dpi","110"
-                     , "--output", disp p s dType,   "--auto"
-                     , "--output", other p s dType, "--off"
-                     ]
+  ds <- getDisplays
+  case ds of
+    [p, s] -> do
+      safeSpawn "xrandr" [ "--dpi","110"
+                         , "--output", disp p s dType,   "--auto"
+                         , "--output", other p s dType, "--off"
+                         ]
+
+    _ -> do
+      safeSpawn "xrandr" []
+
 
 xrandrBoth = do
-  [p, s] <- getDisplays
-  safeSpawn "xrandr" [ "--dpi","110"
-                     , "--output", p, "--auto"
-                     , sndDisplayPos , s
-                     , "--output", s, "--auto"
+  ds <- getDisplays
+  case ds of
+    [p, s] -> do
+      safeSpawn "xrandr" [ "--dpi","110"
+                         , "--output", p, "--auto"
+                         , sndDisplayPos , s
+                         , "--output", s, "--auto"
 
-                     ] -- , "--rotate", "left"]
+                         ] -- , "--rotate", "left"]
+    _ -> do
+      safeSpawn "xrandr" []
 
 logger :: String -> IO ()
 logger msg = do

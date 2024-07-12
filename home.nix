@@ -122,4 +122,11 @@ in
       size =64;
     };
   };
+  # wayland.windowManager.sway = {
+  #   enable = true;
+  #   config = rec {
+  #     modifier = "Mod4";
+  #     terminal = "Terminator";
+  #   };
+  # };
 }

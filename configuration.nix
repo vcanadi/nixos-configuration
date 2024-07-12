@@ -17,7 +17,6 @@ in
       systemd-boot.enable = true;
       efi = {
         canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
       };
       timeout = 2;
     };
@@ -35,6 +34,11 @@ in
       current-nixos-config.source = ./.;
     };
   };
+
+  swapDevices = [{
+    device = "/swapfile";
+    size = 32 * 1024;
+  }];
 
   nixpkgs = {
     config = {
@@ -84,8 +88,8 @@ in
   };
 
   hardware = {
-    opengl.enable = true;
-    opengl.driSupport32Bit = true;
+    graphics.enable = true;
+    graphics.enable32Bit = true;
   };
 
   time = {
