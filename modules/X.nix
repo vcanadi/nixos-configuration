@@ -36,15 +36,15 @@ in
 
     desktopManager.plasma6 = {
       enable = true;
-      enableQt5Integration = true;
+      # enableQt5Integration = true;
     };
 
     displayManager = {
       # defaultSession = "sway";
-      sddm = {
-        enable = true;
-        wayland.enable = true;
-      };
+      # sddm = {
+      #   enable = true;
+      #   wayland.enable = true;
+      # };
     };
 
     xserver = {
@@ -58,17 +58,12 @@ in
       videoDrivers = [ "nvidia" ];
 
       xkb = {
-        options = "caps:escape,grp:rctrl_rshift_toggle,ctrl:swap_lwin_lctrl,terminate:ctrl_alt_bksp";
+        options = "caps:escape,grp:rctrl_rshift_toggle,terminate:ctrl_alt_bksp";
         layout = "us2,hr2";
         extraLayouts = {
           us2 = {
             description = "us2";
             languages = [];
-            keycodesFile = pkgs.writeText "keycodes" ''
-            '';
-
-            typesFile = pkgs.writeText "types" ''
-            '';
 
             symbolsFile = pkgs.writeText "symbols" ''
               xkb_symbols "us2" {
@@ -81,11 +76,6 @@ in
           hr2 = {
             description = "hr2";
             languages = [];
-            keycodesFile = pkgs.writeText "keycodes" ''
-            '';
-
-            typesFile = pkgs.writeText "types" ''
-            '';
 
             symbolsFile = pkgs.writeText "symbols" ''
               xkb_symbols "hr2" {
@@ -133,12 +123,12 @@ in
 
     };
 
-    picom = {
-      enable = true;
-      vSync = true;
-      fade = true;
-      fadeDelta = 3;
-      fadeSteps = [ 0.01 0.02 ];
-    };
+    # picom = {
+    #   enable = true;
+    #   vSync = true;
+    #   fade = true;
+    #   fadeDelta = 3;
+    #   fadeSteps = [ 0.01 0.02 ];
+    # };
   };
 }

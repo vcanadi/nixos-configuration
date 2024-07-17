@@ -76,7 +76,7 @@ in
       pulse.enable = true;
       # jack.enable = true;
     };
-    blueman.enable = true;
+    # blueman.enable = true;
   };
 
   networking.networkmanager.enable = true;
