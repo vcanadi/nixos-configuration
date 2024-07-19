@@ -41,11 +41,27 @@ data DisplayState = DS0
                   | DS1
                   | DSBoth deriving (Eq, Bounded, Enum, Show, Typeable)
 instance ExtensionClass DisplayState where
-    initialValue = DS0
+  initialValue = DS0
 
--- Cyclic enumeration hack
-next :: (Eq a, Enum a, Bounded a) => a -> a
-next = bool minBound <$> succ <*> (/= maxBound)
+data BrightnessState = BSDark | BSDim | BSBright deriving (Eq, Bounded, Enum, Show, Typeable)
+instance ExtensionClass BrightnessState where
+  initialValue = BSBright
+
+brightnessToNum BSBright = 1
+brightnessToNum BSDim = 0.4
+brightnessToNum BSDark = 0.2
+
+-- Cyclic enumeration
+nextEnm' :: (Eq a, Enum a, Bounded a) => a -> a
+nextEnm' = bool minBound <$> succ <*> (/= maxBound)
+
+-- Enumeration with upper limit
+nextEnm :: (Eq a, Enum a, Bounded a) => a -> a
+nextEnm = bool maxBound <$> succ <*> (/= maxBound)
+
+-- Reverse enumeration with lower limit
+prevEnm :: (Eq a, Enum a, Bounded a) => a -> a
+prevEnm = bool minBound <$> pred <*> (/= minBound)
 
 myLayout = avoidStruts
          $ simpleTabbed
@@ -94,7 +110,7 @@ myConfig = def
 
       -- | Toggle primary display
       , ( (mod4Mask , xK_r)
-        ,  XS.modify @DisplayState next -- ^ Toggle between display states (e.g. show on primary display, show on secondary display, show on both displays (extend))
+        ,  XS.modify @DisplayState nextEnm' -- ^ Toggle between display states (e.g. show on primary display, show on secondary display, show on both displays (extend))
         >> XS.get @DisplayState >>= \case -- ^ Based on display state, do the display selection
             DS0    -> xrandrSingle DS0
             DS1    -> xrandrSingle DS1
@@ -129,10 +145,18 @@ myConfig = def
           , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]] -- ^ Over select/move action
 
   myAdditionalKeysP =
-      [ ("<XF86MonBrightnessUp>"                           -- ^ Max brightness on all screens
-        , getDisplays >>= (`forM_` (\d -> unsafeSpawn $ "xrandr --output " <> d <> " --brightness 1")) )
-      , ("<XF86MonBrightnessDown>"                         -- ^ Dimmed brightness on all screens
-        , getDisplays >>= (`forM_` (\d -> unsafeSpawn $ "xrandr --output " <> d <> " --brightness 0.3")))
+      [ ("<XF86MonBrightnessUp>"             -- ^ Increase brightness on all screens
+        , do
+          XS.modify @BrightnessState nextEnm -- ^ Toggle up between brightness levels
+          b <- XS.get @BrightnessState
+          getDisplays >>= mapM_ (setBrightness b)
+        )
+      , ("<XF86MonBrightnessDown>"           -- ^ Decrease brightness on all screens
+        , do
+          XS.modify @BrightnessState prevEnm -- ^ Toggle down between brightness levels
+          b <- XS.get @BrightnessState
+          getDisplays >>= mapM_ (setBrightness b)
+        )
       , ("<XF86AudioMute>", audioMute)
       , ("<XF86AudioLowerVolume>", audioDec)               -- ^ Decrease audio volume
       , ("<XF86AudioRaiseVolume>", audioInc)               -- ^ Increase audio volume
@@ -142,5 +166,6 @@ myConfig = def
       audioInc = void (raiseVolume 4)
       audioDec = void (lowerVolume 4)
       audioMute = void toggleMute
+      setBrightness b d = unsafeSpawn $ "xrandr --output " <> d <> " --brightness " <> show (brightnessToNum b)
 
   myTerminal = "terminator"
