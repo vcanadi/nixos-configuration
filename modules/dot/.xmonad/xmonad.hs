@@ -43,13 +43,9 @@ data DisplayState = DS0
 instance ExtensionClass DisplayState where
   initialValue = DS0
 
-data BrightnessState = BSDark | BSDim | BSBright deriving (Eq, Bounded, Enum, Show, Typeable)
+newtype BrightnessState = BrightnessState { brightnessValue :: Float} deriving (Eq, Show)
 instance ExtensionClass BrightnessState where
-  initialValue = BSBright
-
-brightnessToNum BSBright = 1
-brightnessToNum BSDim = 0.4
-brightnessToNum BSDark = 0.2
+  initialValue = BrightnessState 1
 
 -- Cyclic enumeration
 nextEnm' :: (Eq a, Enum a, Bounded a) => a -> a
@@ -147,15 +143,15 @@ myConfig = def
   myAdditionalKeysP =
       [ ("<XF86MonBrightnessUp>"             -- ^ Increase brightness on all screens
         , do
-          XS.modify @BrightnessState nextEnm -- ^ Toggle up between brightness levels
+          XS.modify @BrightnessState brightnessInc -- ^ Toggle up between brightness levels
           b <- XS.get @BrightnessState
-          getDisplays >>= mapM_ (setBrightness b)
+          getDisplays >>= mapM_ (brightnessSet b)
         )
       , ("<XF86MonBrightnessDown>"           -- ^ Decrease brightness on all screens
         , do
-          XS.modify @BrightnessState prevEnm -- ^ Toggle down between brightness levels
+          XS.modify @BrightnessState brightnessDec -- ^ Toggle down between brightness levels
           b <- XS.get @BrightnessState
-          getDisplays >>= mapM_ (setBrightness b)
+          getDisplays >>= mapM_ (brightnessSet b)
         )
       , ("<XF86AudioMute>", audioMute)
       , ("<XF86AudioLowerVolume>", audioDec)               -- ^ Decrease audio volume
@@ -166,6 +162,8 @@ myConfig = def
       audioInc = void (raiseVolume 4)
       audioDec = void (lowerVolume 4)
       audioMute = void toggleMute
-      setBrightness b d = unsafeSpawn $ "xrandr --output " <> d <> " --brightness " <> show (brightnessToNum b)
+      brightnessSet b d = unsafeSpawn $ "xrandr --output " <> d <> " --brightness " <> show (brightnessValue b)
+      brightnessInc (BrightnessState f) = BrightnessState $ min (f + 0.05) 1
+      brightnessDec (BrightnessState f) = BrightnessState $ max (f - 0.05) 0.2
 
   myTerminal = "terminator"
