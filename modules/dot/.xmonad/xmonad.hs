@@ -22,6 +22,7 @@ import           Data.Ratio((%))
 import           Control.Monad(void)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
+import System.IO (hPutStrLn)
 
 systemdCat t = void $ runProcessWithInput "systemd-cat"
   [ "echo"
@@ -31,7 +32,8 @@ systemdCat t = void $ runProcessWithInput "systemd-cat"
 
 main = do
   systemdCat "Xmonad started"
-  xmonad $ ewmhFullscreen $ ewmh $ xmobarProp $ myConfig -- xmbH
+  xmproc <- spawnPipe "pkill xmobar; sleep 0.2; source /home/vcanadi/.xmonad/.xmobarrc.sh"
+  xmonad $ ewmhFullscreen $ ewmh $ xmobarProp $ myConfig xmproc
 
 getDisplays :: X [String]
 getDisplays = fmap (fmap (head . words) . lines)
@@ -90,14 +92,18 @@ xrandrBoth = getDisplays >>=
     [p]    ->  safeSpawn "xrandr" [ "--dpi","110", "--output", p, "--auto" ]
     _      ->  return ()
 
-myConfig = def
+myConfig xmproc = def
     { layoutHook =  myLayout
     , terminal = myTerminal
     , borderWidth = 1
     , focusFollowsMouse = False
     , keys = myKeys
     , startupHook = systemdCat "Xmonad startup hook"
-                 >> void (spawnPipe "pkill xmobar; sleep 1; source /home/vcanadi/.xmonad/.xmobarrc.sh")
+    -- , logHook = dynamicLogWithPP xmobarPP
+    --       { ppOutput          = hPutStrLn xmproc
+    --       , ppTitle           = xmobarColor "darkgreen"  "" . shorten 20
+    --       , ppHiddenNoWindows = xmobarColor "grey" ""
+    --       }
     } `additionalKeysP` myAdditionalKeysP
   where
 
@@ -164,6 +170,6 @@ myConfig = def
       audioMute = void toggleMute
       brightnessSet b d = unsafeSpawn $ "xrandr --output " <> d <> " --brightness " <> show (brightnessValue b)
       brightnessInc (BrightnessState f) = BrightnessState $ min (f + 0.05) 1
-      brightnessDec (BrightnessState f) = BrightnessState $ max (f - 0.05) 0.2
+      brightnessDec (BrightnessState f) = BrightnessState $ max (f - 0.05) 0.1
 
   myTerminal = "terminator"

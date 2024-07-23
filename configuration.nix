@@ -62,10 +62,6 @@ in
 
   security.polkit.enable = true;
 
-  sound = {
-    enable = true;
-  };
-
   services = {
 
     openssh.enable = true;
