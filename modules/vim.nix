@@ -3,8 +3,13 @@ let myExtraConfig = ''
 
   colorscheme lunaperche
   ri Normal guibg=NONE
-  hi Normal ctermbg=16
+  hi Normal ctermbg=NONE
   set background=light
+
+  " transparent bg
+  autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
+  " For Vim<8, replace EndOfBuffer by NonText
+  autocmd vimenter * hi EndOfBuffer guibg=NONE ctermbg=NONE
 
   let g:mapleader = ','
   set nu
@@ -81,7 +86,7 @@ let myExtraConfig = ''
   autocmd StdinReadPre * let s:std_in=1
   autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
-  highlight Pmenu ctermfg=0 ctermbg=100
+  highlight Pmenu ctermfg=0 ctermbg=NONE
 
   " Movement between windows
   nnoremap <C-J> <C-W><C-J>
@@ -111,7 +116,7 @@ let myExtraConfig = ''
 " COC
 
 " floating window bg color
-highligh CocFloating ctermbg=7
+highligh CocFloating ctermbg=NONE
 
 
 " GoTo code navigation.

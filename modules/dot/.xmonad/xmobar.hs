@@ -2,10 +2,10 @@ Config {
 
 
    -- appearance
-     font =         "Ubuntu 12"
+     font =         "Ubuntu 14"
    , additionalFonts =
-     [ "Font Awesome 66 Free Solid 12"
-     , "Mononoki 12"
+     [ "Font Awesome 66 Free Solid 14"
+     , "Mononoki 14"
      ]
    , bgColor =      "black"
    , fgColor =      "#AAAAAA"
@@ -28,26 +28,26 @@ Config {
    , persistent =       True    -- enable/disable hiding (True = disabled)
    , commands =
         [ Run DiskU
-            [("/", "🖴 <used>/<size>"), ("sdb3", "<usedvbar>")]
+            [("/", "💾 <used>/<size>"), ("sdb3", "<usedvbar>")]
             ["-L", "20", "-H", "50", "-m", "1", "-p", "3"]
             100
 
         , Run DiskIO
-            [("/", "🖴 <read> <write>"), ("sdb3", "<total>")]
+            [("/", "💾 <read> <write>"), ("sdb3", "<total>")]
             []
             50
 
         , Run TopProc
-           [ "--template" , "^🗲  <both1> %"
+           [ "--template" , "^🧠 <both1> %"
            ] 50
 
         , Run TopMem
-           [ "--template" , "^𐂂  <both1>  "
+           [ "--template" , "^🐏 <both1>  "
            ] 50
 
         -- cpu activity monitor
         , Run MultiCpu
-            [ "--template" , "🗲  <autototal> % "
+            [ "--template" , "🧠 <autototal> % "
             , "--Low"      , "50"         -- units: %
             , "--High"     , "85"         -- units: %
             , "--low"      , "darkgreen"
@@ -57,7 +57,7 @@ Config {
 
         -- memory usage monitor
         , Run Memory
-            [ "--template" ,"𐂂  <usedratio> %"
+            [ "--template" ,"🐏 <usedratio> %"
             , "--Low"      , "20"        -- units: %
             , "--High"     , "90"        -- units: %
             , "--low"      , "darkgreen"
@@ -67,7 +67,7 @@ Config {
 
         -- network activity monitor (dynamic interface resolution)
         , Run DynNetwork
-            [ "--template" , "🖧  <dev>: <tx>kB/s|<rx>kB/s"
+            [ "--template" , "ᯤ <dev>: <tx>kB/s|<rx>kB/s"
             , "--Low"      , "1000"       -- units: kB/s
             , "--High"     , "5000"       -- units: kB/s
             , "--low"      , "darkgreen"

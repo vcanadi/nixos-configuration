@@ -34,18 +34,18 @@ in
       };
     };
 
-    desktopManager.plasma6 = {
-      enable = true;
+    # desktopManager.plasma6 = {
+    #   enable = true;
       # enableQt5Integration = true;
-    };
+    # };
 
-    displayManager = {
+    # displayManager = {
       # defaultSession = "sway";
       # sddm = {
       #   enable = true;
       #   wayland.enable = true;
       # };
-    };
+    # };
 
     xserver = {
       enable = true;
@@ -129,6 +129,7 @@ in
     #   fade = true;
     #   fadeDelta = 3;
     #   fadeSteps = [ 0.01 0.02 ];
+    #   inactiveOpacity = 0.7;
     # };
   };
 }

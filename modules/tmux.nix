@@ -75,6 +75,10 @@ in
         # set -g pane-border-format '#{pane_title}'
         set -g pane-border-format "[#[fg=black]#{?pane_active,#[bold],} :#P: #T #[fg=default,nobold]]"
 
+        set -g focus-events on
+        set-hook -g pane-focus-out 'select-pane -P bg=colour250,fg=default'
+        set-hook -g pane-focus-in 'select-pane -P bg=default,fg=default'
+
       # Message text
         set -g message-style "bg=colour235" #base02
         set -g message-style "fg=colour166" #orange
