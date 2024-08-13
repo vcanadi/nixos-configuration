@@ -63,7 +63,7 @@ let overlay = final: prev: rec {
   # Android
     # android-studio
     # jre
-    # android-tools
+    android-tools
     # apksigner
 
   # Virtualization

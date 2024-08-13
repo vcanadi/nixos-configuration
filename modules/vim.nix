@@ -187,7 +187,7 @@ endfunction
       "virtualTextPrefix" = " —— ";
     };
     "list.height" = 20;
-    "codeLens.enable" = true;
+    "codeLens.enable" = false;
     "coc.preferences.enableMarkdown" = true;
     "coc.preferences.jumpCommand" = "tab drop";
     languageserver.haskell = {

@@ -24,20 +24,24 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
 import System.IO (hPutStrLn)
 
-systemdCat t = void $ runProcessWithInput "systemd-cat"
+sysCat t = void $ runProcessWithInput "systemd-cat"
   [ "echo"
   , "______________________________________\n"
   , "[XMonad Log] " <> t <> "\n"
   ] ""
 
 main = do
-  systemdCat "Xmonad started"
+  sysCat "Xmonad started"
   xmproc <- spawnPipe "pkill xmobar; sleep 0.2; source /home/vcanadi/.xmonad/.xmobarrc.sh"
   xmonad $ ewmhFullscreen $ ewmh $ xmobarProp $ myConfig xmproc
 
 getDisplays :: X [String]
-getDisplays = fmap (fmap (head . words) . lines)
-            $ runProcessWithInput "xrandr" [] "" >>= runProcessWithInput "grep" [" connected"]
+getDisplays = do
+  displays <- fmap (fmap (head . words) . lines)
+   $ (runProcessWithInput "xrandr" [] "")
+     >>= runProcessWithInput "grep" [" connected"]
+  sysCat $ "getDisplays::displays: " <> show displays
+  pure displays
 
 data DisplayState = DS0
                   | DS1
@@ -70,26 +74,38 @@ myLayout = avoidStruts
     ratio = toRational (2/(1+sqrt 5::Double))
 
 -- | Hardcode relative location of secondary screen
-sndDisplayPos = "--right-of"
+-- sndDisplayPos = "--right-of"
 -- sndDisplayPos = "--left-of"
--- sndDisplayPos = "--above"
+sndDisplayPos = "--above"
 -- sndDisplayPos = "--below"
 
 -- | Show only on single display
 xrandrSingle dType = getDisplays >>=
   \case
-    [p, s] -> safeSpawn "xrandr" [ "--dpi","110", "--output", disp p s dType, "--auto", "--output", other p s dType, "--off" ]
-    [p]    -> safeSpawn "xrandr" [ "--dpi","110", "--output", p, "--auto"]
+    [p, s] -> do
+      let args = [ "--dpi","110", "--output", disp p s dType, "--auto", "--output", other p s dType, "--off" ]
+      sysCat $ "xrandSingle::xrand args: " <> unwords args
+      safeSpawn "xrandr" args
+    [p]    -> do
+      let args = [ "--dpi","110", "--output", p, "--auto"]
+      sysCat $ "xrandSingle::xrand args: " <> unwords args
+      safeSpawn "xrandr" args
     _      -> return ()
   where
     disp p s dType = if dType == DS0 then p else s
     other p s dType = if dType == DS0 then s else p
 
 -- | Show on two displays
-xrandrBoth = getDisplays >>=
+xrandrBoth = (sysCat "Both displays") >> getDisplays >>=
   \case
-    [p, s] ->  safeSpawn "xrandr" [ "--dpi","110", "--output", p, "--auto", sndDisplayPos , s, "--output", s, "--auto"]
-    [p]    ->  safeSpawn "xrandr" [ "--dpi","110", "--output", p, "--auto" ]
+    [p, s] -> do
+      let args = [ "--dpi","110", "--output", p, "--auto", sndDisplayPos , s, "--output", s, "--auto"]
+      sysCat $ "xrandSingle::xrand args: " <> unwords args
+      safeSpawn "xrandr" args
+    [p]    -> do
+      let args = [ "--dpi","110", "--output", p, "--auto" ]
+      sysCat $ "xrandSingle::xrand args: " <> unwords args
+      safeSpawn "xrandr" args
     _      ->  return ()
 
 myConfig xmproc = def
@@ -98,7 +114,7 @@ myConfig xmproc = def
     , borderWidth = 1
     , focusFollowsMouse = False
     , keys = myKeys
-    , startupHook = systemdCat "Xmonad startup hook"
+    , startupHook = sysCat "Xmonad startup hook"
     -- , logHook = dynamicLogWithPP xmobarPP
     --       { ppOutput          = hPutStrLn xmproc
     --       , ppTitle           = xmobarColor "darkgreen"  "" . shorten 20

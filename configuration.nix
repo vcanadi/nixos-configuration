@@ -78,6 +78,7 @@ in
   networking.networkmanager.enable = true;
 
   programs = {
+    adb.enable = true;
     zsh.enable = true;
     tmux = tmux-nix.tmux;
     gnupg.agent.enable = true;

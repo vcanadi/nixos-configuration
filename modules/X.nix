@@ -126,10 +126,19 @@ in
     # picom = {
     #   enable = true;
     #   vSync = true;
+    #   # Fading
     #   fade = true;
-    #   fadeDelta = 3;
-    #   fadeSteps = [ 0.01 0.02 ];
-    #   inactiveOpacity = 0.7;
+    #   fadeDelta = 4;
+    #   fadeSteps = [ 0.03 0.03 ];
+    #   # Shadows
+    #   shadow = true;
+    #   shadowOpacity = 0.6;
+    #   shadowOffsets = [ (-3) (-3)];
+    #   # Transparency / Opacity
+    #   inactiveOpacity = 0.5;
+    #   activeOpacity = 1.0;
+    #   # General settings
+    #   backend = "glx";
     # };
   };
 }
