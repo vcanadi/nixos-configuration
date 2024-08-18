@@ -125,20 +125,20 @@ in
 
     # picom = {
     #   enable = true;
-    #   vSync = true;
+    #   vSync = false;
     #   # Fading
     #   fade = true;
     #   fadeDelta = 4;
     #   fadeSteps = [ 0.03 0.03 ];
     #   # Shadows
-    #   shadow = true;
-    #   shadowOpacity = 0.6;
-    #   shadowOffsets = [ (-3) (-3)];
+    #   # shadow = false;
+    #   # shadowOpacity = 0.6;
+    #   # shadowOffsets = [ (-3) (-3)];
     #   # Transparency / Opacity
-    #   inactiveOpacity = 0.5;
+    #   inactiveOpacity = 0.2;
     #   activeOpacity = 1.0;
     #   # General settings
     #   backend = "glx";
     # };
-  };
+  # };
 }

@@ -111,7 +111,9 @@ xrandrBoth = (sysCat "Both displays") >> getDisplays >>=
 myConfig xmproc = def
     { layoutHook =  myLayout
     , terminal = myTerminal
-    , borderWidth = 1
+    , borderWidth = 20
+    , normalBorderColor = "black"
+    , focusedBorderColor = "#009900"
     , focusFollowsMouse = False
     , keys = myKeys
     , startupHook = sysCat "Xmonad startup hook"
